@@ -1,0 +1,219 @@
+% !Mode:: "TeX:UTF-8"
+
+\chapter{示例：实现方案}
+本章首先介绍了本系统实现的设计原则与目标，然后描述了系统的整体架构与总体设计方案，接着阐述了系统的各个模块实现时的解决方案，最后给出了系统在~Android~具体实现时的实现方法和使用说明。
+\section{设计目标与原则}
+	\subsection{设计目标}
+	本系统能够检测已知恶意软件及其变种，并能通过模糊检测发现具有相似恶意行为的未知恶意软件，为~Android~平台这样的开放式移动平台提供安全保障，可广泛用于各种型号的~Android~设备。系统具体设计目标如下：\\
+	\begin{enumerate}
+	\item 适用于目前主流的~Android~平板及手机，至少可运行于3.0版本系统。
+	\item 能够检测用户指定的程序是否为恶意程序。
+	\item 能够自动检测设备上的所有程序，并可定时检测。
+	\item 能够监控设备的程序安装行为，自动检测安装的程序是否为恶意程序。
+	\item 能够保证本程序自身的特征库不被破坏，并能及时修复和更新特征库。
+	\item 能够保证用户使用方便。
+	\end{enumerate}
+	
+	\subsection{设计原则}
+	 从安全产品的特点出发，本系统设计与实现将遵循下列一些设计原则：\\
+	\begin{enumerate}
+	\item 高效性
+	
+	 系统运行效率高，可快速实现对目标程序的特征提取与检测，并将结果用最清晰简洁的方式告知用户。
+	\item 灵活性
+	
+	 为用户提供的各种功能具有可选性，用户可根据自己的需要选择其中的功能，而且用户可自行决定如何处理检测结果为恶意的程序。
+	
+	\item 实用性
+	
+	本系统应按照实用性原则进行设计，在保证对程序检测的同时，力求用户界面简洁友好。
+	
+	\item 可扩展性
+	
+	 目前本系统只检测程序的~Java~实现部分，但是还有极少数程序代码是用~C~语言编写的，在后续的开发过程中，可以在不改变程序结构的前提下，实现这一部分的检测功能。
+	
+	\item 健壮性 \par
+	 系统应具有应对非法操作的能力，并且当针对于本系统的恶意攻击到来时，可以及时防御，防止自身特征库遭到损坏。
+	\end{enumerate}
+	
+\section{系统方案}
+	 本系统由两部分构成，第一部分是产品部分，即~Android~应用程序，采用~Java~作为编程语言。第二部分是检测算法模型构建部分，采用~Matlab~实现，其输出的模型数据供产品部分作为特征库使用。故本系统的特征库构建于~PC~端，而对目标程序的检测运行于~Android~端。从而将构建过程中包含的巨大计算量留在~PC~端。其具体结构如图~\ref{system}~所示。
+\pic[htbp]{系统结构}{height=5.86cm}{system}
+
+	 其中程序信息抽取模块是本系统检测恶意软件的基础，特征检测模块是系统的核心与实现难点。特征检测模块中又分为变种检测模块和模糊检测模块，变种检测模块检测待检软件是否是已知恶意软件的变种，而模糊检测模块实现的是本系统从人脸匹配中引入的新型检测手段，可对特征库中不存在的未知恶意软件进行检测。
+	
+\section{系统模块的实现}
+	\subsection{程序分解模块}
+		
+		 Android~的程序文件为~APK~格式，APK~文件是~Android~最终的运行程序，是~Android~Package~的全称。类似于~Symbian~ 操作系统中~sis~文件，APK~文件其实是~Zip~文件格式，但后缀名被修改为~APK。通过解压，可以看到~Dex~ 文件。Dex~是~Dalvik~VM~executes~的全称，即~Dalvik~虚拟机可执行文件，并非~Java~ME~的字节码而是~Dalvik~字节码。\\
+		一个APK文件结构为：
+		\begin{enumerate}
+		\item META-INF$\backslash$————签名信息，用来保证~apk~包的完整性和系统的安全，jar~文件经常可以看到；
+		\item res$\backslash$————资源文件夹，包括程序中使用的图片，布局文件等；
+		\item AndroidManifest.xml$\backslash$————项目配置清单，但不是明文的XML格式，无法直接打开阅读；
+		\item classes.dex$\backslash$————Dalvik~可执行二进制文件，在运行时被动态优化为dey文件并由Dalvik虚拟机解释执行	 ；
+		\item resources.arsc$\backslash$————编译后的二进制资源文件，资源文件打包而成，字符串值（源码中的/value/Strings.xml）就在其中；
+		\item lib$\backslash$————动态链接库文件；
+		\item assets$\backslash$————原始文件文件夹，其中的文件不会被压缩，也不能像~res~目录下的资源文件一样通过资源类引用。
+		\end{enumerate}\par
+		 图~\ref{apk}~是我们解压缩helloworld.apk文件后看到的内容，可以看到其结构跟工程结构有些类似。
+		
+\pic[htbp]{helloworld.apk的结构}{width=0.5\textwidth}{apk}
+
+		
+		 classes.dex~文件是~Java~源码编译后生成的~Java~字节码文件。但由于~Android~使用的~Dalvik~虚拟机与标准的~Java~虚拟机是不兼容的，Dex~文件与~Class~文件相比，不论是文件结构还是~opcode~都不一样。目前常见的~Java~ 反编译工具都不能处理~Dex~文件。Android~SDK~中提供了一个~Dex~文件的反编译工具~dexdump。用法为，dexdump -d -f -h  xxx.dex。
+		\\
+		指令参数解释：\\
+		-d ： 反编译程序段\\
+		-f ： 从文件头显示摘要信息\\
+		-h ： 显示文件头详情\\
+		-C ： 反编译低级符号名\\
+		-S ： 只计算大小 \par
+		 在知道了程序安装包是~Zip~编码之后，我们就可以通过遍历~Zip~包中包含的项目名，找到程序的二进制文件，即~Dex~文件。并在内存中建立一段缓冲区，可将~Dex~文件读入内存，再写到指定的临时文件中。分解流程如图~\ref{flow1}~所示。
+	
+\pic[htbp]{程序分解流程}{height = 5.76cm}{flow1}	
+		
+	\subsection{构建特征向量模块}
+		 特征向量是数据挖掘中的一个概念，一个数据集中的每个数据实例都可以用一组属性值来描述，每一个数据实例都具有一个特殊的目标属性，称为类属性，它表征每个数据实例归属的类。这一组属性值即是代表这个数据实例的特征向量。在我们的检测问题中，Android~系统~API~和~Java~标准函数就是我们定义的属性，而恶意和非恶意就是类属性。这一过程如图~\ref{flow3}~所示。
+		
+\pic[htbp]{构建特征向量流程}{height = 0.5\textwidth}{flow3}	
+		
+		 我们将特征向量空间（$\Omega$）存储在数据库中，数据表的定义见表~\ref{omegatable}~所示。
+
+\threelinetable[htbp]{omegatable}{0.8\textwidth}{llllX}{$\Omega$~数据表定义}
+{字段&主键&类型&是否为空&备注\\
+}{
+ID&是&Int&NOT NULL&特征向量维度序号\\
+MethodName&否&Text&NOT NULL&函数名\\
+}{\item
+}
+
+		 构造特征向量时，先初始化一个全为0的特征向量，然后利用SQL查询语句确定代表某一函数名的维度序号：\\
+		select ID from Omega where MethodName = “待查函数名”；\\
+		 并将特征向量（$\omega$）的第~ID~位设置为1。见式(\ref{omegai})。
+		\begin{equation}\label{omegai}
+		\omega_i =
+		\begin{cases}
+		1 & i = ID \\
+		0 & else
+		\end{cases}
+		\end{equation}
+	\subsection{特征库构建模块}
+		 特征库构建模块实现于~PC~端，恶意样本来自各大权威机构公布的数据，详见第\pageref{omegai}页\ref{omegai}小节，其流程如图~\ref{flow5}~所示，特征库数据模型构建方法如下：
+		
+\begin{pics}[htbp]{特征库构建流程}{flow5}
+  \addsubpic{KNN特征库构建流程}{width=0.3\textwidth}{flow5-1}
+  \addsubpic{K-L~变换矩阵构建流程}{width=0.3\textwidth}{flow5-2}
+  \addsubpic{LDA~投影矩阵构建流程}{width=0.3\textwidth}{flow5-3}
+\end{pics}
+
+		\begin{enumerate}
+		\item 最近邻居(KNN)算法\par
+		 KNN~算法的特征库就是恶意程序样本的特征向量集合，我们将这些特征向量存储到数据库中。
+		
+		\item 主成分分析（PCA）算法\par
+		 考虑到文献\citeup{wangang1912}\citeup{zhaokaihua1995}中的适用条件，由于我们的特征向量维度远大于样本数量，所以需要去掉冗余数据，使训练数据矩阵为可逆矩阵才能使用线性判别分析（LDA）算法。
+
+		 PCA~方法主要是通过对协方差矩阵进行本征分解，以得出数据的主成分（即本征矢量）与它们的权值（即本征值）。PCA~ 提供了一种降低数据维度的有效办法；如果分析者在原数据中除掉最小的本征值所对应的成分，那么所得的低维度数据必定是最优化的（也即这样降低维度必定是失去信息最少的方法）。
+
+		 我们的目标是把高维的数据集~$\Omega_B$~和~$\Omega_M$~变换成具有较小维度的数据集~$Y_B$~和~$Y_M$。$Y_B$~和~$Y_M$~是矩阵~$\Omega_B$~和~$\Omega_M$~的~Karhunen–Loève~变换（K-L~变换）。即~$\mathbf{Y}=\mathbb{KLT}\{\mathbf{X}\}$。\\
+		计算特征向量平均值见式(\ref{mean})。
+		\begin{equation}\label{mean}
+		u=\dfrac{1}{N} \sum_{\omega \in \Omega_B \cup \Omega_M} \omega
+		\end{equation}
+		 从~$\Omega_B$~和~$\Omega_M$~中减去平均值~$u$~见式(\ref{Omega_u})。
+		\begin{equation}\label{Omega_u}
+		\begin{split}
+		B & =\begin{vmatrix}\Omega_B \\ \Omega_M \end{vmatrix}-hu\\
+		  & \text{其中h是全为1的列向量。}
+		\end{split}
+		\end{equation}
+		求协方差矩阵~C~见式(\ref{getC})。
+		\begin{equation}\label{getC}
+		C=B \cdot B^T
+		\end{equation}
+		 计算~C~的特征值和特征向量，提取不为0的特征值所对应的特征向量，构成~K-L~变换矩阵~W。\\
+		 所以，$Y_B$~和~$Y_M$~可由式(\ref{ybym})计算。
+		\begin{equation}\label{ybym}
+		\begin{split}
+		Y_B &= \Omega_B \cdot W \\
+		Y_M &= \Omega_M \cdot W
+		\end{split}
+		\end{equation}
+		
+		最后我们将~K-L~变换矩阵~W~存储在数据库中。
+				
+		\item Fisher~线性判别分析（LDA）\par
+\threelinetable[htbp]{ldaparameterdeftable}{\textwidth}{lXlX}{LDA算法变量定义}
+{变量&定义&变量&定义\\
+}{
+        $S_b$ 	& 样本类间离散度矩阵 & $x$		& 一个程序\\
+		$S_i$ 	& 样本类内离散度矩阵&$X_M$	& 恶意程序集合\\
+		$S_w$ 	& 总类内离散度矩阵&$X_B$	& 非恶意程序集合\\
+		$W$   	& 投影方向向量&$y_M$ 	& 恶意样本的投影值 \\
+		$J_F(W)$& Fisher~准则函数&$y_B$ 	& 非恶意样本的投影值\\
+		$M$		& 恶意（Malice）的缩写&$y_0$ 	& 识别阈值点\\
+		$B$		& 非恶意（Benign）的缩写&&\\
+}{
+\item
+}
+
+应用统计方法解决模式识别问题时，一再碰到的问题之一是维数问题。在低维空间里解析上或计算上行得通的方法，在高维空间里往往行不通。因此，降低维数有时就成为处理实际问题的关键。在数学上总是可以把高维空间样本投影到一条直线上，形成一维空间，即把维数压缩到一维。但是投影方向有无数种，若把样本投影到一条任意的直线上，可能使几类样本混在一起无法区分，如图~\ref{fisher1}~所示。。但在一般情况下，总可以找到某个方向，使在这个方向的直线上，样本的投影能分开得最好，如图~\ref{fisher2}~所示。。 问题是如何根据实际情况找到这条最好的、最易于区分的投影线。这就是~Fisher~法所要解决的基本问题。\par
+
+\begin{pics}[htbp]{Fisher~线性判别基本原理}{fisher}
+  \addsubpic{最优方向投影}{width=0.4\textwidth}{fisher1}
+  \addsubpic{K-L~任意方向投影}{width=0.4\textwidth}{fisher2}
+\end{pics}
+
+		 描述~LDA~算法前，首先定义几个基本变量，变量定义见表~\ref{ldaparameterdeftable}。LDA~算法步骤如下：
+
+		\begin{enumerate}
+		\item 计算样本均值向量~$m_i$：
+		\begin{equation*}
+		m_i=\dfrac{1}{N_i}\sum_{y \in Y_i}y ~~~~,i=B,M
+		\end{equation*}
+		\item 计算样本类内离散度矩阵~$S_i$~和总类内离散度矩阵~$S_w$：
+		\begin{align}
+		S_i & = \sum_{y \in Y_i}(y-m_i)(x-m_i)^T ~~~~,i=B,M\\
+		S_w & = P(x|x \in X_B)S_B + P(x|x\in X_M)S_M
+		\end{align}
+		\item 计算样本类间离散度矩阵~$S_b$：
+		\begin{equation*}
+		S_b=P(x|x \in X_B)P(x|x\in X_M)(m_B-m_M)(m_B-m_M)^T
+		\end{equation*}
+		$P(x|x \in X_B)$~和~$P(x|x\in X_M)$~是恶意程序和非恶意程序的先验概率，根据目前~Android~市场的情况，我们取~$P(x|x\in X_M)=0.001$。
+		\item Fisher准则函数为：
+		\begin{equation}
+		J_F(W) = \dfrac{W^T S_b W}{W^T S_w W}
+		\end{equation}
+		 为求函数取极大值时的~$W^*$。可用拉格朗日乘数法，定义拉格朗日函数为：
+		\begin{equation*}
+		\dfrac{L(W,\lambda)}{W} = S_bW-\lambda S_w W
+		\end{equation*}
+		另偏导数为零，得
+		\begin{equation*}
+		S_b W^* = \lambda S_w W^*
+		\end{equation*}
+		 其中~$W^*$~就是~$J_F(W)$~的极值解。因为~$S_w$~可逆，等式两边左乘~$S_w^{-1}$，可得
+		\begin{equation*}
+		S_w^{-1} S_b W^* = \lambda W^*
+		\end{equation*}
+		所以求~$W^*$~即求矩阵~$S_w^{-1} S_b$~的特征值问题。在我们这个特殊情况下，只有两种类别，故
+		\begin{equation*}
+		S_b W^* = (m_B-m_M)(m_B-m_M)^T W^*
+		\end{equation*}
+		 其值为一标量，所以对~$W$~投影方向无影响。忽略这个标量的比例因子可得，
+		\begin{equation*}
+		W^* = S_w^{-1} (m_B-m_M)
+		\end{equation*}
+		\item 求出~$W^*$~后即可计算：
+		\begin{align}
+		y_M & = mean(W^*T \cdot Y_M) \\
+		y_B & = mean(W^*T \cdot Y_B) \\
+		y_0 & = \dfrac{m_B+m_M}{2}  +  \dfrac{\ln (P(x|x\in X_B)/P(x|x\in X_M))}{N_B+N_M-2}
+		\end{align}
+		 最后将LDA变换矩阵~$W$、$y_M$、$y_B$、$y_0$保存在数据库中。
+		\end{enumerate}	
+		\end{enumerate}
+\section{本章小结}
+本章介绍了~AFace~系统的实现细节，它是一个由~Android~端和~PC~端两部分组成的系统。我们首先介绍了系统的设计原则。然后介绍了我们在此原则下设计的检测流程及其背后的检测原理。最后，作为一款完整的产品，还介绍了系统的产品软件架构以及产品的界面设计。

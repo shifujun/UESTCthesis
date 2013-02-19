@@ -1,0 +1,4507 @@
+% ^^A !Mode:: "TeX:UTF-8:DTX"
+
+% \iffalse meta-comment
+%
+% Copyright 2012-2013 Shi Fujun <shifujun@foxmail.com>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Shi Fujun <shifujun@foxmail.com>.
+%
+% This work consists of the files uestcthesis.dtx, uestcthesis.ins and
+% uestcthesis.bst.
+% and the derived file uestcthesis.cls.
+% Other files in this work's package are belongs to the respective owners.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{uestcthesis.dtx}
+%</driver>
+%<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
+%<class>\ProvidesClass{uestcthesis}
+%<*class>
+    [2013/02/12 v0.3 UESTC thesis class]
+%</class>
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage[hyperref,UTF8]{ctex}
+\usepackage{cmap}
+\usepackage[pdftex,unicode,
+            bookmarksnumbered=true,
+            bookmarksopen=true,
+            colorlinks=false,
+            pdfborder={0 0 1},
+            citecolor=blue,
+            linkcolor=red,
+            anchorcolor=green,
+            urlcolor=blue,
+            breaklinks=true
+            ]{hyperref}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{uestcthesis.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \GetFileInfo{uestcthesis.dtx}
+%
+% \DoNotIndex{\newcommand,\newenvironment}
+%
+%
+% \title{The \textsf{uestcthesis} class\thanks{This document
+%   corresponds to \textsf{uestcthesis}~\fileversion, dated \filedate.}}
+% \author{时富军 \\ \texttt{shifujun@foxmail.com}}
+%
+% \maketitle
+% \iffalse
+%<*class>
+% \fi
+% \section{文类源代码}
+% \changes{v0.21}{2013/01/22}{将模板重构为DocStrip格式}
+%
+% \subsection{中文支持}
+%继承ctexbook文类，并调用了如下功能的选项：\par
+%cs4size:使用小四字号为缺省字体大小。\par
+%UTF8:使用UTF-8 编码。\par
+%fancyhdr:保持和fancyhdr 宏包的兼容性。该选项将使得fancyhdr 宏包被自动调用。
+%fancyhdr是版式设置宏包，即页眉页脚设置。\par
+%hyperref:自动判断hyperref 宏包的正确参数以避免产生乱码。
+%如果在导言区用户没有自己调用hyperref，则该选项将使得hyperref 宏包在导言区末尾被
+%自动调用；如果需要对hyperref 宏包做进一步的设置，则用户可以自己在ctex 宏包后调用
+%hyperref，并使用适当的选项或设置。hyperref是超链接宏包，为pdf 文件中的交叉引用提供超链接。\par
+%fntef:为CJKfntef 宏包和CCTfntef 宏包提供统一接口。
+%该选项将使得CJKfntef 宏包或者CCTfntef 宏包被自动调用。这两个宏包是下划线宏包。
+%    \begin{macrocode}
+\LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
+%    \end{macrocode}
+%
+%调用etoolbox宏包，为了使用其提供的|\ifblank|命令。
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+%
+%调用ifthen宏包，为了使用其提供的|\ifthenelse|命令。
+%    \begin{macrocode}
+\RequirePackage{ifthen}
+%    \end{macrocode}
+% \subsection{学位选项}
+%设置有关学士学位论文的选项值。变量的命名方式采用：|%\<name>@degree|，其中|<name>|
+%是可变的变量名。此形式用于在其他排版设置中取代原有的常量值。
+% \begin{macro}{\bachelor@uestcthesis}
+%本科学位论文相关设置：
+%    \begin{macrocode}
+\newcommand{\bachelor@uestcthesis}{
+\newcommand{\degree@uestcthesis}{bachelor}
+\newcommand{\bachelortitlepage@uestcthesis}{}%先声明宏，稍后定义。
+\newcommand{\titlepage@degree}{\bachelortitlepage@uestcthesis}
+%定义封面的排版设置
+
+\newcommand{\multibibflag@uestcthesis}{}
+%设置不使用multibib宏包
+
+\newcommand{\thesisname@degree}{电子科技大学学士学位论文}
+%论文全名
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\master@uestcthesis}
+%硕士学位论文相关设置：
+%    \begin{macrocode}
+\newcommand{\master@uestcthesis}{
+\newcommand{\degree@uestcthesis}{master}
+\newcommand{\mastertitlepage@uestcthesis}{}%先声明宏，稍后定义。
+\newcommand{\titlepage@degree}{\mastertitlepage@uestcthesis}
+%定义封面的排版设置
+
+\newcommand{\multibibflag@uestcthesis}{TRUE}
+%设置使用multibib宏包
+
+\newcommand{\thesisname@degree}{电子科技大学硕士学位论文}
+%论文全名
+
+\newcommand{\publicationsname@degree}{攻硕期间取得的研究成果}
+
+\newcommand{\@degree}{硕士}
+%定义申请学位级别
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\doctor@uestcthesis}
+%博士学位论文相关设置：
+%    \begin{macrocode}
+\newcommand{\doctor@uestcthesis}{
+\newcommand{\degree@uestcthesis}{doctor}
+\newcommand{\doctortitlepage@uestcthesis}{}%先声明宏，稍后定义。
+\newcommand{\titlepage@degree}{\doctortitlepage@uestcthesis}
+%定义封面的排版设置
+
+\newcommand{\multibibflag@uestcthesis}{TRUE}
+%设置使用multibib宏包
+
+\newcommand{\thesisname@degree}{电子科技大学博士学位论文}
+%论文全名
+
+\newcommand{\publicationsname@degree}{攻博期间取得的研究成果}
+
+\newcommand{\@degree}{博士}
+%定义申请学位级别
+}
+%    \end{macrocode}
+% \end{macro}
+% 声明三个选项分别代表三种学位论文。由于其中的定义包含中文，所以声明必须放在ctexbook文类后面。
+%    \begin{macrocode}
+\DeclareOption{bachelor}{\bachelor@uestcthesis}
+\DeclareOption{master}{\master@uestcthesis}
+\DeclareOption{doctor}{\doctor@uestcthesis}
+\ProcessOptions\relax
+%    \end{macrocode}
+% \subsection{版面设置}
+%调用版面设置宏包geometry。这些选项的值是参照MS WORD打印出来的PDF文件对比得到的。
+%选项说明：\\
+%a4paper:设置版面纸张为A4纸。\\
+%headheight:设置页眉高度。\\
+%headsep:页眉与版心的距离。\\
+%includeheadfoot:将页眉页脚高度算进版心中。\\
+%centering:设置版心居中。\\
+%top:页面顶边与版心之间的距离。\\
+%left:双页排版的内侧边距。
+%
+%    \begin{macrocode}
+\RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
+                top=2.75cm,left=3cm]{geometry}
+%    \end{macrocode}
+%
+%按照学校要求需要设置默认行距为20磅。参数是倍数值，没有单位。这个值是通过
+%|\showthe\baselineskip|命令查看当前的行距，然后计算得到的。
+%    \begin{macrocode}
+\linespread{1.391}
+%    \end{macrocode}
+% \subsection{图表设置}
+%调用宏包：
+%graphicx插图宏包\\
+%calc计算宏包，用于在插图等尺寸指定时可以指定用四则运算表示尺寸。
+%例如|0.6\textwidth|表示0.6倍的行宽。\\
+%float宏包，为浮动环境增加一个H选项，命令系统就地放置浮动体。但这个选项必须单独
+%使用，例如|\begin{figure}[H]|。 如果中括号内有其他选项，则H会失去强制作用。\\
+%texnames宏包提供了|\LaTeX|等\TeX 专有Logo打印命令。这个宏包可能只在编写说明文档
+%时有用，在编写毕业设计论文时应该不会用到。
+%
+%    \begin{macrocode}
+\RequirePackage{graphicx,calc,float,texnames}
+%    \end{macrocode}
+%
+%调用图表标题宏包caption。选项说明：\\
+%format=hang:将标题从第二行起悬挂缩进排版，缩进宽度等于标题标志加分隔符的宽度。\\
+%labelsep=space:分隔符样式为一个空格。
+%
+%    \begin{macrocode}
+\RequirePackage[format=hang,labelsep=space]{caption}
+%    \end{macrocode}
+%
+%设置浮动体在文本中间的前后间距为6磅。同时在caption宏包的belowskip选项中设置的-7mm+6bp。
+%
+%    \begin{macrocode}
+\intextsep=6bp
+%    \end{macrocode}
+%
+%分别设置表和图的标题与正文的距离。\\
+%aboveskip:标题与图表之间的距离。设置为0是为了将前文间距交给|\intextsep|设置。\\
+%belowskip:标题与下文之间的距离。其中-7mm是将后文间距先调为0，再加上需要的6磅。
+%这样设置是因为|\intextsep|命令设置出的效果中后文间距比6bp多出约7mm距离。
+%
+%    \begin{macrocode}
+\captionsetup[figure]{aboveskip=0bp,belowskip=-7mm+6bp}
+\captionsetup[table]{aboveskip=0bp,belowskip=0bp}
+%    \end{macrocode}
+%
+%调用宏包：\\
+%booktabs表格线宏包。用于绘制三线表。\\
+%tabularx可调列宽表格宏包。可自动换行。\\
+%threeparttable可加脚注的表格宏包。\\
+%longtable跨页表格宏包。
+%    \begin{macrocode}
+\RequirePackage{booktabs,tabularx,threeparttable,longtable}
+%    \end{macrocode}
+%
+%先声明一个图表标题字体。
+%    \begin{macrocode}
+\DeclareCaptionFont{capfont}{\zihao{5}}
+%    \end{macrocode}
+%
+%再设置图表标题字体为上一行声明的。
+%    \begin{macrocode}
+\captionsetup{font=capfont}
+%    \end{macrocode}
+%
+%使图编号数字间加一个短横线。即设置成图1-1的样式。
+%    \begin{macrocode}
+\renewcommand{\thefigure}{\arabic{chapter}\textendash\arabic{figure}}
+%    \end{macrocode}
+%
+%使表编号数字间加一个短横线。即设置成表1-1的样式。
+%    \begin{macrocode}
+\renewcommand{\thetable}{\arabic{chapter}\textendash\arabic{table}}
+%    \end{macrocode}
+%
+%设置图片的根目录。
+%    \begin{macrocode}
+\graphicspath{{pics/}}
+%    \end{macrocode}
+%
+%调用宏包placeins。允许上一个section的浮动图形出现在下一个section的开始部分，还提供|\FloatBarrier|命令，使所有未处理的浮动图形立即被处理。
+%    \begin{macrocode}
+\RequirePackage[below]{placeins}
+%    \end{macrocode}
+%
+%调用宏包flafter。使得所有浮动体不能被放置在其浮动环境之前，以免浮动体在引述它的文本之前出现.
+%    \begin{macrocode}
+\RequirePackage{flafter}
+%    \end{macrocode}
+% \begin{macro}{\newcmds@uestcthesis}
+%定义一些插入图表的包装命令
+%    \begin{macrocode}
+\newcommand{\newcmds@uestcthesis}{
+%    \end{macrocode}
+% \begin{macro}{\pic}
+%|\pic|命令生成一个独占一行、居中的图片。标题前后间距符合科大毕设标准
+%    \begin{macrocode}
+\newcommand{\pic}[4][htbp]{
+\begin{figure}[##1]
+\centering
+  \includegraphics[##3]{##4}
+  \caption{##2}
+  \label{##4}
+\end{figure}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{environment}{pics}
+%定义子图环境和插入子图命令
+%    \begin{macrocode}
+\newcommand{\subpiclabel}{}%定义一个空的多图环境整体的标签变量
+\newcommand{\subpiccaption}{}%定义一个空的多图环境整体的标题变量
+\newenvironment{pics}[3][htbp]{%定义多图环境
+\renewcommand{\subpiclabel}{##3}%设置多图环境整体的标签
+\renewcommand{\subpiccaption}{##2}%设置多图环境整体的标题。这里先定义两个空变量，又设置值，是因为在定义一个环境时，环境结尾中不能调用##2，##3等传入的值。所以要在环境结尾中插入标题和标签就只能这么做了。
+\begin{figure}[##1]
+\centering}
+{\caption{\subpiccaption}
+\label{\subpiclabel}
+\end{figure}
+}
+%    \end{macrocode}
+% \end{environment}
+% \begin{macro}{\addsubpic}
+%定义插入子图命令
+%    \begin{macrocode}
+\newcommand{\addsubpic}[3]{
+ \subfigure[##1]{\label{##3}\includegraphics[##2]{##3}}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\threelinetable}
+%|\threelinetable|命令生成一个独占一行、居中的三线表格。标题前后间距符合科大毕设标准。
+%    \begin{macrocode}
+\newcommand{\threelinetable}[8][htbp]{
+\begin{table}[##1]
+\centering
+\begin{threeparttable}
+\caption{##5}
+\label{##2}
+\begin{tabularx}{##3}{##4}
+\toprule[0.1em]
+##6
+\midrule[0.05em]
+##7
+\bottomrule[0.1em]
+\end{tabularx}
+\ifblank{##8}{}{
+\begin{tablenotes}
+##8
+\end{tablenotes}
+}
+\end{threeparttable}
+\end{table}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\threelinetable}
+%|\longthreelinetable|命令生成一个居中的、可自动换页的三线表格。标题前后间距符合科大毕设标准。
+%    \begin{macrocode}
+\newcommand{\longthreelinetable}[6]{
+{
+\centering
+\begin{longtable}{##4}
+\caption{##2}\label{##1}\\
+\toprule[0.1em]
+##5
+\midrule[0.05em]
+\endfirsthead
+\multicolumn{##3}{r}{\footnotesize 接上页}\\
+\toprule[0.1em]
+##5
+\midrule[0.05em]
+\endhead
+\bottomrule[0.1em]
+\multicolumn{##3}{r}{\footnotesize 接下页}\\
+\endfoot
+\bottomrule[0.1em]
+\endlastfoot
+##6
+\end{longtable}
+}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\pictable}
+%插入图片形式的表格
+%    \begin{macrocode}
+\newcommand{\pictable}[4][htbp]{
+\begin{table}[##1]
+\centering
+\caption{##2}
+\label{##4}
+\includegraphics[##3]{##4}
+\end{table}
+}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+}%\newcmds@uestcthesis定义完毕
+%    \end{macrocode}
+% \end{macro}
+% \subsection{页眉页脚设置}
+% \begin{macro}{\mainmatterfancy}
+%定义正文版式设置
+%    \begin{macrocode}
+\newcommand{\mainmatterfancy}{
+\fancyhf{}
+\fancyhead[OC]{\zihao{5}\leftmark}%奇数页居中打印章标题
+\fancyhead[EC]{\zihao{5}\thesisname@degree}%偶数页居中打印论文全名
+\fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Cabstractfancy}
+%定义中文摘要版式设置
+%    \begin{macrocode}
+\newcommand{\Cabstractfancy}{%
+\fancyhf{}%
+\fancyhead[C]{\zihao{5}摘要}%页眉居中打印“摘要”
+\fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Eabstractfancy}
+%定义英文摘要版式设置
+%    \begin{macrocode}
+\newcommand{\Eabstractfancy}{
+\fancyhf{}%
+\fancyhead[C]{\zihao{5}ABSTRACT}%页眉居中打印“ABSTRACT”
+\fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\tocmatterfancy}
+%定义目录区版式设置
+%    \begin{macrocode}
+\newcommand{\tocmatterfancy}{
+\fancyhf{}
+\fancyhead[C]{\zihao{5}目\enspace 录}%页眉居中打印“目　录”
+\fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\glossarymatterfancy}
+%定义主要符号表版式设置
+%    \begin{macrocode}
+\newcommand{\glossarymatterfancy}{%定义主要符号表版式设置
+\fancypagestyle{plain}{
+\fancyhf{}
+\fancyhead[C]{\zihao{5}主要符号表}%
+\fancyfoot[C]{\thepage}%
+}
+%    \end{macrocode}
+%由于主要符号表在目录后面，而且是自动生成的。导致主要符号表的第一页页面还显示目录。
+%所以这里有一个BUG需要修正。glossary宏包提供的|\glossarypreamble|原本是空的宏，
+%会自动插入在主要符号表的前面。
+%    \begin{macrocode}
+\renewcommand{\glossarypreamble}{%
+\fancyhead[C]{\zihao{5}主要符号表}%页眉居中打印“主要符号表”
+}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\Cabstractmatter}
+%设置中文摘要版式
+%    \begin{macrocode}
+\newcommand{\Cabstractmatter}{
+\setcounter{page}{1}%页码重置为1
+\pagenumbering{Roman}%页码使用大写罗马数字
+\pagestyle{fancy}
+\Cabstractfancy
+\fancypagestyle{plain}{\Cabstractfancy}
+%中文摘要页也是章标题页面，也使用plain版式。所以单独重新定义。这个定义会在英文摘要版式设置中被覆盖掉。
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\Eabstractmatter}
+%设置英文摘要版式。英文摘要页也是章标题页面，也使用plain版式。所以单独重新定义。这个定义会在目录版式设置中被覆盖掉。
+%    \begin{macrocode}
+\newcommand{\Eabstractmatter}{
+\pagestyle{fancy}
+\Eabstractfancy
+\fancypagestyle{plain}{\Eabstractfancy}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\tocmatter}
+%定义目录版式
+%    \begin{macrocode}
+\newcommand{\tocmatter}{
+\pagestyle{fancy}
+\tocmatterfancy
+%使章标题页页眉页脚与其他页一致
+\fancypagestyle{plain}{\tocmatterfancy}
+%目录页也是章标题页面，也使用plain版式。但目录的右页和摘要或正文的其他章标题页不一样，所以单独重新定义。这个定义会在正文区命令中被覆盖掉。
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\mainmatter}
+%重定义正文区版式
+%    \begin{macrocode}
+\renewcommand{\mainmatter}{
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{第\chinese{chapter}章~##1 }{}}%修正页眉章号显示不正确
+\mainmatterfancy%设置正文的版式
+\fancypagestyle{plain}{\mainmatterfancy}
+%使章标题页使用plain版式，需要单独定义它。使它的页眉页脚与其他页一致。
+}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{封面设置}
+%根据不同的学位，定义不同的封面设置。学校规定封面必须用文印中心提供的封面，
+%所以这个封面设置不用太过纠结。这个封面只能作为非正式提交前的论文的临时封面。
+%让论文看起来完整一点，毕竟没有封面太难看了。\par
+% \subsubsection{封面填写命令}
+% \begin{macro}{\stuid}
+%设置学号命令
+%    \begin{macrocode}
+\newcommand{\stuid}[1]{
+\newcommand{\@stuid}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\major}
+%设置专业命令
+%    \begin{macrocode}
+\newcommand{\major}[1]{
+\newcommand{\@major}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\school}
+%设置学院命令
+%    \begin{macrocode}
+\newcommand{\school}[1]{
+\newcommand{\@school}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\adviser}
+%设置第一指导教师信息命令
+%    \begin{macrocode}
+\newcommand{\adviser}[3]{
+\newcommand{\@advisername}{#1}%姓名
+\newcommand{\@advisertitle}{#2}%职称
+\newcommand{\@adviserinstitution}{#3}%工作单位
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\adviserB}
+%设置第二指导教师信息命令
+%    \begin{macrocode}
+\newcommand{\adviserB}[3]{
+\newcommand{\@adviserBname}{#1}%姓名
+\newcommand{\@adviserBtitle}{#2}%职称
+\newcommand{\@adviserBinstitution}{#3}%工作单位
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\adviserC}
+%设置第三指导教师信息命令
+%    \begin{macrocode}
+\newcommand{\adviserC}[3]{
+\newcommand{\@adviserCname}{#1}%姓名
+\newcommand{\@adviserCtitle}{#2}%职称
+\newcommand{\@adviserCinstitution}{#3}%工作单位
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\adviserD}
+%设置第四指导教师信息命令
+%    \begin{macrocode}
+\newcommand{\adviserD}[3]{
+\newcommand{\@adviserDname}{#1}%姓名
+\newcommand{\@adviserDtitle}{#2}%职称
+\newcommand{\@adviserDinstitution}{#3}%工作单位
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\university}
+%设置指导单位命令
+%    \begin{macrocode}
+\newcommand{\university}[1]{
+\newcommand{\@university}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\date}
+%设置论文提交日期命令
+%    \begin{macrocode}
+\renewcommand{\date}[3]{
+\renewcommand{\@date}{#1年#2月#3日}
+\newcommand{\@year}{#1}%用于pdf元信息
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\oraldefensedate}
+%设置论文答辩日期命令
+%    \begin{macrocode}
+\newcommand{\oraldefensedate}[3]{
+\newcommand{\@oraldefensedate}{#1年#2月#3日}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\awarddate}
+%设置学位授予日期命令
+%    \begin{macrocode}
+\newcommand{\awarddate}[3]{
+\newcommand{\@awarddate}{#1年#2月#3日}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\classnumber}
+%设置分类号命令
+%    \begin{macrocode}
+\newcommand{\classnumber}[1]{
+\newcommand{\@classnumber}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\securityclassification}
+%设置密级命令
+%    \begin{macrocode}
+\newcommand{\securityclassification}[1]{
+\newcommand{\@securityclassification}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\UDC}
+%设置UDC命令
+%    \begin{macrocode}
+\newcommand{\UDC}[1]{
+\newcommand{\@UDC}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\chairman}
+%设置答辩委员会主席命令
+%    \begin{macrocode}
+\newcommand{\chairman}[1]{
+\newcommand{\@chairman}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\appraiser}
+%设置评阅人命令
+%    \begin{macrocode}
+\newcommand{\appraiser}[1]{
+\newcommand{\@appraiser}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\englishtitle}
+%设置论文英文名命令
+%    \begin{macrocode}
+\newcommand{\englishtitle}[1]{
+\newcommand{\@englishtitle}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\englishmajor}
+%设置专业英文名命令
+%    \begin{macrocode}
+\newcommand{\englishmajor}[1]{
+\newcommand{\@englishmajor}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\englishauthor}
+%设置作者英文名命令
+%    \begin{macrocode}
+\newcommand{\englishauthor}[1]{
+\newcommand{\@englishauthor}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\englishadvisor}
+%设置指导教师英文名命令
+%    \begin{macrocode}
+\newcommand{\englishadvisor}[1]{
+\newcommand{\@englishadvisor}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\englishshcool}
+%设置学院英文名命令
+%    \begin{macrocode}
+\newcommand{\englishshcool}[1]{
+\newcommand{\@englishshcool}{#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\uestclogo}
+%插入学校LOGO的命令
+%    \begin{macrocode}
+\newcommand{\uestclogo}{
+\includegraphics{UESTC_LOGO.png}
+}
+%    \end{macrocode}
+% \end{macro}
+% \subsubsection{学士学位封面}
+% \begin{macro}{\bachelortitlepage@uestcthesis}
+%定义学士学位封面的格式
+%    \begin{macrocode}
+\ifdefstring{\degree@uestcthesis}{bachelor}{
+\renewcommand{\bachelortitlepage@uestcthesis}{
+\renewcommand{\maketitle}{
+\begin{titlepage}
+\begin{center}
+\zihao{3}
+\includegraphics[width=13cm]{UESTC.png}\\
+\vspace{1cm}
+\resizebox{!}{1cm}{\zihao{0} 学\hspace{0.75em}士\hspace{0.75em}学\hspace{0.75em}位\hspace{0.75em}论\hspace{0.75em}文}\\[3mm]
+{\bf BACHELOR DISSERTATION}\\[1cm]
+\renewcommand{\ULthickness}{0.8pt}
+\renewcommand{\CJKunderlinecolor}{\color{black}}
+\linespread{1.25}
+\noindent
+\parbox[t][14ex][t]{\linewidth}{\centering
+{\heiti\zihao{3} 论文题目}\zihao{3}{\uline{\@title}}
+}\\[3mm]
+\linespread{1.391}
+\renewcommand{\ULthickness}{0.4pt}
+{\zihao{3}学生姓名~}\makebox[20em][c]{\uline{\hfill\@author\hfill}}\\[5mm]
+{\zihao{3}学\qquad 号~}\makebox[20em][c]{\uline{\hfill\@stuid\hfill}}\\[5mm]
+{\zihao{3}专\qquad 业~}\makebox[20em][c]{\uline{\hfill\@major\hfill}}\\[5mm]
+{\zihao{3}学\qquad 院~}\makebox[20em][c]{\uline{\hfill\@school\hfill}}\\[5mm]
+{\zihao{3}指导教师~}\makebox[20em][c]{\uline{\hfill\@advisername\hfill}}\\[5mm]
+{\zihao{3}指导单位~}\makebox[20em][c]{\uline{\hfill\@university\hfill}}\\[5mm]
+{\zihao{3}\@date}
+\end{center}
+\end{titlepage}}}}{}
+%    \end{macrocode}
+% \end{macro}
+% \subsubsection{硕士学位封面}
+% \begin{macro}{\mastertitlepage@uestcthesis}
+%定义硕士学位封面的格式
+%    \begin{macrocode}
+\ifdefstring{\degree@uestcthesis}{master}{
+\renewcommand{\mastertitlepage@uestcthesis}{
+\renewcommand{\maketitle}{%定义封面的格式
+\begin{titlepage}
+\begin{center}
+{\zihao{2}电\enspace{}子\enspace{}科\enspace{}技\enspace{}大\enspace{}学}\\
+{\zihao{-4}UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA}\\
+~\\
+~\\
+{\zihao{0}硕士学位论文}\\[12bp]
+{\bf\zihao{3}MASTER THESIS}\\[2cm]
+\uestclogo\\[2cm]
+\renewcommand{\ULthickness}{0.8pt}
+\renewcommand{\CJKunderlinecolor}{\color{black}}
+\linespread{1.25}
+\noindent
+\parbox[t][14ex][t]{\linewidth}{\centering
+{\zihao{-2} 论文题目~~}{\zihao{3}\uline{\@title}}
+}\\[3mm]
+\linespread{1.391}
+\renewcommand{\ULthickness}{0.4pt}
+{\zihao{3}~}\\
+{\zihao{3}学科专业~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@major\hfill}}\\[5mm]
+{\zihao{3}学\qquad 号~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@stuid\hfill}}\\[5mm]
+{\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
+{\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
+\end{center}
+\newpage
+\thispagestyle{empty}
+\noindent
+{\zihao{-4}分类号}\makebox[15em][l]{\zihao{-4}\uline{~~~\@classnumber\hfill}}
+{\zihao{-4}密级}\makebox[15em][l]{\zihao{-4}\uline{~~~\@securityclassification\hfill}}\\
+{\zihao{-4}UDC\textsuperscript{注1}\!}\makebox[15em][l]{\zihao{-4}\uline{~~~\@UDC\hfill}}\\
+\begin{center}
+{\zihao{-0}学\quad{}位\quad{}论\quad{}文}\\
+{\zihao{3}~}\\
+\makebox[\linewidth][c]{\zihao{3}\uline{\hfill\@title\hfill}}\\
+{\zihao{-4}（题名和副题名）}\\
+{\zihao{5}~}\\
+{\zihao{5}~}\\
+\makebox[10em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\
+{\zihao{-4}（作者姓名）}\\
+{\zihao{-4}~}\\
+{\zihao{5}~}\\
+{\zihao{-4}指导教师}\makebox[29em][c]{\zihao{-4}\uline{\hfill\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserCname}}{}{\@adviserBname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserDname}}{}{\@adviserBname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[5bp]
+{\zihao{-4}（姓名、职称、单位名称）}\\[8bp]
+\end{center}
+{\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@degree\hfill}}
+{\zihao{-4}学科专业}\makebox[15em][l]{\zihao{-4}\uline{\hfill\@major\hfill}}\\[13bp]
+{\zihao{-4}提交论文日期}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@date\hfill}}
+{\zihao{-4}论文答辩日期}\makebox[13em][l]{\zihao{-4}\uline{\hfill\@oraldefensedate\hfill}}\\[13bp]
+{\zihao{-4}学位授予单位和日期}\makebox[26em][l]{\zihao{3}\uline{\hfill 电子科技大学\hfill\@awarddate}}\\[13bp]
+{\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{-4}\uline{\hfill\@chairman\hfill}}\\[13bp]
+{\zihao{-4}评阅人}\makebox[32em][l]{\zihao{-4}\uline{\hfill\@appraiser\hfill}}\\
+\vfill
+{\zihao{5}注1：注明《国际十进分类法UDC》的类号。}
+\newpage
+\thispagestyle{empty}
+\begin{center}
+{\zihao{-4}~}\\
+{\zihao{-4}~}\\
+{\zihao{-4}~}\\
+{\bf\zihao{-2}\@englishtitle}\\
+\vfill
+{\zihao{-3}A Thesis Submitted to}\\[1ex]
+{\zihao{-3}University of Electronic Science and Technology of China}\\
+\vspace{3cm}
+\makebox[6em][r]{\zihao{4}Major:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishmajor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
+\end{center}
+\newpage
+\thispagestyle{empty}
+\linespread{1.5}
+\begin{center}
+{\bf\zihao{-2}独创性声明}\par
+\end{center}
+{\zihao{4}\qquad 本人声明所呈交的学位论文是本人在导师指导下进行的研究工作及取得的研究成果。据我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包含为获得电子科技大学或其它教育机构的学位或证书而使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示谢意。\par
+~\par
+作者签名：\makebox[5em][l]{\uline{\hfill}}\hfill
+日期：\qquad{}年\qquad{}月\qquad{}日 \par
+~\par
+\begin{center}
+{\bf\zihao{-2}论文使用授权}\par
+\end{center}
+{\zihao{4}\qquad 本学位论文作者完全了解电子科技大学有关保留、使用学位论文的规定，有权保留并向国家有关部门或机构送交论文的复印件和磁盘，允许论文被查阅和借阅。本人授权电子科技大学可以将学位论文的全部或部分内容编入有关数据库进行检索，可以采用影印、缩印或扫描等复制手段保存、汇编学位论文。\par
+（保密的学位论文在解密后应遵守此规定） \par
+~\par
+}
+\qquad 作者签名：\makebox[5em][l]{\uline{\hfill}}\hfill
+导师签名：\makebox[7em][l]{\uline{\hfill}}\par
+\hfill 日期：\qquad{}年\qquad{}月\qquad{}日 \par
+}
+\linespread{1.391}
+\end{titlepage}}}}{}
+%    \end{macrocode}
+% \end{macro}
+% \subsubsection{博士学位封面}
+% \begin{macro}{\doctortitlepage@uestcthesis}
+%定义博士学位封面的格式
+%    \begin{macrocode}
+\ifdefstring{\degree@uestcthesis}{doctor}{
+\renewcommand{\doctortitlepage@uestcthesis}{
+\renewcommand{\maketitle}{%定义封面的格式
+\begin{titlepage}
+\begin{center}
+{\zihao{2}电\enspace{}子\enspace{}科\enspace{}技\enspace{}大\enspace{}学}\\
+{\zihao{-4}UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA}\\
+~\\
+~\\
+{\zihao{0}博士学位论文}\\[12bp]
+{\bf\zihao{3}DOCTORAL DISSERTATION}\\[2cm]
+\uestclogo\\[2cm]
+\renewcommand{\ULthickness}{0.8pt}
+\renewcommand{\CJKunderlinecolor}{\color{black}}
+\linespread{1.25}
+\noindent
+\parbox[t][14ex][t]{\linewidth}{\centering
+{\zihao{-2} 论文题目~~}{\zihao{3}\uline{\@title}}
+}\\[3mm]
+\linespread{1.391}
+\renewcommand{\ULthickness}{0.4pt}
+{\zihao{3}~}\\
+{\zihao{3}学科专业~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@major\hfill}}\\[5mm]
+{\zihao{3}学\qquad 号~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@stuid\hfill}}\\[5mm]
+{\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
+{\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
+\end{center}
+\newpage
+\thispagestyle{empty}
+\noindent
+{\zihao{-4}分类号}\makebox[15em][l]{\zihao{-4}\uline{~~~\@classnumber\hfill}}
+{\zihao{-4}密级}\makebox[15em][l]{\zihao{-4}\uline{~~~\@securityclassification\hfill}}\\
+{\zihao{-4}UDC\textsuperscript{注1}\!}\makebox[15em][l]{\zihao{-4}\uline{~~~\@UDC\hfill}}\\
+\begin{center}
+{\zihao{-0}学\quad{}位\quad{}论\quad{}文}\\
+{\zihao{3}~}\\
+\makebox[\linewidth][c]{\zihao{3}\uline{\hfill\@title\hfill}}\\
+{\zihao{-4}（题名和副题名）}\\
+{\zihao{5}~}\\
+{\zihao{5}~}\\
+\makebox[10em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\
+{\zihao{-4}（作者姓名）}\\
+{\zihao{-4}~}\\
+{\zihao{5}~}\\
+{\zihao{-4}指导教师}\makebox[29em][c]{\zihao{-4}\uline{\hfill\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserCname}}{}{\@adviserBname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserDname}}{}{\@adviserBname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[5bp]
+{\zihao{-4}（姓名、职称、单位名称）}\\[8bp]
+\end{center}
+{\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@degree\hfill}}
+{\zihao{-4}学科专业}\makebox[15em][l]{\zihao{-4}\uline{\hfill\@major\hfill}}\\[13bp]
+{\zihao{-4}提交论文日期}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@date\hfill}}
+{\zihao{-4}论文答辩日期}\makebox[13em][l]{\zihao{-4}\uline{\hfill\@oraldefensedate\hfill}}\\[13bp]
+{\zihao{-4}学位授予单位和日期}\makebox[26em][l]{\zihao{3}\uline{\hfill 电子科技大学\hfill\@awarddate}}\\[13bp]
+{\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{-4}\uline{\hfill\@chairman\hfill}}\\[13bp]
+{\zihao{-4}评阅人}\makebox[32em][l]{\zihao{-4}\uline{\hfill\@appraiser\hfill}}\\
+\vfill
+{\zihao{5}注1：注明《国际十进分类法UDC》的类号。}
+\newpage
+\thispagestyle{empty}
+\begin{center}
+{\zihao{-4}~}\\
+{\zihao{-4}~}\\
+{\zihao{-4}~}\\
+{\bf\zihao{-2}\@englishtitle}\\
+\vfill
+{\zihao{-3}A Doctor Dissertation Submitted to}\\[1ex]
+{\zihao{-3}University of Electronic Science and Technology of China}\\
+\vspace{3cm}
+\makebox[6em][r]{\zihao{4}Major:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishmajor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
+\end{center}
+\newpage
+\thispagestyle{empty}
+\linespread{1.5}
+\begin{center}
+{\bf\zihao{-2}独创性声明}\par
+\end{center}
+{\zihao{4}\qquad 本人声明所呈交的学位论文是本人在导师指导下进行的研究工作及取得的研究成果。据我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包含为获得电子科技大学或其它教育机构的学位或证书而使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示谢意。\par
+~\par
+作者签名：\makebox[5em][l]{\uline{\hfill}}\hfill
+日期：\qquad{}年\qquad{}月\qquad{}日 \par
+~\par
+\begin{center}
+{\bf\zihao{-2}论文使用授权}\par
+\end{center}
+{\zihao{4}\qquad 本学位论文作者完全了解电子科技大学有关保留、使用学位论文的规定，有权保留并向国家有关部门或机构送交论文的复印件和磁盘，允许论文被查阅和借阅。本人授权电子科技大学可以将学位论文的全部或部分内容编入有关数据库进行检索，可以采用影印、缩印或扫描等复制手段保存、汇编学位论文。\par
+（保密的学位论文在解密后应遵守此规定） \par
+~\par
+}
+\qquad 作者签名：\makebox[5em][l]{\uline{\hfill}}\hfill
+导师签名：\makebox[7em][l]{\uline{\hfill}}\par
+\hfill 日期：\qquad{}年\qquad{}月\qquad{}日 \par
+}
+\linespread{1.391}
+\end{titlepage}}}}{}
+%    \end{macrocode}
+% \end{macro}
+% \subsubsection{载入封面设置}
+%根据不同的学位，加载不同的封面设置。
+%    \begin{macrocode}
+\titlepage@degree
+%    \end{macrocode}
+% \subsection{各级标题设置}
+%设置标题排序深度到3级节标题subsubsection，例如1.1.1.1
+%    \begin{macrocode}
+\setcounter{secnumdepth}{3}
+%    \end{macrocode}
+%
+%设置章标题格式。弹性长度的距离为行距的20\%。排版规则中说明可以适当调整各级标题段后间距。
+%    \begin{macrocode}
+\CTEXsetup[ name={第,章},
+            number={\chinese{chapter}},
+            nameformat={},
+            numberformat={},
+            titleformat={},
+            aftername={~},
+            beforeskip={2mm},%章标题段前30磅，这里2mm是由于实际效果与MS WORD有差异而微调出的。具体测量的是页眉线到章标题文字上边的距离。
+            afterskip={30bp plus 6bp minus 6bp},%章标题段后30磅。
+            format={\heiti\zihao{-3}\centering},
+            ]{chapter}
+%    \end{macrocode}
+%
+%设置1级节标题格式
+%    \begin{macrocode}
+\CTEXsetup[ aftername={~},
+            beforeskip={18bp},
+            afterskip={18bp plus 3.6bp minus 3.6bp},
+            format={\heiti\zihao{4}\flushleft}]{section}
+%    \end{macrocode}
+%
+%设置2级节标题格式
+%    \begin{macrocode}
+\CTEXsetup[ aftername={~},
+            beforeskip={12bp},
+            afterskip={12bp plus 2.4bp minus 2.4bp},
+            format={\heiti\zihao{4}\flushleft}]{subsection}
+%    \end{macrocode}
+%
+%设置3级节标题格式
+%    \begin{macrocode}
+\CTEXsetup[ aftername={~},
+            beforeskip={6bp},
+            afterskip={6bp plus 1.2bp minus 1.2bp},
+            format={\heiti\zihao{-4}\flushleft}]{subsubsection}
+%    \end{macrocode}
+% \subsection{摘要设置}
+%调用ifthen宏包，可提供|\ifthenelse|判断命令。
+% \begin{environment}{Cabstract}
+%定义中文摘要环境
+%    \begin{macrocode}
+\newenvironment{Cabstract}[5]{
+%    \end{macrocode}
+% \begin{macro}{\@ckeywords}
+%定义生成中文关键词的命令。如果关键词少于3个则用“必选关键词”五个字补上，以提示作者关键词不够。同时自动加入正确的中文逗号。
+%    \begin{macrocode}
+\newcommand{\@ckeywords}{
+\ifthenelse{\equal{#1}{}}{必选关键词}{#1}
+\ifthenelse{\equal{#2}{}}{必选关键词}{，#2}
+\ifthenelse{\equal{#3}{}}{必选关键词}{，#3}
+\ifthenelse{\equal{#4}{}}{}{，#4}
+\ifthenelse{\equal{#5}{}}{}{，#5}
+}
+\ifthenelse{\equal{#5}{}}{
+\ifthenelse{\equal{#4}{}}{
+\ifthenelse{\equal{#3}{}}{
+\def\@pdfckeywords{#1, #2, 关键字应3-5个}
+}{\def\@pdfckeywords{#1, #2, #3}}
+}{\def\@pdfckeywords{#1, #2, #3, #4}}
+}{\def\@pdfckeywords{#1, #2, #3, #4, #5}}
+\hypersetup{%
+pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
+}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+\chapter*{摘要}%插入不带章号的摘要
+}
+{\\[3mm]%摘要后换行空出3mm
+{\heiti 关键词：}\@ckeywords%插入关键词
+}
+%    \end{macrocode}
+% \end{environment}
+% \begin{environment}{Eabstract}
+%定义英文摘要环境
+%    \begin{macrocode}
+\newenvironment{Eabstract}[5]{
+%    \end{macrocode}
+% \begin{macro}{\@ckeywords}
+%定义生成英文关键词的命令。如果关键词少于3个则用“必选关键词”五个字补上，以提示作者关键词不够。同时自动加入正确的英文逗号。
+%    \begin{macrocode}
+\newcommand{\@ekeywords}{
+\ifthenelse{\equal{#1}{}}{必选关键词}{#1}
+\ifthenelse{\equal{#2}{}}{必选关键词}{,#2}
+\ifthenelse{\equal{#3}{}}{必选关键词}{,#3}
+\ifthenelse{\equal{#4}{}}{}{,#4}
+\ifthenelse{\equal{#5}{}}{}{,#5}
+}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+\Eabstractmatter%设置英文摘要版式
+\chapter*{ABSTRACT}%插入不带章号的ABSTRACT
+}
+{\\[3mm]%摘要后换行空出3mm
+{\heiti Keywords:}\@ekeywords%插入关键词
+}
+%    \end{macrocode}
+% \end{environment}
+% \subsection{目录设置}
+%设置目录标题
+%    \begin{macrocode}
+\CTEXoptions[contentsname={\protect\songti\protect\zihao{-2}目\enspace 录}]
+%    \end{macrocode}
+%
+%设置目录的显示深度到3级节标题。
+%    \begin{macrocode}
+\setcounter{tocdepth}{3}
+%    \end{macrocode}
+%
+%目录中连接页码的点的密度
+%    \begin{macrocode}
+\def\@dotsep{2}
+%    \end{macrocode}
+%
+%目录中的章标题改为黑体
+%    \begin{macrocode}
+\def\l@chapter#1#2{\ifnum 0>\c@tocdepth \else \vskip \z@ \@plus .2\p@ {\leftskip
+0em\relax \rightskip \@tocrmarg \parfillskip -\rightskip \parindent 0em\relax
+\@afterindenttrue \interlinepenalty \@M \leavevmode \@tempdima 1em\relax \advance
+\leftskip \@tempdima \null \nobreak \hskip -\leftskip {\heiti #1}\nobreak \leaders
+\hbox {$\m@th \mkern \@dotsep mu\hbox {.}\mkern \@dotsep mu$}\hfill \nobreak
+\hb@xt@ \@pnumwidth {\hfil \normalfont \normalcolor #2}\par }\fi}
+%    \end{macrocode}
+%
+%设置四级标题在目录中的左缩进分别为0、2、4、6个英文字符宽。序号到题目间隔1个英文字符宽。
+%    \begin{macrocode}
+\renewcommand*\l@section{\@dottedtocline{1}{2em}{1em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{4em}{1em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{6em}{1em}}
+%    \end{macrocode}
+% \subsection{数学式设置}
+%amsmath和kmath宏包提供更美观的数学字体。
+%    \begin{macrocode}
+\RequirePackage{amsmath,kmath}
+%    \end{macrocode}
+%
+%使公式编号数字间加一个短横线。例如(1-1)。
+%    \begin{macrocode}
+\renewcommand{\theequation}{\arabic{chapter}\textendash\arabic{equation}}
+%    \end{macrocode}
+%
+%调用定理设置宏包
+%    \begin{macrocode}
+\RequirePackage{ntheorem}
+\theorembodyfont{\normalfont}%字体
+\theoremseparator{\quad}%分隔符是一个空格
+%    \end{macrocode}
+%
+%定义四种带标号的定理环境
+%    \begin{macrocode}
+\newtheorem{dingyi}{定义}[section]
+\newtheorem{gongli}{公理}[section]
+\newtheorem{dingli}{定理}[section]
+\newtheorem{yinli}{引理}[section]
+%    \end{macrocode}
+%
+%定义一种不带标号的证明环境。
+%    \begin{macrocode}
+\theoremstyle{nonumberplain}
+\newtheorem{zhengming}{证明}
+%    \end{macrocode}
+% \subsection{参考文献设置}
+% 根据是否为研究生学位，选择是否载入multibib宏包。
+%    \begin{macrocode}
+\RequirePackage[numbers,sort&compress]{natbib}
+%参考文献宏包。调用natbib，选项是GBT7714-2005NLang.bst的说明中指定的。
+%hypernat宏包已经不用了。
+
+\newcommand{\citeup}[1]{\textsuperscript{\cite{#1}}}
+%自定义命令：插入右上角角标形式的参考文献引用。
+%    \end{macrocode}
+%为了在硕士和博士论文加入攻读期间发表的论文一章，必须使用multibib宏包。
+%    \begin{macrocode}
+\ifblank{\multibibflag@uestcthesis}{}{
+\RequirePackage[resetlabels]{multibib}
+\newcites{publications}{NULL}
+\bibliographystylepublications{uestcthesis}
+\nocitepublications{*}
+%    \end{macrocode}
+%重定义|\bibliographypublications|，去掉|\bibliographypublications|命令中原有的
+%修改章名的设置，因为|\newcites|命令设置章名时不支持中文。这个设置改由
+%|\CTEXoptions[ bibname={\publicationsname@degree}]|代替。
+%    \begin{macrocode}
+\def\bibliographypublications#1{\let \temp@auxout \@auxout \let \addtocontents
+\mb@addtocontents \let \@auxout \@auxoutpublications \let \jobname
+\@auxoutpublicationsname \bibliography {#1}}
+}
+%    \end{macrocode}
+% \subsection{PDF文件相关设置}
+% 设置pdf文件中的超链接和书签
+%    \begin{macrocode}
+\RequirePackage{cmap}%pdflatex编译时，可以生成可复制、粘贴的中文PDF文档
+\RequirePackage{hyperxmp}%在pdf中加入XMP高级元信息
+\RequirePackage[pdftex,unicode,
+            bookmarksnumbered=true,
+            bookmarksopen=true,
+            colorlinks=false,
+            pdfborder={0 0 1},
+            citecolor=blue,
+            linkcolor=red,
+            anchorcolor=green,
+            urlcolor=blue,
+            breaklinks=true,
+			pdfdisplaydoctitle=true
+			]{hyperref}
+\input{contents/titlepage.tex}%pdf元信息中需要封面的部分内容，所以在此处导入封面信息
+\hypersetup{%
+pdftitle={\@title},
+pdfauthor={\@author},
+pdfcopyright={Copyright (C) \@year, \@author},
+pdfsubject={\thesisname@degree},
+pdflicenseurl={http://121.49.98.197/tasi/doc/fj_dcx.doc},
+pdfcreator={PDFLaTeX with uestcthesis class},
+pdflang={zh-CN},
+pdfpagelayout={TwoPageRight}
+}
+%    \end{macrocode}
+% \subsection{其他设置}
+% 根据hyperref的文档：应该先调用hyperref，后调用subfigure，以解决兼容性问题。
+%    \begin{macrocode}
+\RequirePackage[small]{subfigure}
+%    \end{macrocode}
+%
+%枚举环境宏包
+%    \begin{macrocode}
+\RequirePackage{enumerate}
+%    \end{macrocode}
+%
+%排版源代码所需宏包
+%    \begin{macrocode}
+\RequirePackage{color,marvosym}
+%    \end{macrocode}
+% \subsection{主要符号表设置}
+%设置术语表宏包供主要符号表使用
+%    \begin{macrocode}
+\RequirePackage[header,cols=3,hyper=true]{glossary}
+\makeglossary
+\renewcommand{\glossaryname}{主要符号表}
+\renewcommand{\entryname}{符号或术语}
+\renewcommand{\descriptionname}{说明}
+\renewcommand{\glspageheader}{页码}
+%    \end{macrocode}
+% \begin{macro}{\ifusingglossary}
+%设置一个变量用以判断是否使用主要符号表
+%    \begin{macrocode}
+\newcommand{\ifusingglossary}{}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\fuhao}
+%包装向主要符号表中插入条目的命令
+%    \begin{macrocode}
+\newcommand{\fuhao}[3]{
+\glossary{name={#1},description={#2},sort=#3}
+\renewcommand{\ifusingglossary}{true}%设置使用主要符号表
+}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{自动添加论文的必选结构}
+%    \begin{macrocode}
+% !Mode:: "TeX:UTF-8"
+
+\AtBeginDocument{%插入到论文内容的最前面。
+\begin{CJK}{UTF8}{rm}%中文支持环境，此处内容不受ctexbook文类影响，所以必须手动加这个环境。
+\maketitle%生成并插入封面
+\Cabstractmatter%设置中文摘要版式
+\include{contents/Cabstract}%插入中文摘要
+\Eabstractmatter%设置英文摘要版式
+\include{contents/Eabstract}%插入英文摘要
+\tocmatter%目录版式
+\tableofcontents%插入目录
+\ifblank{\ifusingglossary}{}{%如果没有使用过\fuhao命令，则不插入主要符号表
+%此处遇到问题：目录之后到正文之前如果加入章节，这些章节的版式不受传统版式设置控制。估计是BUG。此处耗时6小时20分钟，终于找到了修正方案。
+\glossarymatterfancy%设置主要符号表版式。
+\printglossary%插入主要符号表
+\mainmatter%修正主要符号表版式，这里是受目录版式的影响，必须在此加入\mainmatter。
+}%
+\end{CJK}
+\mainmatter%正文区版式
+\makeatletter
+\newcmds@uestcthesis%自定义图表命令，这些命令必须在document环境里声明才能在正文中使用，所以只能放在这里了。
+\makeatother
+}
+
+\AtEndDocument{%插入到论文内容最后面。
+\begin{CJK}{UTF8}{rm}
+\chapter*{致\enspace 谢}%用带星号的章命令插入不带章号的致谢。
+\markboth{致\enspace 谢}{}%页眉设置
+\phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
+\addcontentsline{toc}{chapter}{致\enspace 谢}%将致谢编入目录
+\input{contents/acknowledgements.tex}%插入致谢内容
+\newpage
+\bibliographystyle{uestcthesis}
+%载入参考文献样式文件uestcthesis.bst。此参考文献样式只在GBT7714-2005NLang.bst的基础上改变了参考文献条目的行距，以符合电子科技大学的要求。修改处位于uestcthesis.bst文件的3542行。另外将英文作者名由全大写改为首字母大写。
+\phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
+\addcontentsline{toc}{chapter}{参考文献}%将参考文献编入目录
+\nocite{*}%若将此命令屏蔽掉，则未引用的文献不会出现在文后的参考文献列表中。
+{\zihao{5}
+\bibliography{contents/reference}%插入参考文献
+}
+\appendix%附录版式
+\renewcommand{\chaptermark}[1]{\markboth{附录~\Alph{chapter}~\quad  #1 }{}}%附录页眉设置
+\input{contents/appendix.tex}%插入附录内容
+\clearpage
+\ifdefstring{\degree@uestcthesis}{bachelor}{
+\renewcommand{\chaptermark}[1]{\markboth{外文资料原文}{}}
+\def\leftmark{外文资料原文}
+\include{contents/original}
+\renewcommand{\chaptermark}[1]{\markboth{外文资料译文}{}}
+\def\leftmark{外文资料译文}
+\include{contents/translation}
+}{
+\IfFileExists{contents/publications.bib}{%如果删除了publications.bib，则不显示这一章
+\CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
+\phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
+\addcontentsline{toc}{chapter}{\publicationsname@degree}%将攻博/硕期间发表的论文编入目录
+{\zihao{5}
+\bibliographypublications{contents/publications}%插入攻博/硕期间发表的论文
+}}{}}
+\clearpage\end{CJK}}
+%    \end{macrocode}
+% \iffalse
+%</class>
+% \fi
+% \iffalse
+%<*bst>
+% \fi
+% \section{参考文献样式源代码}
+% \changes{v0.3}{2013/2/12}{修复了参考文献模板bst文件中原有的问题，
+% 不再需要其他工具替换bbl中的错误。即参考文献中的“|\\.|”修正为“|\\|”。}
+%    \begin{macrocode}
+ %本文件基于吴凯制作的GBT7714-2005NLang.bst(1 Beta 2 测试版2012年9月20日)修改而成。
+ %根据GBT7714-2005NLang.bst中copyright的要求，将文件名修改成uestcthesis.bst。
+ %对吴凯的杰出工作表示感谢！
+
+ENTRY
+  { address
+    author
+    booktitle
+    chapter
+    edition
+    editor
+    howpublished
+    institution
+    journal
+    key
+    month
+    note
+    number
+    organization
+    pages
+    publisher
+    school
+    series
+    title
+    type
+    volume
+    year
+    url
+    TypeofLit                %新加入：文献类型和标志代码
+    normalauthor             %不改变大小写的作者
+    normaleditor             %不改变大小写的编者
+    translator               %新加入：翻译者
+    date                     %日期，公告日期，公开日期
+    modifydate               %修改日期
+    citedate                 %引用日期
+    patentid                 %专利号
+    country                  %国家（主要用于专利中）
+    miscyear                 %其它类中用于输出年份
+    startyear                %起始年
+    startvolume              %起始卷
+    startnumber              %起始期
+    endyear                  %终止年
+    endvolume                %终止卷
+    endnumber                %终止期
+    language                 %默认是英文文献，非空则表明是中文文献
+  }
+  {}
+  { label extra.label sort.label short.list }
+
+INTEGERS { output.state before.all mid.sentence after.sentence after.block }
+FUNCTION {format.url}
+{ url empty$
+    { "" }
+    { new.block
+    "\url{" url * "}" * }
+  if$
+}
+FUNCTION {init.state.consts}
+{ #0 'before.all :=
+  #1 'mid.sentence :=
+  #2 'after.sentence :=
+  #3 'after.block :=
+}
+
+STRINGS { s t }
+
+
+
+FUNCTION {output.nonnull}
+{ 's :=
+  output.state mid.sentence =
+    { ", " * write$ }
+    { output.state after.block =
+    { add.period$ write$
+      newline$
+      "\newblock " write$
+    }
+    { output.state before.all =
+        'write$
+        { add.period$ " " * write$ }
+      if$
+    }
+      if$
+      mid.sentence 'output.state :=
+    }
+  if$
+  s
+}
+
+
+FUNCTION {coutput.nonnull}                                   %wk
+{ 's :=
+  output.state mid.sentence =
+    { "，" * write$ }                                       %
+    { output.state after.block =
+    { add.period$ write$
+      newline$
+      "\newblock " write$
+    }
+    { output.state before.all =
+        'write$
+        { add.period$ " " * write$ }
+      if$
+    }
+      if$
+      mid.sentence 'output.state :=
+    }
+  if$
+  s
+}
+
+FUNCTION {output}
+{ duplicate$ empty$
+    'pop$
+    'output.nonnull
+  if$
+}
+
+FUNCTION {coutput}                                           %wk
+{ duplicate$ empty$
+    'pop$
+    'coutput.nonnull
+  if$
+}
+
+FUNCTION {output.check}
+{ 't :=
+  duplicate$ empty$
+    { pop$ "empty " t * " in " * cite$ * warning$ }
+    'output.nonnull
+  if$
+}
+
+FUNCTION {coutput.check}                                     %wk
+{ 't :=
+  duplicate$ empty$
+    { pop$ "empty " t * " in " * cite$ * warning$ }
+    'coutput.nonnull
+  if$
+}
+
+FUNCTION {output.year.month.check}
+{ year empty$
+    { "empty year in " cite$ * warning$ }
+    { add.period$ write$
+      month empty$
+        { " " year * extra.label * "." *
+          after.sentence 'output.state :=
+        }
+        { " " year * extra.label * " (" * month * ")." *
+          after.sentence 'output.state :=
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {output.cyear.month.check}                            %wk
+{ year empty$
+    { "empty year in " cite$ * warning$ }
+    {write$
+      month empty$
+        {year                      %wk
+          after.sentence 'output.state :=
+        }
+        { "" year * extra.label * "(" * month * ")" *     %wk
+          after.sentence 'output.state :=
+        }
+      if$
+    }
+  if$
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {output.modifydate.check}
+{modifydate
+}
+
+FUNCTION {output.citedate.check}
+{ year empty$
+    { "" }
+    { write$
+      "[" citedate * extra.label * "]" *
+      after.sentence 'output.state :=
+    }
+  if$
+}
+
+
+FUNCTION {output.year.check}
+{ year empty$
+    { "empty year in " cite$ * warning$ }
+    {miscyear empty$
+        {year}
+         {miscyear}
+     if$                     %wk
+    }
+  if$
+  extra.label *
+}
+
+FUNCTION {output.cyear.check}                           %wk
+{ year empty$
+    { "empty year in " cite$ * warning$ }
+    {miscyear empty$
+        {year}
+         {miscyear}
+     if$                     %wk
+    }
+  if$
+  extra.label *
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+FUNCTION {output.continue.year.check}                           %wk
+{
+endyear empty$
+   {startyear empty$
+      {year empty$
+         { "empty year in " cite$ * warning$ }
+         {"" year * "" * }
+       if$
+       }
+      {"" startyear * "-" * }
+    if$
+    }
+{startyear empty$
+    {year empty$
+        { "empty year in " cite$ * warning$ }
+        {"" year * "" * }
+    if$
+    }
+    {"" startyear * "-" *
+    "" endyear * "" * *
+    }
+ if$
+}
+if$
+}
+
+
+FUNCTION {output.continue.cyear.check}                           %wk
+{
+endyear empty$
+   {startyear empty$
+      {year empty$
+         { "empty year in " cite$ * warning$ }
+         {"" year * "" * }
+       if$
+       }
+      {"" startyear * "-" * }
+    if$
+    }
+{startyear empty$
+    {year empty$
+        { "empty year in " cite$ * warning$ }
+        {"" year * "" * }
+    if$
+    }
+    {"" startyear * "-" *
+    "" endyear * "" * *
+    }
+ if$
+}
+if$
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {output.article.year.check}
+{month empty$
+{
+year empty$
+    { "empty year in " cite$ * warning$ }
+    {year                 %wk
+    }
+  if$
+}
+{
+TypeofLit empty$
+       {year empty$
+    { "empty year in " cite$ * warning$ }
+    {year                 %wk
+    }
+  if$}
+
+{year empty$
+    { "empty year in " cite$ * warning$ }
+    {year                 %wk
+       "-"  month * "" * *
+    }
+  if$
+}
+if$
+}
+if$
+}
+
+FUNCTION {output.carticle.year.check}                           %wk
+{month empty$
+{
+year empty$
+    { "empty year in " cite$ * warning$ }
+    {year                 %wk
+    }
+  if$
+}
+{
+TypeofLit empty$
+       {year empty$
+    { "empty year in " cite$ * warning$ }
+    {year                 %wk
+    }
+  if$}
+
+{year empty$
+    { "empty year in " cite$ * warning$ }
+    {year                 %wk
+       "-"  month * "" * *
+    }
+  if$
+}
+if$
+}
+if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+FUNCTION {output.bibitem}
+{ newline$
+  "\bibitem[" write$
+  label write$
+  "]{" write$
+  cite$ write$
+  "}" write$
+  newline$
+  ""
+  before.all 'output.state :=
+}
+
+FUNCTION {fin.entry}
+{ add.period$
+  write$
+  newline$
+}
+
+FUNCTION {new.block}
+{ output.state before.all =
+    'skip$
+    { after.block 'output.state := }
+  if$
+}
+
+FUNCTION {new.sentence}
+{ output.state after.block =
+    'skip$
+    { output.state before.all =
+        'skip$
+        { after.sentence 'output.state := }
+      if$
+    }
+  if$
+}
+
+FUNCTION {not}
+{   { #0 }
+    { #1 }
+  if$
+}
+
+FUNCTION {and}
+{   'skip$
+    { pop$ #0 }
+  if$
+}
+
+FUNCTION {or}
+{   { pop$ #1 }
+    'skip$
+  if$
+}
+
+FUNCTION {new.block.checkb}
+{ empty$
+  swap$ empty$
+  and
+    'skip$
+    'new.block
+  if$
+}
+
+FUNCTION {field.or.null}
+{ duplicate$ empty$
+    { pop$ "" }
+    'skip$
+  if$
+}
+
+FUNCTION {boldface}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "{\bf " swap$ * "}" * }
+  if$
+}
+
+%FUNCTION {emphasize}
+%{ duplicate$ empty$
+%    { pop$ "" }
+%    { "{\em " swap$ * "}" * }
+%  if$
+%}
+
+
+%%%%%%%%%%%%%%%%%%%
+Function{upcase}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "u" change.case$ }
+  if$
+}
+%FUNCTION {bib.name.font}
+%{ upcase }
+%FUNCTION {bib.fname.font}
+%{ bib.name.font }
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+INTEGERS { nameptr namesleft numnames }
+
+FUNCTION {capitalize}
+{ "u" change.case$ "t" change.case$ }
+
+FUNCTION {format.names}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr "{vv~}{ll}{ f{~}}{, jj}"
+    format.name$
+    remove.dots
+     't :=
+      nameptr #1 >
+        {
+          nameptr #3
+          #1 + =
+          numnames #3
+          > and
+            { "others" 't :=
+              #1 'namesleft := }
+            'skip$
+          if$
+          namesleft #1 >
+            { ", " * t * }
+            { numnames #2 >
+              { "" * }
+              'skip$
+              if$
+              s nameptr "{ll}" format.name$ duplicate$ "others" =
+                { 't := }
+                { pop$ }
+              if$
+              t "others" =
+                 {%bib.name.font    %改为大写
+                  ", et al" *
+                }
+                {", " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+%%%%%%%%%%%
+%  t "others" =                   %改为大写
+%    'skip$                       %改为大写
+%    { bib.name.font }            %改为大写
+%  if$                            %改为大写
+%%%%%%%%%%%
+}
+
+
+FUNCTION {format.cnames}                                     %wk
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr "{vv~}{ll}{ f{~}}{ jj}" format.name$
+    remove.dots
+    't :=
+      nameptr #1 >
+        {
+          nameptr #3
+          #1 + =
+          numnames #3
+          > and
+            { "others" 't :=
+              #1 'namesleft := }
+            'skip$
+          if$
+          namesleft #1 >
+            { ", " * t * }
+            { numnames #2 >
+              { "" * }
+              'skip$
+              if$
+              s nameptr "{ll}" format.name$ duplicate$ "others" =
+                { 't := }
+                { pop$ }
+              if$
+              t "others" =
+                 { ",等" *
+               % bib.name.font    %改为大写
+                }
+                {", " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+%%%%%%%%%%%
+%  t "others" =                   %改为大写
+%    'skip$                       %改为大写
+%    { bib.name.font }            %改为大写
+%  if$                            %改为大写
+%%%%%%%%%%%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%不加大写的名字
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+FUNCTION {format.normal.names}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr "{vv~}{ll}{ f{~}}{, jj}"
+    format.name$
+    remove.dots
+     't :=
+      nameptr #1 >
+        {
+          nameptr #3
+          #1 + =
+          numnames #3
+          > and
+            { "others" 't :=
+              #1 'namesleft := }
+            'skip$
+          if$
+          namesleft #1 >
+            { ", " * t * }
+            { numnames #2 >
+              { "" * }
+              'skip$
+              if$
+              s nameptr "{ll}" format.name$ duplicate$ "others" =
+                { 't := }
+                { pop$ }
+              if$
+              t "others" =
+                 { ", et al" * }
+                {", " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+
+FUNCTION {format.normal.cnames}                                    %wk
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr "{vv~}{ll}{ f{~}}{ jj}" format.name$
+    remove.dots
+    't :=
+      nameptr #1 >
+        {
+          nameptr #3
+          #1 + =
+          numnames #3
+          > and
+            { "others" 't :=
+              #1 'namesleft := }
+            'skip$
+          if$
+          namesleft #1 >
+            { ", " * t * }
+            { numnames #2 >
+              { "" * }
+              'skip$
+              if$
+              s nameptr "{ll}" format.name$ duplicate$ "others" =
+                { 't := }
+                { pop$ }
+              if$
+              t "others" =
+                 { ",等" * }
+                {", " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+FUNCTION {format.authors}
+{ author empty$
+    { "" }
+    {normalauthor empty$
+         {author format.names }
+         {normalauthor format.normal.names}
+    if$
+}
+  if$
+}
+
+FUNCTION {format.cauthors}                                   %wk
+{ author empty$
+    { "" }
+    {normalauthor empty$
+         {author format.cnames }
+         {normalauthor format.normal.cnames}
+    if$
+}
+  if$
+}
+
+FUNCTION {format.key}
+{ empty$
+    { key field.or.null }
+    { "" }
+  if$
+}
+
+FUNCTION {format.editors}
+{ editor empty$
+    { "" }
+    {normaleditor empty$
+         {editor format.names }
+         {normaleditor format.normal.names}
+    if$
+      editor num.names$ #1 >                                %  Use ODWE abbrevs.
+        { "" * }                                      %  to avoid
+        { "" * }                                       %  ambiguity between
+      if$                                                   %  "editor" and
+    }                                                       %  "edition".
+  if$
+}
+
+FUNCTION {format.ceditors}                                 %wk   本函数
+{ editor empty$
+    { "" }
+    {
+    normaleditor empty$
+         {editor * "" * format.cnames }
+         {normaleditor * "" * format.normal.cnames}
+    if$
+    }
+  if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.title}                                     %  Nothing needs
+{ title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    { title }                                               %  or
+  if$                                                       %  authordate3.bst.
+}
+
+FUNCTION {format.ctitle}                %wk                 %  Nothing needs
+{ title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {title}                                               %  or
+  if$                                                       %  authordate3.bst.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+FUNCTION {format.article.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[J]" * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]" * * }
+if$
+                                                    %  authordate3.bst.
+}
+
+
+FUNCTION {format.carticle.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[J]" * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+
+TypeofLit empty$
+       {""}
+       { "[" TypeofLit * "]" * *  }
+if$
+                                                     %  authordate3.bst.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.book.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[M]" * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]" * * }
+if$
+                                                    %  authordate3.bst.
+}
+
+
+FUNCTION {format.cbook.title}                %wk                 %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[M]" * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]" * * }
+if$
+                                                    %  authordate3.bst.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.misc.title}                %wk                 %  Nothing needs
+{
+patentid empty$
+       {%没有专利号应该是其它类型文献，直接标准输出
+title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[缺文献类型标志代码]." * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]." * * }
+if$
+       }
+       {%有专利号
+          country empty$
+             {
+title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[缺文献类型标志代码]." * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]." * * }
+if$
+""  patentid * "" * *
+             }
+             {%有专利号，有国家
+title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[缺文献类型标志代码]." * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+
+              "："  country * "，" * *
+              ""  patentid * "" * *
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]." * * }
+if$
+
+              }
+             if$
+}
+if$
+
+}
+
+
+FUNCTION {format.cmisc.title}                %wk                 %  Nothing needs
+{
+patentid empty$
+       {%没有专利号应该是其它类型文献，直接标准输出
+title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[缺文献类型标志代码]." * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]." * * }
+if$
+       }
+       {%有专利号
+          country empty$
+             {
+title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[缺文献类型标志代码]." * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]." * * }
+if$
+""  patentid * "" * *
+             }
+             {%有专利号，有国家
+title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[缺文献类型标志代码]." * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+
+              "："  country * "，" * *
+              ""  patentid * "" * *
+TypeofLit empty$
+       {""}
+       { "["  TypeofLit * "]." * * }
+if$
+
+              }
+             if$
+}
+if$
+
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+FUNCTION {format.proceedings.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[C]" * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+
+TypeofLit empty$
+       {""}
+       { "[" TypeofLit * "]" * *  }
+if$
+                                                     %  authordate3.bst.
+}
+
+
+FUNCTION {format.cproceedings.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[C]" * title output.check}
+       {format.title title output.check}
+    if$
+    }
+if$
+
+TypeofLit empty$
+       {""}
+       { "[" TypeofLit * "]" * *  }
+if$
+                                                     %  authordate3.bst.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.incollection.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[M]//" * title output.check}
+       {format.title "" * title output.check}
+    if$
+    }
+if$
+
+TypeofLit empty$
+       {""}
+       { "[" TypeofLit * "]//" * * }
+if$
+                                                     %  authordate3.bst.
+}
+
+
+FUNCTION {format.cincollection.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[M]//" * title output.check}
+       {format.title "" * title output.check}
+    if$
+    }
+if$
+
+TypeofLit empty$
+       {""}
+       { "[" TypeofLit * "]//" * * }
+if$
+                                                     %  authordate3.bst.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.inproceedings.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[C]//" * title output.check}
+       {format.title "" * title output.check}
+    if$
+    }
+if$
+
+TypeofLit empty$
+       {""}
+       { "[" TypeofLit * "]//" * * }
+if$
+                                                     %  authordate3.bst.
+}
+
+
+FUNCTION {format.cinproceedings.title}                                     %  Nothing needs
+{title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {
+    typeoflit empty$
+       {format.title "[C]//" * title output.check}
+       {format.title "" * title output.check}
+    if$
+    }
+if$
+
+TypeofLit empty$
+       {""}
+       { "[" TypeofLit * "]//" * * }
+if$
+                                                     %  authordate3.bst.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+FUNCTION {n.dashify}
+{ 't :=
+  ""
+    { t empty$ not }
+    { t #1 #1 substring$ "-" =
+        { t #1 #2 substring$ "--" = not
+            { "--" *
+              t #2 global.max$ substring$ 't :=
+            }
+            {   { t #1 #1 substring$ "-" = }
+               { "-" *
+                 t #2 global.max$ substring$ 't :=
+               }
+              while$
+            }
+          if$
+        }
+        { t #1 #1 substring$ *
+          t #2 global.max$ substring$ 't :=
+        }
+        if$
+    }
+  while$
+}
+
+FUNCTION {format.btitle}
+{ title empty$
+   { "" }                                                   %  Don't change case
+   {booktitle}                                      %  in
+   if$                                                      %  authordate1.bst
+}                                                           %  or
+
+FUNCTION {format.cbtitle}                  %wk                 %  Nothing needs
+{ title empty$                                              %  doing here in
+    { "" }                                                  %  authordate1.bst
+    {booktitle}                                               %  or
+  if$                                                       %  authordate3.bst.
+}
+                                                            %  authordate3.bst.
+FUNCTION {tie.or.space.connect}
+{ duplicate$ text.length$ #3 <
+    { "~" }
+    { " " }
+  if$
+  swap$ * *
+}
+
+FUNCTION {either.or.check}
+{ empty$
+    'pop$
+    { "can't use both " swap$ * " fields in " * cite$ * warning$ }
+  if$
+}
+
+INTEGERS { multiresult }
+
+FUNCTION {multi.page.check}
+{ 't :=
+  #0 'multiresult :=
+    { multiresult not
+      t empty$ not
+      and
+    }
+    { t #1 #1 substring$
+      duplicate$ "-" =
+      swap$ duplicate$ "," =
+      swap$ "+" =
+      or or
+        { #1 'multiresult := }
+        { t #2 global.max$ substring$ 't := }
+      if$
+    }
+  while$
+  multiresult
+}
+
+FUNCTION {format.numberinseries}
+{ number empty$
+    { "" }
+    { number multi.page.check
+        { ", nos. " number n.dashify tie.or.space.connect }
+        { ", no. "  number tie.or.space.connect }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.cnumberinseries}                           %wk
+{ number empty$
+    { "" }
+    { number multi.page.check
+        { ", 第" number n.dashify tie.or.space.connect * "期"}  %wk
+        { ", 第"  number tie.or.space.connect * "期"}           %wk
+      if$
+    }
+  if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {booklike.series.volume.number}                    %  Chicago, pages
+{ series empty$                                             %  450-451.
+    { volume empty$
+      { " " }
+      { " Vol. " volume * }
+      if$
+    }
+    {
+      volume empty$
+        { number empty$
+            { series }
+            { series format.numberinseries * }
+          if$
+        }
+        { number empty$
+            { series ", vol. " volume * * }
+            { series ", vol. " * volume * format.numberinseries * }
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {cbooklike.series.volume.number.pages}           %wk加入页码 ？？？        %  Chicago, pages           %wk
+{ series empty$                                             %  450-451.
+    { volume empty$
+      {  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$}
+      { "卷" volume * }
+      if$
+    }
+    {
+      volume empty$
+        { number empty$
+            { series }
+            { series format.numberinseries * }
+          if$
+        }
+        { number empty$
+            { series "，第" volume * "卷" * * }
+            { series "卷" * volume * format.cnumberinseries * }
+          if$
+        }
+      if$
+    }
+  if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {incollectionlike.series.volume.number.pages}             %wk
+{ series empty$
+    { volume empty$
+      {  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$}
+      { "，" volume * ""  * *
+        pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$}
+      if$
+    }
+    { new.block
+      volume empty$
+        { number empty$
+            { series }
+            { series format.numberinseries * }
+          if$
+        }
+        { number empty$
+            { series ", vol. " volume * * }
+            { series ", vol. " * volume * format.numberinseries * }
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {cincollectionlike.series.volume.number.pages}             %wk
+{ series empty$
+    { volume empty$
+      {  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$}
+      { "，第" volume * "卷"  * *
+        pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$}
+      if$
+    }
+    { new.block
+      volume empty$
+        { number empty$
+            { series }
+            { series format.numberinseries * }
+          if$
+        }
+        { number empty$
+            { series ", vol. " volume * * }
+            { series ", vol. " * volume * format.numberinseries * }
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+
+FUNCTION {format.TypeofLit}                                  %wk  完全改写
+{ TypeofLit empty$
+    { "" }
+    {"[" TypeofLit * "]" *}
+    if$
+}
+
+
+FUNCTION {format.edition}
+{ edition empty$
+    {
+      translator empty$
+        { "" }
+        {"" translator * "，translation" * }
+        if$
+    }
+    {
+      translator empty$
+         {edition}
+         {translator output
+          "，translation." edition * "" * *}
+         if$
+    }
+if$
+}
+
+
+FUNCTION {format.cedition}                                  %wk  完全改写
+{ edition empty$
+    {
+      translator empty$
+        { "" }
+        {"" translator format.cnames * "，译" *}
+        if$
+    }
+    {
+      translator empty$
+         {edition}
+         {translator format.cnames output
+          "，译." edition * "" * *}
+         if$
+    }
+if$
+}
+
+
+
+
+FUNCTION {format.ctranslator}                                  %wk  完全改写
+{ translator empty$
+    { "" }
+    {format.cnames "，译" * "translator" output.check}
+    if$
+}
+
+FUNCTION {format.pages}
+{ pages empty$
+    { "" }
+    { pages multi.page.check
+        { ":" pages n.dashify tie.or.space.connect * }
+        { ":" pages tie.or.space.connect  * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.pagesinbook}                               %  By the time the
+{ pages empty$                                              %  reader has read
+    { "" }                                                  %  address, pub'r,
+    { pages multi.page.check                                %  note (where the
+        { ":" pages n.dashify tie.or.space.connect }   %  note may end with
+        { ":" pages tie.or.space.connect }              %  numbers), s/he
+      if$                                                   %  may not recognise
+    }                                                       %  a number-range as
+  if$                                                       %  meaning pages.
+}                                                           %  Avoid ambiguity
+                                                            %  (Butcher, p.181).
+
+FUNCTION {format.cpagesinbook}                              %  By the time the         %wk
+{ pages empty$                                              %  reader has read
+    { "" }                                                  %  address, pub'r,
+    { pages multi.page.check                                %  note (where the
+        { ":" * pages n.dashify tie.or.space.connect * "" }   %  note may end with
+        { ":" * "Page " pages tie.or.space.connect * ""}              %  numbers), s/he
+      if$                                                   %  may not recognise
+    }                                                       %  a number-range as
+  if$                                                       %  meaning pages.
+}                                                           %  Avoid ambiguity
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.vol.num.date.pages}                       %wk
+{volume empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {volume                                         %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+  number empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" number * ")" * *                                          %wk  被重新改过
+      volume empty$                                                   %wk  被重新改过
+        { "there's a number but no volume in " cite$ * warning$ }     %wk  被重新改过
+        'skip$                                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$
+}
+
+
+FUNCTION {format.cvol.num.date.pages}                       %wk
+{volume empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {volume                                         %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+  number empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" number * ")" * *                                          %wk  被重新改过
+      volume empty$                                                   %wk  被重新改过
+        { "there's a number but no volume in " cite$ * warning$ }     %wk  被重新改过
+        'skip$                                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.article.vol.num.date.pages}                       %wk
+{
+volume empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {volume                                         %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+number empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" number * ")" * *                                          %wk  被重新改过
+      volume empty$                                                   %wk  被重新改过
+        { "there's a number but no volume in " cite$ * warning$ }     %wk  被重新改过
+        'skip$                                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$
+}
+
+
+
+FUNCTION {format.carticle.vol.num.date.pages}                       %wk
+{
+volume empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {volume                                         %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+number empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" number * ")" * *                                          %wk  被重新改过
+      volume empty$                                                   %wk  被重新改过
+        { "there's a number but no volume in " cite$ * warning$ }     %wk  被重新改过
+        'skip$                                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.book.continue.vol.num}                       %wk
+{
+startyear empty$
+    'skip$
+    {"." startyear * "" * *
+    startvolume empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {"," startvolume * "" *  *}                                                                 %wk  被重新改过
+     if$
+                                                             %wk  被重新改过
+    startnumber empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" startnumber * ")-" * *  }                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+if$
+                                                             %wk  被重新改过
+endyear empty$
+    'skip$
+    {"" endyear * "" * *
+    endvolume empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {"," endvolume * "" *  *}                                                                 %wk  被重新改过
+     if$
+                                                             %wk  被重新改过
+    endnumber empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" endnumber * ")" * *  }                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+if$
+}
+
+
+
+
+FUNCTION {format.cbook.continue.vol.num}                       %wk
+{
+startyear empty$
+    'skip$
+    {"." startyear * "" * *
+    startvolume empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {"," startvolume * "" *  *}                                                                 %wk  被重新改过
+     if$
+                                                             %wk  被重新改过
+    startnumber empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" startnumber * ")-" * *  }                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+if$
+                                                             %wk  被重新改过
+endyear empty$
+    'skip$
+    {"" endyear * "" * *
+    endvolume empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {"," endvolume * "" *  *}                                                                 %wk  被重新改过
+     if$
+                                                             %wk  被重新改过
+    endnumber empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" endnumber * ")" * *  }                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+if$
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.date.modifydate.citedate}                       %wk
+{
+date empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    {date                                         %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+
+modifydate empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "(" modifydate * ")" * *                                          %wk  被重新改过
+      date empty$                                                   %wk  被重新改过
+        { "" cite$ * warning$ }     %wk  被重新改过
+        'skip$                                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$
+
+citedate empty$                                                       %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "[" citedate * "]" * *                                         %wk  被重新改过
+      date empty$                                                   %wk  被重新改过
+        { "" cite$ * warning$ }     %wk  被重新改过
+        'skip$                                                        %wk  被重新改过
+      if$                                                             %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.chapter.pages.inbook}
+{ chapter empty$
+    'format.pagesinbook
+    { type empty$
+        { "Chap." }
+        { type }
+      if$
+      chapter tie.or.space.connect
+      pages empty$
+        'skip$
+        { ", " * format.pagesinbook "l" change.case$ * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.cchapter.pages.inbook}
+{chapter empty$                                                        %wk  被重新改过
+    'skip$                                                            %wk  被重新改过
+    { "，第" chapter * "章" * *                                          %wk  被重新改过
+    }                                                                 %wk  被重新改过
+  if$                                                                 %wk  被重新改过
+  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * "" *}                                   %wk 改为第页
+      if$
+    }
+  if$
+}
+
+
+
+FUNCTION {format.chapter.pages.incoll}
+{ chapter empty$
+    { pages empty$
+        { "In " }
+        { "{\em " format.pagesinbook " of:} " * * }
+      if$
+    }
+    { type empty$
+        { "{\em Chap. " chapter * }
+        { "{\em " type * " " * chapter * }
+      if$
+      pages empty$
+        { " of:} " * }
+        { ", " * format.pagesinbook "l" change.case$ " of:} " * * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.cchapter.pages.incoll}                       %wk
+{ chapter empty$
+    { pages empty$
+        { "" }
+        { "第" format.pagesinbook "章" * * }
+      if$
+    }
+    { type empty$
+        { "第" chapter * "章" * * }
+        { "" type * "" * chapter * }
+      if$
+      pages empty$
+        { "" * }
+        { ":" * format.pagesinbook "l" change.case$ "" * * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.in.ed.booktitle}                           %  Achieves effect         %wk
+{ booktitle empty$                                          %  shown in 16.51
+    { "" }                                                  %  of Chicago, at
+    { editor empty$                                         %  expense of not
+         {"" * booktitle * "" *
+          new.block
+         }
+        {new.block
+    normalauthor empty$                           %用于正常显示
+         {
+    normaleditor empty$                           %用于正常显示
+         {      format.editors  "author and editor" output.check}       %用于正常显示,
+         {      format.editors  "author and normaleditor" output.check} %用于正常显示
+    if$                                           %用于正常显示
+         }                   %用于正常显示
+         {
+    normaleditor empty$                           %用于正常显示
+         {format.editors  "normalauthor and editor" output.check}                   %用于正常显示
+         {format.editors  "normalauthor and normaleditor" output.check}       %用于正常显示
+    if$                                           %用于正常显示
+
+         }       %用于正常显示
+    if$                                           %用于正常显示
+      editor format.key output
+      new.block
+      format.btitle "booktitle" output.check
+      }
+      if$                                                   %  4.4 of BS 1629.
+    }
+  if$                                                       %  Don't change
+}                                                           %  case.
+
+
+FUNCTION {format.in.ced.booktitle}                           %  Achieves effect         %wk
+{ booktitle empty$                                          %  shown in 16.51
+    { "" }                                                  %  of Chicago, at
+    { editor empty$                                         %  expense of not
+         {"" * booktitle * "" *
+          new.block
+         }
+        {new.block
+    normalauthor empty$                           %用于正常显示
+         {
+    normaleditor empty$                           %用于正常显示
+         {format.ceditors  "author and editor" output.check}       %用于正常显示,
+         {format.ceditors  "author and normaleditor" output.check} %用于正常显示
+    if$                                           %用于正常显示
+         }                   %用于正常显示
+         {
+    normaleditor empty$                           %用于正常显示
+         {format.ceditors  "normalauthor and editor" output.check}                   %用于正常显示
+         {format.ceditors  "normalauthor and normaleditor" output.check}       %用于正常显示
+    if$                                           %用于正常显示
+
+         }       %用于正常显示
+    if$                                           %用于正常显示
+      editor format.key output
+      new.block
+      format.cbtitle "booktitle" output.check
+      }
+      if$                                                   %  4.4 of BS 1629.
+    }
+  if$                                                       %  Don't change
+}                                                           %  case.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+FUNCTION {format.in.proceedings.booktitle}                           %  Achieves effect         %wk
+{ booktitle empty$                                          %  shown in 16.51
+    { "" }                                                  %  of Chicago, at
+    {format.btitle "booktitle" output.check   }
+  if$                                                       %  Don't change
+}                                                           %  case.
+
+
+FUNCTION {format.in.cproceedings.booktitle}                           %  Achieves effect         %wk
+{ booktitle empty$                                          %  shown in 16.51
+    { "" }                                                  %  of Chicago, at
+    { format.cbtitle "booktitle" output.check   }
+      if$                                                   %  4.4 of BS 1629.
+                                                     %  Don't change
+}
+
+
+FUNCTION {format.thesis.type}
+{ type empty$
+    'skip$
+    { pop$
+      type                                                  %  Don't change
+    }                                                       %  case.
+  if$
+}
+
+FUNCTION {format.tr.number}
+{ type empty$
+    { "Tech. rept."  }                                      %  ODWE abbrevs.
+    'type
+  if$
+  number empty$
+    {                  }                                    %  Whatever was
+    { number tie.or.space.connect }                         %  having its case
+  if$                                                       %  changed, leave
+}                                                           %  it alone.
+
+FUNCTION {format.addr.pub}
+{ publisher empty$
+    {address empty$
+        { ".[S.l.]: [s.n.] " *}
+        { address ": [s.n.] " * }
+      if$
+    }
+    { address empty$
+        { ".[S.l.]: " * }
+        { address ": " * }
+      if$
+      publisher *
+    }
+
+  if$
+}
+
+FUNCTION {format.caddr.pub}
+{publisher empty$
+    {address empty$
+        { ".[出版地不详]：[出版者不详]" *}
+        { address ":[出版者不详]" * }
+      if$
+    }
+    { address empty$
+        { ".[出版地不详]：" * }
+        { address ": " * }
+      if$
+     publisher *
+    }
+
+  if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.addr.institution}
+{ institution empty$
+    {address empty$
+        { ".[S.l.]: [s.n.] " *}
+        { address ": [s.n.] " * }
+      if$
+    }
+    { address empty$
+        { ".[S.l.]: " * }
+        { address ": " * }
+      if$
+      institution *
+    }
+
+  if$
+}
+
+FUNCTION {format.caddr.institution}
+{institution empty$
+    {address empty$
+        { ".[地址不详]：[机构不详]" *}
+        { address ":[机构不详]" * }
+      if$
+    }
+    { address empty$
+        { ".[地址不详]：" * }
+        { address ": " * }
+      if$
+     institution *
+    }
+
+  if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.school.pub}
+{ school empty$
+    {address empty$
+        { "[S.l.]: [s.n.] " }
+        { address ": [s.n.] " * }
+      if$
+    }
+    { address empty$
+        { ".[S.l.]: " * }
+        { address ": " * }
+      if$
+      school *
+    }
+
+  if$
+}
+
+FUNCTION {format.cschool.pub}
+{school empty$
+    {address empty$
+        { "[地址不详]：[学校不详]" }
+        { address ":[学校不详]" * }
+      if$
+    }
+    { address empty$
+        { ".[学校不详]：" * }
+        { address ": " * }
+      if$
+      school *
+    }
+
+  if$
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.inproceedings.addr.pub}
+{
+TypeofLit empty$
+       {publisher empty$
+    {address empty$
+        { ".[S.l.]: [s.n.] " }
+        { address ": [s.n.] " * }
+      if$
+    }
+    { address empty$
+        { ".[S.l.]: " * }
+        { address ": " * }
+      if$
+      publisher *
+    }
+
+  if$}
+       { "" }
+if$
+}
+
+FUNCTION {format.cinproceedings.addr.pub}
+{
+TypeofLit empty$
+       {publisher empty$
+    {address empty$
+        { ".[出版地不详]：[出版者不详]" }
+        { address ":[出版者不详]" * }
+      if$
+    }
+    { address empty$
+        { ".[出版地不详]：" * }
+        { address ": " * }
+      if$
+      publisher *
+    }
+
+  if$}
+       { ""}
+if$
+
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {format.misc.addr.pub}
+{ publisher empty$
+    {address empty$
+        { "" }
+        { address ": [s.n.] " * }
+      if$
+    }
+    { address empty$
+        { "[S.l.]: " * }
+        { address ": " * }
+      if$
+      publisher *
+    }
+
+  if$
+}
+
+FUNCTION {format.cmisc.addr.pub}
+{publisher empty$
+    {address empty$
+        { "" }
+        { address ":[出版者不详]" * }
+      if$
+    }
+    { address empty$
+        { "[出版地不详]：" * }
+        { address ": " * }
+      if$
+      publisher *
+    }
+
+  if$
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+FUNCTION {format.addr.pub.org}                              %  If there's an
+{ address empty$                                            %  an organization
+  { "[S.l.]:" *publisher * ", for " * organization * }                 %  and a publisher
+  { address ": " * publisher * ", for " * organization * }  %  too.
+  if$
+}
+
+FUNCTION {format.addr.inst}
+{ address empty$
+  { institution empty$
+    { "[S.l.]" }
+    { "[S.l.]" * institution *　*}
+    if$
+  }
+  { institution empty$
+    { "" }
+    { institution ", " * }
+    if$
+    address *
+  }
+  if$
+}
+
+FUNCTION {format.addr.org}
+{ address empty$
+  { organization empty$
+    { "" }
+    { organization }
+    if$
+  }
+  { organization empty$
+    { "" }
+    { organization ", " * }
+    if$
+    address *
+  }
+  if$
+}
+
+FUNCTION {format.article.crossref}
+{ "In "
+  " \cite{" * crossref * "}" *
+}
+
+FUNCTION {format.book.crossref}
+{ volume empty$
+    { "empty volume in " cite$ * "'s crossref of " * crossref * warning$
+      "In "
+    }
+    { " Vol." volume tie.or.space.connect
+      " of " *
+    }
+  if$
+  "\cite{" * crossref * "}" *
+}
+
+FUNCTION {format.incoll.inproc.crossref}
+{ "In "
+  " \cite{" * crossref * "}" *
+}
+
+
+FUNCTION {article}
+{language empty$
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.article.title output
+  new.block
+  crossref missing$
+    { journal                           %  Don't change
+      "journal" output.check                                %  case.
+      output.article.year.check   output
+      format.article.vol.num.date.pages output
+      format.date.modifydate.citedate output
+    }
+    { format.article.crossref output.nonnull
+      format.pages output
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+
+  fin.entry
+}
+
+%FUNCTION {carticle}                                         %wk  本函数
+{ output.bibitem
+  format.cauthors "author" output.check
+  author format.key output
+  new.block
+  format.carticle.title output
+  new.block
+  crossref missing$
+    {journal                               % Don't change    %wk
+     "journal" output.check                                %  case.
+      output.carticle.year.check   output                                      %wk
+      format.carticle.vol.num.date.pages output                      %wk
+      format.date.modifydate.citedate output
+      new.block
+    }
+    { format.article.crossref output.nonnull
+      format.pages output
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+FUNCTION {book}
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.book.title output
+  new.block
+  crossref missing$
+    { format.edition output
+      new.block
+      format.book.continue.vol.num ouput
+      booklike.series.volume.number output
+      new.block
+      format.addr.pub "publisher" output.check
+      output.continue.year.check  ouput
+      format.date.modifydate.citedate output
+      format.pages output
+    }
+    { format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cbook}                                             %wk
+{ output.bibitem
+  author empty$
+    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
+      editor format.key output
+    }
+    { format.cauthors output.nonnull
+      crossref missing$
+        {"author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.cbook.title output                       %wk
+  new.block
+  crossref missing$
+    {
+     format.cedition output                                 %wk   edition->cedition
+      new.block
+      format.cbook.continue.vol.num ouput
+      new.block
+      format.caddr.pub "publisher" output.check
+      output.continue.cyear.check  ouput                                     %wk
+      cbooklike.series.volume.number.pages output
+      format.date.modifydate.citedate output
+     }
+    {  format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%未处理
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {booklet}
+{language empty$
+{ output.bibitem
+  format.authors output
+  author format.key output
+  output.year.month.check
+  new.block
+  format.btitle "title" output.check
+  new.block
+  howpublished output
+  address output
+  output.year.check
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cbooklet}                                           %wk
+{ output.bibitem
+  format.cauthors output                                      %wk
+  author  format.key output
+  format.btitle "title" output.check                         %wk
+  new.block
+  howpublished output
+  address output
+  output.cyear.month.check                                    %wk
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {inbook}
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.book.title output
+  new.block
+  crossref missing$
+    { format.edition output
+      booklike.series.volume.number output
+      new.block
+      format.addr.pub "publisher" output.check
+      output.year.check output
+      format.date.modifydate.citedate output
+      format.pages output
+    }
+    { format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cinbook}                                             %wk
+{ output.bibitem
+  author empty$
+    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
+      editor format.key output
+    }
+    { format.cauthors output.nonnull
+      crossref missing$
+        {"author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.cbook.title output                       %wk
+  new.block
+  crossref missing$
+    {
+     format.cedition output                                 %wk   edition->cedition
+      new.block
+      format.caddr.pub "publisher" output.check
+      output.cyear.check                                       %wk
+      cbooklike.series.volume.number.pages output
+      format.date.modifydate.citedate output
+     }
+    {  format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {incollection}                                     %wk
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "editor" output.check                  %wk    format.editors->format.ceditors
+      editor format.key output             }
+    { format.authors "author" output.check                   %wk
+      author format.key output             }
+  if$
+  new.block
+  format.incollection.title output
+  crossref missing$                                         %  Chapter and/or
+    {
+    before.all 'output.state :=
+    format.in.ed.booktitle output                         %  page numbers can
+      format.edition output                                 %  come out via this         %wk  edition->cedition
+      new.block
+      format.addr.pub "publisher" output.check
+      output.year.check
+      incollectionlike.series.volume.number.pages output          %  route, too.
+      format.date.modifydate.citedate output
+    }
+    { format.incoll.inproc.crossref output.nonnull
+      new.block
+    }
+  if$
+
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cincollection}                                     %wk
+{ output.bibitem
+  author empty$
+    { format.ceditors "editor" output.check                  %wk    format.editors->format.ceditors
+      editor format.key output             }
+    { format.cauthors "author" output.check                   %wk
+      author format.key output             }
+  if$
+  new.block
+  format.cincollection.title output
+  crossref missing$                                         %  Chapter and/or
+    { format.in.ced.booktitle output                         %  page numbers can
+      format.cedition output                                 %  come out via this         %wk  edition->cedition
+      new.block
+      format.caddr.pub "publisher" output.check
+      output.cyear.check   output
+      cincollectionlike.series.volume.number.pages output          %  route, too.
+      format.date.modifydate.citedate output
+    }
+    { format.incoll.inproc.crossref output.nonnull
+      new.block
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%图书book和
+%会议录inproceedings(会议conference与inproceedings一样)，
+%文献类型代码[C]
+%硕士学位论文mastersthesis，
+%文献类型代码[D]
+%博士学位论文phdthesis，
+%文献类型代码[D]
+%技术报告techreport的类型是一样的，
+%文献类型代码[R]
+%
+%因此我们直接拷贝book的相关内容即可。
+%原始部分可以参考authordate1.bst。
+%
+%利用misc作为电子文献［EB/OL］所使用的类型
+%存在的问题：无法正常调用url，只能利用note来生成。
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {inproceedings}                                    %wk 改自incollection类型
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "editor" output.check                  %wk    format.editors->format.ceditors
+      editor format.key output             }
+    { format.authors "author" output.check                   %wk
+      author format.key output             }
+  if$
+  new.block
+  format.inproceedings.title output
+  crossref missing$                                         %  Chapter and/or
+    {
+    before.all 'output.state :=
+    format.in.ed.booktitle output                         %  page numbers can
+      format.edition output                                 %  come out via this         %wk  edition->cedition
+      new.block
+      format.inproceedings.addr.pub "publisher" output.check
+      output.year.check
+      incollectionlike.series.volume.number.pages output          %  route, too.
+      format.date.modifydate.citedate output
+    }
+    { format.incoll.inproc.crossref output.nonnull
+      new.block
+    }
+  if$
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cinproceedings}                                           %wk 改自incollection类型
+{ output.bibitem
+  author empty$
+    { format.ceditors "editor" output.check                  %wk    format.editors->format.ceditors
+      editor format.key output             }
+    { format.cauthors "author" output.check                   %wk
+      author format.key output             }
+  if$
+  new.block
+  format.cinproceedings.title output
+  crossref missing$                                         %  Chapter and/or
+    { format.in.ced.booktitle output                         %  page numbers can
+      format.cedition output                                 %  come out via this         %wk  edition->cedition
+      new.block
+      format.cinproceedings.addr.pub "publisher" output.check
+      output.cyear.check
+      cincollectionlike.series.volume.number.pages output          %  route, too.
+      format.date.modifydate.citedate output
+    }
+    { format.incoll.inproc.crossref output.nonnull
+      new.block
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {conference} { inproceedings }
+%FUNCTION {cconference} { cinproceedings }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {TECHREPORT}                             %wk   改自book类型
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.title "[R]" *  "title" output.check
+  new.block
+  crossref missing$
+    { format.edition output
+      booklike.series.volume.number output
+      new.block
+      format.addr.institution "publisher" output.check
+      output.year.check output
+      format.pages output
+    }
+    { format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cTECHREPORT}                                    %wk   改自book类型
+{ output.bibitem
+  author empty$
+    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
+      editor format.key output
+    }
+    { format.cauthors output.nonnull
+      crossref missing$
+        {"author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.ctitle  "[R]" * "title" output.check                        %wk
+  new.block
+  crossref missing$
+    {
+     format.cedition output                                 %wk   edition->cedition
+      new.block
+      format.caddr.institution "publisher" output.check
+      output.cyear.check                                       %wk
+      cbooklike.series.volume.number.pages output
+    }
+    {  format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {mastersthesis}                                %wk   改自book类型
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.title "[D]" *  "title" output.check
+  new.block
+  crossref missing$
+    { format.edition output
+      booklike.series.volume.number output
+      new.block
+%      format.addr.pub "publisher" output.check
+      format.school.pub "publisher" output.check
+      output.year.check output
+      format.pages output
+    }
+    { format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cmastersthesis}                                %wk   改自book类型
+{ output.bibitem
+  author empty$
+    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
+      editor format.key output
+    }
+    { format.cauthors output.nonnull
+      crossref missing$
+        {"author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.ctitle  "[D]" * "title" output.check                      %wk
+  new.block
+  crossref missing$
+    {
+     format.cedition output                                 %wk   edition->cedition
+      new.block
+%      format.caddr.pub "publisher" output.check
+      format.cschool.pub "publisher" output.check
+      output.cyear.check                                       %wk
+      cbooklike.series.volume.number.pages output
+    }
+    {  format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {phdthesis}                        %wk  改自book类型
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.title "[D]" *  "title" output.check
+  new.block
+  crossref missing$
+    { format.edition output
+      booklike.series.volume.number output
+      new.block
+%      format.addr.pub "publisher" output.check
+      format.school.pub "publisher" output.check
+      output.year.check output
+      format.pages output
+    }
+    { format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cphdthesis}                        %wk  改自book类型
+{ output.bibitem
+  author empty$
+    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
+      editor format.key output
+    }
+    { format.cauthors output.nonnull
+      crossref missing$
+        {"author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.ctitle  "[D]" * "title" output.check                        %wk
+  new.block
+  crossref missing$
+    {
+     format.cedition output                                 %wk   edition->cedition
+      new.block
+%      format.caddr.pub "publisher" output.check
+      format.cschool.pub "publisher" output.check
+      output.cyear.check                                       %wk
+      cbooklike.series.volume.number.pages output
+    }
+    {  format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {proceedings}            %改自book类型
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.conference.title output
+  new.block
+  crossref missing$
+    { format.edition output
+      booklike.series.volume.number output
+      new.block
+      format.addr.pub "publisher" output.check
+      output.year.check output
+      format.date.modifydate.citedate output
+      format.pages output
+    }
+    { format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cproceedings}            %改自book类型
+{ output.bibitem
+  author empty$
+    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
+      editor format.key output
+    }
+    { format.cauthors output.nonnull
+      crossref missing$
+        {"author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.cconference.title output                       %wk
+  new.block
+  crossref missing$
+    {
+     format.cedition output                                 %wk   edition->cedition
+      new.block
+      format.caddr.pub "publisher" output.check
+      output.cyear.check                                       %wk
+      cbooklike.series.volume.number.pages output
+      format.date.modifydate.citedate output
+     }
+    {  format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {manual}             %改自book类型
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.btitle "[H]" *  "title" output.check
+  new.block
+  crossref missing$
+    { format.edition output
+      booklike.series.volume.number output
+      new.block
+      format.addr.pub "publisher" output.check
+      output.year.check output
+      format.pages output
+    }
+    { format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cmanual}                                             %wk
+{ output.bibitem
+  author empty$
+    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
+      editor format.key output
+    }
+    { format.cauthors output.nonnull
+      crossref missing$
+        {"author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.ctitle  "[H]" * "title" output.check                        %wk
+  new.block
+  crossref missing$
+    { format.cedition output                                 %wk   edition->cedition
+      new.block
+      format.caddr.pub "publisher" output.check
+      output.cyear.check                                       %wk
+      cbooklike.series.volume.number.pages output
+    }
+    {  format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+FUNCTION {misc}              %作为非常规文献的格式，可靠性低，应该仔细检查，改自book类型
+{language empty$
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.misc.title output
+  new.block
+  crossref missing$
+    { format.edition output
+      booklike.series.volume.number output
+      new.block
+      format.misc.addr.pub "publisher" output.check
+%      output.year.check output
+      format.date.modifydate.citedate output
+%      format.pages output
+    }
+    { format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+%FUNCTION {cmisc}              %作为非常规文献的格式，可靠性低，应该仔细检查，改自book类型
+{ output.bibitem
+  author empty$
+    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
+      editor format.key output
+    }
+    { format.cauthors output.nonnull
+      crossref missing$
+        {"author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.cmisc.title output                       %wk
+
+  new.block
+  crossref missing$
+    {
+     format.cedition output                                 %wk   edition->cedition
+      new.block
+      format.cmisc.addr.pub "publisher" output.check
+%      output.cyear.check                                       %wk
+%      cbooklike.series.volume.number.pages output
+      format.date.modifydate.citedate output
+     }
+    {  format.book.crossref output.nonnull
+    }
+  if$
+  new.block
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+if$
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+FUNCTION {unpublished}
+{language empty$
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  output.year.month.check
+  new.block
+  format.btitle "title" output.check
+  new.block
+  note "note" output.check
+  fin.entry
+}
+
+%FUNCTION {cunpublished}                                     %wk
+{ output.bibitem
+  format.cauthors "author" output.check                      %wk
+  author format.key output
+  output.cyear.month.check                                  %wk
+  new.block
+  format.ctitle "title" output.check                          %wk
+  new.block
+  note "note" output.check
+  fin.entry
+}
+if$
+}
+
+FUNCTION {default.type} { book }    %wk 因为主要是基于book类型,因此将缺省类型由misc改为book
+
+MACRO {jan} {"Jan."}                                        %  ODWE, "months", &
+                                                            %  Chicago, p. 383.
+MACRO {feb} {"Feb."}
+
+MACRO {mar} {"Mar."}
+
+MACRO {apr} {"Apr."}
+
+MACRO {may} {"May"}
+
+MACRO {jun} {"June"}
+
+MACRO {jul} {"July"}
+
+MACRO {aug} {"Aug."}
+
+MACRO {sep} {"Sept."}
+
+MACRO {oct} {"Oct."}
+
+MACRO {nov} {"Nov."}
+
+MACRO {dec} {"Dec."}
+
+MACRO {acmcs} {"ACM Computing Surveys"}
+
+MACRO {acta} {"Acta Informatica"}
+
+MACRO {cacm} {"Communications of the ACM"}
+
+MACRO {ibmjrd} {"IBM Journal of Research and Development"}
+
+MACRO {ibmsj} {"IBM Systems Journal"}
+
+MACRO {ieeese} {"IEEE Transactions on Software Engineering"}
+
+MACRO {ieeetc} {"IEEE Transactions on Computers"}
+
+MACRO {ieeetcad}
+ {"IEEE Transactions on Computer-Aided Design of Integrated Circuits"}
+
+MACRO {ipl} {"Information Processing Letters"}
+
+MACRO {jacm} {"Journal of the ACM"}
+
+MACRO {jcss} {"Journal of Computer and System Sciences"}
+
+MACRO {scp} {"Science of Computer Programming"}
+
+MACRO {sicomp} {"SIAM Journal on Computing"}
+
+MACRO {tocs} {"ACM Transactions on Computer Systems"}
+
+MACRO {tods} {"ACM Transactions on Database Systems"}
+
+MACRO {tog} {"ACM Transactions on Graphics"}
+
+MACRO {toms} {"ACM Transactions on Mathematical Software"}
+
+MACRO {toois} {"ACM Transactions on Office Information Systems"}
+
+MACRO {toplas} {"ACM Transactions on Programming Languages and Systems"}
+
+MACRO {tcs} {"Theoretical Computer Science"}
+
+READ
+
+FUNCTION {sortify}
+{ purify$
+  "l" change.case$
+}
+
+INTEGERS { len }
+
+FUNCTION {chop.word}
+{ 's :=
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
+  if$
+}
+
+
+
+
+FUNCTION {format.lab.names}                                      %wk
+{ 's :=
+  s #1 "{vv~}{ll}" format.name$
+  s num.names$ duplicate$
+  #2 >
+    { pop$ " et al." * }
+    { #2 <
+        'skip$
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+            { " {\em et~al.}" * }
+            { " and " * s #2 "{vv~}{ll}" format.name$ * }           %wk
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.lab.cnames}                                      %wk
+{ 's :=
+  s #1 "{vv~}{ll}" format.name$
+  s num.names$ duplicate$
+  #2 >
+    { pop$ "~等" * }
+    { #2 <
+        'skip$
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+            { " {\em et~al.}" * }
+            { "和" * s #2 "{vv~}{ll}" format.name$ * }           %wk
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {author.key.label}
+{ author empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+%    {author format.lab.names }
+     {language empty$
+      {author format.lab.names}
+      {author format.lab.cnames}
+      if$}
+
+  if$
+}
+
+FUNCTION {author.editor.key.label}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            'key
+          if$
+        }
+%        { editor format.lab.names }
+     {language empty$
+      {editor format.lab.names}
+      {editor format.lab.cnames}
+      if$}
+
+      if$
+    }
+%    { author format.lab.names }
+     {language empty$
+      {author format.lab.names}
+      {author format.lab.cnames}
+      if$}
+
+  if$
+}
+
+FUNCTION {editor.key.label}
+{ editor empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+%    { editor format.lab.names }
+     {language empty$
+      {editor format.lab.names}
+      {editor format.lab.cnames}
+      if$}
+
+  if$
+}
+
+FUNCTION {author.key.organization.label}
+{ author empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {editor.key.organization.label}
+{ editor empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { editor format.lab.names }
+  if$
+}
+
+FUNCTION {calc.short.authors}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.key.label
+    { type$ "proceedings" =
+        'editor.key.organization.label
+        { type$ "manual" =
+            'author.key.organization.label
+            'author.key.label
+          if$
+        }
+      if$
+    }
+  if$
+  'short.list :=
+}
+
+FUNCTION {calc.label}
+{ calc.short.authors
+  short.list
+  "("
+  *
+  year duplicate$ empty$
+  short.list key field.or.null = or
+     { pop$ ""}
+     'skip$
+  if$
+  * ")" *
+  'label :=
+}
+
+INTEGERS { seq.num }
+
+FUNCTION {init.seq}
+{ #0 'seq.num :=}
+
+EXECUTE {init.seq}
+
+FUNCTION {int.to.fix}
+{ "000000000" swap$ int.to.str$ *
+  #-1 #10 substring$
+}
+
+
+FUNCTION {presort}
+{ calc.label
+  label sortify
+  "    "
+  *
+  seq.num #1 + 'seq.num :=
+  seq.num  int.to.fix
+  'sort.label :=
+  sort.label *
+  #1 entry.max$ substring$
+  'sort.key$ :=
+}
+
+ITERATE {presort}
+
+SORT
+
+STRINGS { longest.label last.label next.extra }
+
+INTEGERS { longest.label.width last.extra.num number.label }
+
+FUNCTION {initialize.longest.label}
+{ "" 'longest.label :=
+  #0 int.to.chr$ 'last.label :=
+  "" 'next.extra :=
+  #0 'longest.label.width :=
+  #0 'last.extra.num :=
+  #0 'number.label :=
+}
+
+FUNCTION {forward.pass}
+{ last.label label =
+    { last.extra.num #1 + 'last.extra.num :=
+      last.extra.num int.to.chr$ 'extra.label :=
+    }
+    { "a" chr.to.int$ 'last.extra.num :=
+      "" 'extra.label :=
+      label 'last.label :=
+    }
+  if$
+  number.label #1 + 'number.label :=
+}
+
+FUNCTION {reverse.pass}
+{ next.extra "b" =
+    { "a" 'extra.label := }
+    'skip$
+  if$
+  extra.label 'next.extra :=
+  extra.label
+  duplicate$ empty$
+    'skip$
+    { "{\natexlab{" swap$ * "}}" * }
+  if$
+  'extra.label :=
+  label extra.label * 'label :=
+}
+
+EXECUTE {initialize.longest.label}
+
+ITERATE {forward.pass}
+
+REVERSE {reverse.pass}
+
+FUNCTION {bib.sort.order}
+{ sort.label  'sort.key$ :=
+}
+
+ITERATE {bib.sort.order}
+
+SORT
+
+FUNCTION {begin.bib}
+{   preamble$ empty$
+    'skip$
+    { preamble$ write$ newline$ }
+  if$
+  "\begin{thebibliography}{" number.label int.to.str$ *
+  "}\setlength{\baselineskip}{20bp plus 2bp minus 1bp}\setlength{\itemsep}{0bp}\setlength{\parskip}{0pt}" *
+  %加入三个setlength以符合电子科技大学关于参考文献行距的要求。
+  write$ newline$
+  "\providecommand{\natexlab}[1]{#1}"
+  write$ newline$
+  "\providecommand{\url}[1]{\texttt{#1}}"
+  write$ newline$
+  "\expandafter\ifx\csname urlstyle\endcsname\relax"
+  write$ newline$
+  "  \providecommand{\doi}[1]{doi: #1}\else"
+  write$ newline$
+  "  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi"
+  write$ newline$
+}
+
+EXECUTE {begin.bib}
+
+EXECUTE {init.state.consts}
+
+ITERATE {call.type$}
+
+FUNCTION {end.bib}
+{ newline$
+  "\end{thebibliography}" write$ newline$
+}
+
+EXECUTE {end.bib}
+%    \end{macrocode}
+% \iffalse
+%</bst>
+% \fi
+% \StopEventually{\PrintChanges}
+% \Finale
+%
+\endinput

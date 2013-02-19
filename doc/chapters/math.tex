@@ -1,0 +1,79 @@
+% !Mode:: "TeX:UTF-8"
+
+\chapter{示例：数学论文}
+M. P. Drazin\citeup{drazin1958pseudo}在1958给出Drazin逆的定义, 其定义如下：\par
+若$A$是复$n$阶方阵, 满足下列等式的$X$称为Drazin逆:
+\begin{equation}
+\label{equ:xax}
+XAX=X,AX=XA,A^{k+1}X=A^k
+\end{equation}
+其中$k$是$A$的指标，即使得$rank(A^{k+1})=rank(A^k)$的最小整数。记为$A^D$。当$k=1$时，称为$A$的群逆。记为$A^\sharp$。\par
+此后，Drazin逆被广泛运用于很多方面。如：奇异微分差分方程；Markov链；迭代法；数值分析等等。特别地，这种广义矩阵在奇异线性常微分方程组以及奇异差分方程组求解问题中有重要的应用\citeup{angwen1988,baishunong1998,Dingwenxiang2000,gxzzzzqlyt1993,jiangyouxu1998,tangxujun1999,zhaokaihua1995,wangang1912,zhaoyaodong1998}。 所以有必要对其进一步研究。
+\section{Drazin逆计算方法的简介}
+很明显，一般通过（\ref{equ:xax}）求$A$的Drazin逆比较困难。于是，在此之后有很多人执立于这方面的研究。比如：C.\nbs D.\nbs Meyer\citeup{Dingwenxiang2000}, U.\nbs G.\nbs Rothblum\citeup{zhaoyaodong1998}, Y. Wei\citeup{baishunong1998} 等等。其中C.\nbs D.\nbs Meyer早在1974年就给出一个用极限的形式求 ，其表达如下：\par
+若$A\in F^{n\times n}$，且对任意非负整数$p$，有
+\begin{equation}
+  A^D=\lim_{\varepsilon\rightarrow 0}(A^{p+1}+\varepsilon I)^{-1}C^{(p)}_A
+\end{equation}
+其中$F^{n\times n}$为毫斯多夫拓扑空间上的$n$阶方阵，$C^{(p)}_A=A^{p+1}A^D$。\par
+特别地， 若$p\geq ind(A)$，则
+\begin{equation*}
+  A^D=\lim_{\varepsilon\rightarrow 0}(A^{p+1}+\varepsilon I)^{-1}A^p
+\end{equation*}
+当$p=ind(A)=k$时, 则
+\begin{equation*}
+  A^D=\lim_{\varepsilon\rightarrow 0}(A^{p+1}+\varepsilon I)^{-1}A^k
+\end{equation*}\par
+U.\nbs G.\nbs Rothblum在1976年也给出了Drazin逆的另外一种表达形式：\par
+若$A$是一任意方阵，$H$是$A$的本征投影，则$A-H$为非奇异阵且
+\begin{equation}
+  A^D=(A-H)^{-1}(I-H)=(I-H)(A-H)^{-1}
+\end{equation}
+其中$H=I-AA^D=I-A^DA$\par
+目前，比较常用的是建立在将矩阵$A$的约当标准型的基础之上的表达形式，该形式也是诸形式当中比较简单的一种。该形式是Campbell和Meyer\citeup{campbell1979generalized}在1979年给出的, 其形式如下：\par
+若$A$的约当标准型为
+\begin{equation*}
+  A=P\left(
+       \begin{array}{cc}
+         D & 0 \\
+         0 & N \\
+       \end{array}
+     \right)
+  P^{-1}
+\end{equation*}
+其中$D$是秩为$r$的非奇异阵，$N$为指标为$k$的幂零矩阵，则
+\begin{equation}
+  A^D=P\left(
+       \begin{array}{cc}
+         D^{-1} & 0 \\
+         0 & 0 \\
+       \end{array}
+     \right)
+  P^{-1}
+\end{equation}\par
+此外, Campbell\citeup{campbell1979generalized}也给出了另外一种表达形式:
+\begin{equation}
+A^D=A^k(A^{2k+1})^+A^k
+\end{equation}\par
+其中$A$是Moore-Penrose逆。\par
+1996年Y.\nbs Wei在前人的基础上，给出了以下Drazin逆的表达形式：\par
+若$A\in C^{n\times n}$且$ind(A)=k$，则
+\begin{equation}
+A^D=(\tilde{A})^{-1}A^k
+\end{equation}
+其中$\tilde{A}=A^{k+1}|_{R(A^k)}$是$A^{k+1}$在$R(A^k)$上的限制。\par
+基于第一类广义逆的基础上, 程云鹏\citeup{cyp2006juzhenlun}给出了以下的表达形式:
+\begin{equation}\label{equ:adaka2k}
+A^D=A^k(A^{2k+1})^{(1)}A^k
+\end{equation}
+其中$(A^{2k+1})^{(1)}\in A^{2k+1}\{1\}$。\par
+该方法的优点是，仅需要一个$\{1\}$，即可得到$A^D$。当$A$的指标容易求得并且较小时，可采用此法。\par
+当矩阵$A$的阶数较高时, 求$A$的指标是不容易的。另一方面，当$A$的病态严重时，求$A$的较高幂次又会使病态更严重。这时，采用式（\ref{equ:adaka2k}）进行计算是不适合的，最好采用Cline给出的逐次满秩分解的方法，该方法每一步都作较小阶矩阵的满秩分解，有限步后可以确定出矩阵的指标和Drazin逆。\par
+设$A\in C^{n\times n}$。令$A$的满秩分解为
+\begin{equation*}
+A=B_1G_1
+\end{equation*}
+而$G_iB_i$的满秩分解为
+\begin{equation*}
+G_iB_i=B_{i+1}G_{i+1}\qquad (i=1,2,...)
+\end{equation*}

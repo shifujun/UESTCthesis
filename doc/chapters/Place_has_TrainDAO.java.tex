@@ -1,0 +1,121 @@
+\noindent
+\ttfamily
+\hlstd{}\hllin{01\ }\hlkwa{package\ }\hlstd{dbcontrol}\hlopt{.}\hlstd{dao}\hlopt{;}\\
+\hllin{02\ }\hlstd{}\\
+\hllin{03\ }\hlkwa{import\ }\hlstd{dbcontrol}\hlopt{.}\hlstd{vo}\hlopt{.}\hlstd{Place\textunderscore has\textunderscore TrainVO}\hlopt{;}\\
+\hllin{04\ }\hlstd{}\hlkwa{import\ }\hlstd{dbcontrol}\hlopt{.}\hlstd{vo}\hlopt{.}\hlstd{TrainVO}\hlopt{;}\\
+\hllin{05\ }\hlstd{}\hlkwa{import\ }\hlstd{dbcontrol}\hlopt{.}\hlstd{vo}\hlopt{.}\hlstd{VO}\hlopt{;}\\
+\hllin{06\ }\hlstd{}\hlkwa{import\ }\hlstd{java}\hlopt{.}\hlstd{sql}\hlopt{.}\hlstd{ResultSet}\hlopt{;}\\
+\hllin{07\ }\hlstd{}\hlkwa{import\ }\hlstd{java}\hlopt{.}\hlstd{sql}\hlopt{.}\hlstd{SQLException}\hlopt{;}\\
+\hllin{08\ }\hlstd{}\hlkwa{import\ }\hlstd{java}\hlopt{.}\hlstd{util}\hlopt{.}\hlstd{LinkedList}\hlopt{;}\\
+\hllin{09\ }\hlstd{}\hlkwa{import\ }\hlstd{java}\hlopt{.}\hlstd{util}\hlopt{.}\hlstd{logging}\hlopt{.}\hlstd{Level}\hlopt{;}\\
+\hllin{10\ }\hlstd{}\hlkwa{import\ }\hlstd{java}\hlopt{.}\hlstd{util}\hlopt{.}\hlstd{logging}\hlopt{.}\hlstd{Logger}\hlopt{;}\\
+\hllin{11\ }\hlstd{}\\
+\hllin{12\ }\hlcom{/{*}{*}}\\
+\hllin{13\ }\hlcom{\ {*}\ Place\textunderscore has\textunderscore Train表DAO类}\\
+\hllin{14\ }\hlcom{\ {*}}\\
+\hllin{15\ }\hlcom{\ {*}\ @author\ Shifujun}\\
+\hllin{16\ }\hlcom{\ {*}/}\hlstd{}\\
+\hllin{17\ }\hlkwa{public\ class\ }\hlstd{Place\textunderscore has\textunderscore TrainDAO\ }\hlkwa{extends\ }\hlstd{AbstractDAO\ }\hlopt{\{}\\
+\hllin{18\ }\hlstd{\\
+\hllin{19\ }}\hlstd{\ \ \ \ }\hlstd{Place\textunderscore has\textunderscore TrainVO\ vo}\hlopt{;}\\
+\hllin{20\ }\hlstd{\\
+\hllin{21\ }}\hlstd{\ \ \ \ }\hlstd{}\hlkwc{@Override}\\
+\hllin{22\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlkwa{public\ }\hlstd{}\hlkwb{void\ }\hlstd{}\hlkwd{createPreparedStatements}\hlstd{}\hlopt{()\ \{}\\
+\hllin{23\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlkwa{try\ }\hlstd{}\hlopt{\{}\\
+\hllin{24\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{insertStmtStr\ }\hlopt{=\ }\hlstd{}\hlstr{"insert\ into\ Place\textunderscore has\textunderscore Train\ (}\Righttorque\\
+\hllin{25\ }\hlstr{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstr{Place\textunderscore ID,Train\textunderscore ID)\ values\ (?,?)"}\hlstd{}\hlopt{;}\\
+\hllin{26\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{insertStmt\ }\hlopt{=\ }\hlstd{dbutil}\hlopt{.}\hlstd{}\hlkwd{createPreparedStatement}\hlstd{}\hlopt{(}\Righttorque\\
+\hllin{27\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{insertStmtStr}\hlopt{);}\\
+\hllin{28\ }\hlstd{\\
+\hllin{29\ }}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{updateStmtStr\ }\hlopt{=\ }\hlstd{}\hlstr{""}\hlstd{}\hlopt{;}\\
+\hllin{30\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{updateStmt\ }\hlopt{=\ }\hlstd{dbutil}\hlopt{.}\hlstd{}\hlkwd{createPreparedStatement}\hlstd{}\hlopt{(}\Righttorque\\
+\hllin{31\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{updateStmtStr}\hlopt{);}\\
+\hllin{32\ }\hlstd{\\
+\hllin{33\ }}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{deleteStmtStr\ }\hlopt{=\ }\hlstd{}\hlstr{"delete\ from\ Place\textunderscore has\textunderscore Train\ }\Righttorque\\
+\hllin{34\ }\hlstr{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstr{where\ Place\textunderscore ID\ =\ ?\ and\ Train\textunderscore ID\ =\ ?"}\hlstd{}\hlopt{;}\\
+\hllin{35\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{deleteStmt\ }\hlopt{=\ }\hlstd{dbutil}\hlopt{.}\hlstd{}\hlkwd{createPreparedStatement}\hlstd{}\hlopt{(}\Righttorque\\
+\hllin{36\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{deleteStmtStr}\hlopt{);}\\
+\hllin{37\ }\hlstd{\\
+\hllin{38\ }}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{selectStmtStr\ }\hlopt{=\ }\hlstd{}\hlstr{"select\ {*}\ from\ Place\textunderscore has\textunderscore Train\ }\Righttorque\\
+\hllin{39\ }\hlstr{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstr{where\ Place\textunderscore ID\ =\ ?\ and\ Train\textunderscore ID\ =\ ?"}\hlstd{}\hlopt{;}\\
+\hllin{40\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{selectStmt\ }\hlopt{=\ }\hlstd{dbutil}\hlopt{.}\hlstd{}\hlkwd{createPreparedStatement}\hlstd{}\hlopt{(}\Righttorque\\
+\hllin{41\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{selectStmtStr}\hlopt{);}\\
+\hllin{42\ }\hlstd{\\
+\hllin{43\ }}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{selectListStmtStr\ }\hlopt{=\ }\hlstd{}\hlstr{"select\ {*}\ from\ }\Righttorque\\
+\hllin{44\ }\hlstr{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstr{Place\textunderscore has\textunderscore Train\ where\ Place\textunderscore ID\ =\ ?"}\hlstd{}\hlopt{;}\\
+\hllin{45\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{selectListStmt\ }\hlopt{=\ }\hlstd{dbutil}\hlopt{.}\hlstd{}\hlkwd{createPreparedStatement}\hlstd{}\hlopt{(}\Righttorque\\
+\hllin{46\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{selectListStmtStr}\hlopt{);}\\
+\hllin{47\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlopt{\}\ }\hlstd{}\hlkwa{catch\ }\hlstd{}\hlopt{(}\hlstd{Exception\ ex}\hlopt{)\ \{}\\
+\hllin{48\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{Logger}\hlopt{.}\hlstd{}\hlkwd{getLogger}\hlstd{}\hlopt{(}\hlstd{Place\textunderscore has\textunderscore TrainDAO}\hlopt{.}\hlstd{}\hlkwa{class}\hlstd{}\hlopt{.}\Righttorque\\
+\hllin{49\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{}\hlkwd{getName}\hlstd{}\hlopt{()).}\hlstd{}\hlkwd{log}\hlstd{}\hlopt{(}\hlstd{Level}\hlopt{.}\hlstd{SEVERE}\hlopt{,\ }\hlstd{null}\hlopt{,\ }\hlstd{ex}\hlopt{);}\\
+\hllin{50\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{51\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{52\ }\hlstd{\\
+\hllin{53\ }}\hlstd{\ \ \ \ }\hlstd{}\hlkwc{@Override}\\
+\hllin{54\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlkwa{public\ }\hlstd{}\hlkwb{void\ }\hlstd{}\hlkwd{insertDAO}\hlstd{}\hlopt{()\ }\hlstd{}\hlkwa{throws\ }\hlstd{SQLException\ }\hlopt{\{}\\
+\hllin{55\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{insertStmt}\hlopt{.}\hlstd{}\hlkwd{setInt}\hlstd{}\hlopt{(}\hlstd{}\hlnum{1}\hlstd{}\hlopt{,\ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{getPlace\textunderscore ID}\hlstd{}\hlopt{());}\\
+\hllin{56\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{insertStmt}\hlopt{.}\hlstd{}\hlkwd{setString}\hlstd{}\hlopt{(}\hlstd{}\hlnum{2}\hlstd{}\hlopt{,\ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{getTrain\textunderscore ID}\hlstd{}\hlopt{());}\\
+\hllin{57\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{insertStmt}\hlopt{.}\hlstd{}\hlkwd{executeUpdate}\hlstd{}\hlopt{();}\\
+\hllin{58\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{59\ }\hlstd{\\
+\hllin{60\ }}\hlstd{\ \ \ \ }\hlstd{}\hlkwc{@Override}\\
+\hllin{61\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlkwa{public\ }\hlstd{}\hlkwb{void\ }\hlstd{}\hlkwd{deleteDAO}\hlstd{}\hlopt{()\ }\hlstd{}\hlkwa{throws\ }\hlstd{SQLException\ }\hlopt{\{}\\
+\hllin{62\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{deleteStmt}\hlopt{.}\hlstd{}\hlkwd{setInt}\hlstd{}\hlopt{(}\hlstd{}\hlnum{1}\hlstd{}\hlopt{,\ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{getPlace\textunderscore ID}\hlstd{}\hlopt{());}\\
+\hllin{63\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{deleteStmt}\hlopt{.}\hlstd{}\hlkwd{setString}\hlstd{}\hlopt{(}\hlstd{}\hlnum{2}\hlstd{}\hlopt{,\ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{getTrain\textunderscore ID}\hlstd{}\hlopt{());}\\
+\hllin{64\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{deleteStmt}\hlopt{.}\hlstd{}\hlkwd{executeUpdate}\hlstd{}\hlopt{();}\\
+\hllin{65\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{66\ }\hlstd{\\
+\hllin{67\ }}\hlstd{\ \ \ \ }\hlstd{}\hlkwc{@Override}\\
+\hllin{68\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlkwa{public\ }\hlstd{}\hlkwb{void\ }\hlstd{}\hlkwd{loadDAO}\hlstd{}\hlopt{()\ }\hlstd{}\hlkwa{throws\ }\hlstd{SQLException\ }\hlopt{\{}\\
+\hllin{69\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{selectStmt}\hlopt{.}\hlstd{}\hlkwd{setInt}\hlstd{}\hlopt{(}\hlstd{}\hlnum{1}\hlstd{}\hlopt{,\ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{getPlace\textunderscore ID}\hlstd{}\hlopt{());}\\
+\hllin{70\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{selectStmt}\hlopt{.}\hlstd{}\hlkwd{setString}\hlstd{}\hlopt{(}\hlstd{}\hlnum{2}\hlstd{}\hlopt{,\ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{getTrain\textunderscore ID}\hlstd{}\hlopt{());}\\
+\hllin{71\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{ResultSet\ rs\ }\hlopt{=\ }\hlstd{selectStmt}\hlopt{.}\hlstd{}\hlkwd{executeQuery}\hlstd{}\hlopt{();}\\
+\hllin{72\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlkwa{if\ }\hlstd{}\hlopt{(}\hlstd{rs}\hlopt{.}\hlstd{}\hlkwd{next}\hlstd{}\hlopt{())\ \{}\\
+\hllin{73\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{}\hlkwa{this}\hlstd{}\hlopt{.}\hlstd{vo\ }\hlopt{=\ }\hlstd{}\hlkwa{new\ }\hlstd{}\hlkwd{Place\textunderscore has\textunderscore TrainVO}\hlstd{}\hlopt{();}\\
+\hllin{74\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{setPlace\textunderscore ID}\hlstd{}\hlopt{(}\hlstd{rs}\hlopt{.}\hlstd{}\hlkwd{getInt}\hlstd{}\hlopt{(}\hlstd{}\hlstr{"Place\textunderscore ID"}\hlstd{}\hlopt{));}\\
+\hllin{75\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{setTrain\textunderscore ID}\hlstd{}\hlopt{(}\hlstd{rs}\hlopt{.}\hlstd{}\hlkwd{getString}\hlstd{}\hlopt{(}\hlstd{}\hlstr{"Train\textunderscore ID"}\hlstd{}\hlopt{));}\\
+\hllin{76\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlopt{\}\ }\hlstd{}\hlkwa{else\ }\hlstd{}\hlopt{\{}\\
+\hllin{77\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{vo\ }\hlopt{=\ }\hlstd{null}\hlopt{;}\\
+\hllin{78\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{79\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{80\ }\hlstd{\\
+\hllin{81\ }}\hlstd{\ \ \ \ }\hlstd{}\hlkwc{@Override}\\
+\hllin{82\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlkwa{public\ }\hlstd{}\hlkwb{void\ }\hlstd{}\hlkwd{setVO}\hlstd{}\hlopt{(}\hlstd{VO\ vo}\hlopt{)\ \{}\\
+\hllin{83\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlkwa{this}\hlstd{}\hlopt{.}\hlstd{vo\ }\hlopt{=\ (}\hlstd{Place\textunderscore has\textunderscore TrainVO}\hlopt{)\ }\hlstd{vo}\hlopt{;}\\
+\hllin{84\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{85\ }\hlstd{\\
+\hllin{86\ }}\hlstd{\ \ \ \ }\hlstd{}\hlkwc{@Override}\\
+\hllin{87\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlkwa{public\ }\hlstd{}\hlkwb{void\ }\hlstd{}\hlkwd{updateDAO}\hlstd{}\hlopt{()\ }\hlstd{}\hlkwa{throws\ }\hlstd{SQLException\ }\hlopt{\{}\\
+\hllin{88\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlslc{//这个表不需要更新。}\\
+\hllin{89\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{90\ }\hlstd{\\
+\hllin{91\ }}\hlstd{\ \ \ \ }\hlstd{}\hlcom{/{*}{*}}\\
+\hllin{92\ }\hlcom{}\hlstd{\ \ \ \ \ }\hlcom{{*}\ 查找和this.vo的地点相同的所有VO。}\\
+\hllin{93\ }\hlcom{}\hlstd{\ \ \ \ \ }\hlcom{{*}}\\
+\hllin{94\ }\hlcom{}\hlstd{\ \ \ \ \ }\hlcom{{*}\ @return}\\
+\hllin{95\ }\hlcom{}\hlstd{\ \ \ \ \ }\hlcom{{*}\ @throws\ SQLException}\\
+\hllin{96\ }\hlcom{}\hlstd{\ \ \ \ \ }\hlcom{{*}/}\hlstd{\\
+\hllin{97\ }}\hlstd{\ \ \ \ }\hlstd{}\hlkwa{public\ }\hlstd{LinkedList}\hlopt{$<$}\hlstd{Place\textunderscore has\textunderscore TrainVO}\hlopt{$>$\ }\hlstd{}\hlkwd{getTrainListByPlace}\hlstd{}\hlopt{(}\Righttorque\\
+\hllin{98\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{)\ }\hlstd{}\hlkwa{throws\ }\hlstd{SQLException\ }\hlopt{\{}\\
+\hllin{99\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{selectListStmt}\hlopt{.}\hlstd{}\hlkwd{setInt}\hlstd{}\hlopt{(}\hlstd{}\hlnum{1}\hlstd{}\hlopt{,\ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{getPlace\textunderscore ID}\hlstd{}\hlopt{());}\\
+\hllin{100\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{ResultSet\ rs\ }\hlopt{=\ }\hlstd{selectListStmt}\hlopt{.}\hlstd{}\hlkwd{executeQuery}\hlstd{}\hlopt{();}\\
+\hllin{101\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{LinkedList}\hlopt{$<$}\hlstd{Place\textunderscore has\textunderscore TrainVO}\hlopt{$>$\ }\hlstd{list\ }\hlopt{=\ }\hlstd{}\hlkwa{new\ }\hlstd{LinkedList}\hlopt{$<$}\Righttorque\\
+\hllin{102\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{Place\textunderscore has\textunderscore TrainVO}\hlopt{$>$();}\\
+\hllin{103\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlkwa{while\ }\hlstd{}\hlopt{(}\hlstd{rs}\hlopt{.}\hlstd{}\hlkwd{next}\hlstd{}\hlopt{())\ \{}\\
+\hllin{104\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{Place\textunderscore has\textunderscore TrainVO\ vo\ }\hlopt{=\ }\hlstd{}\hlkwa{new\ }\hlstd{}\hlkwd{Place\textunderscore has\textunderscore TrainVO}\hlstd{}\hlopt{();}\\
+\hllin{105\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{setPlace\textunderscore ID}\hlstd{}\hlopt{(}\hlstd{rs}\hlopt{.}\hlstd{}\hlkwd{getInt}\hlstd{}\hlopt{(}\hlstd{}\hlstr{"Place\textunderscore ID"}\hlstd{}\hlopt{));}\\
+\hllin{106\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{vo}\hlopt{.}\hlstd{}\hlkwd{setTrain\textunderscore ID}\hlstd{}\hlopt{(}\hlstd{rs}\hlopt{.}\hlstd{}\hlkwd{getString}\hlstd{}\hlopt{(}\hlstd{}\hlstr{"Train\textunderscore ID"}\hlstd{}\hlopt{));}\\
+\hllin{107\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ \ \ \ \ }\hlstd{list}\hlopt{.}\hlstd{}\hlkwd{add}\hlstd{}\hlopt{(}\hlstd{vo}\hlopt{);}\\
+\hllin{108\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{109\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlkwa{return\ }\hlstd{list}\hlopt{;}\\
+\hllin{110\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{111\ }\hlstd{\\
+\hllin{112\ }}\hlstd{\ \ \ \ }\hlstd{}\hlkwc{@Override}\\
+\hllin{113\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlkwa{public\ }\hlstd{VO\ }\hlkwd{getVO}\hlstd{}\hlopt{()\ \{}\\
+\hllin{114\ }\hlstd{}\hlstd{\ \ \ \ \ \ \ \ }\hlstd{}\hlkwa{return\ this}\hlstd{}\hlopt{.}\hlstd{vo}\hlopt{;}\\
+\hllin{115\ }\hlstd{}\hlstd{\ \ \ \ }\hlstd{}\hlopt{\}}\\
+\hllin{116\ }\hlstd{}\hlopt{\}}\hlstd{}\\
+\mbox{}
+\normalfont
+\normalsize
