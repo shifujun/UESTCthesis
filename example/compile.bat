@@ -1,4 +1,4 @@
-set jobname=uestcthesis-doc
+set jobname=thesis
 @echo off
 call clean.bat
 del %jobname%.pdf

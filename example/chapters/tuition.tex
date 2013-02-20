@@ -71,19 +71,21 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 
 从网页\url{http://www.ctex.org/CTeXDownload}下载$\mathbb{C}$\kern-.05em\TeX{}(当前版本2.9.2.164，大小203M) 。可以在网页上看到这个203M的版本不包含完整的宏包（插件），所以安装这个版本在第一次使用时需要联网才能正常使用。也可以直接下载1.31G的完整版。安装完成后，前者比后者会节约大概2GB的磁盘空间。
 
-安装时建议不要改变除安装路径以外的其他选项，即完整安装。由于安装包中包含非常多文件，所以某些笔记本硬盘可能会安装的比较慢。这是正常现象。安装完成后扩展名为tex 的文件应该会被自动关联。双击uestcthesis-doc.tex应该会自动用WinEdt打开。
+安装时建议不要改变除安装路径以外的其他选项，即完整安装。由于安装包中包含非常多文件，所以某些笔记本硬盘可能会安装的比较慢。这是正常现象。安装完成后扩展名为tex 的文件应该会被自动关联。双击thesis.tex应该会自动用WinEdt打开。
 \subsection{安装模板}
+（如果从github下载本模板，并保持uestcthesis.cls, UESTC\_LOGO.png, UESTC.png 和 uestcthesis.bst四个文件在工作目录中，就不需要再安装模板了。）
+
 运行开始菜单 $\longrightarrow$ CTeX $\longrightarrow$ MiKTeX $\longrightarrow$ Maintenance (Admin) $\longrightarrow$ Package Manager (Admin)。 这个程序是管理CTeX系统中的宏包用的。点击菜单栏中的Repository $\longrightarrow$ Change Package Repository。选择第一项“Package shall be installed from the Internet”，点击下一步，选择服务器。在学校使用可以选择China 的mirrors.ustc.edu.cn。这是中科大的源，同在教育网中，速度会比较快。然后点完成。之后程序应该会立刻开始同步数据。
 
 同步完成后，在工具栏右侧的Name:处填写uestcthesis，然后回车。搜索出来的就是本模板。右键点击本模板的条目，选择Install。完成后点Close关闭。
 
 安装完成后运行开始菜单 $\longrightarrow$ CTeX $\longrightarrow$ MiKTeX $\longrightarrow$ Maintenance (Admin) $\longrightarrow$ Settings (Admin)。依次点击按钮“Refresh FNDB” 和“Update Formats”，然后确定。
 \subsection{测试编译}
-用WinEdt打开uestcthesis-doc.tex如图~\ref{winedt}（双击即可）。
+用WinEdt打开thesis.tex如图~\ref{winedt}（双击即可）。
 \pic[htbp]{WinEdt界面}{width=\textwidth}{winedt}
 点击图中红色箭头指向的黑色实心小三角，在下拉菜单中选择PDFLaTeX。然后点击绿色箭头指向的按钮将此文件设置为主文件。最后点击蓝色箭头指向的按钮，或按键盘上的F9按键，编译论文。用这种方式编译论文比较方便，但会缺少研究生论文所需的“攻读期间发表的成果”一章。所以正式编译时必须用compile.bat编译论文才能得到正确的结果。
 
-通过将此文件设置为主文件之后，以后只要uestcthesis-doc.tex在WinEdt中打开了，即使当前编辑的文件不是uestcthesis-doc.tex，编译时也会编译uestcthesis-doc.tex文件。这样可以避免每次都切换回uestcthesis-doc.tex编辑窗口。
+通过将此文件设置为主文件之后，以后只要thesis.tex在WinEdt中打开了，即使当前编辑的文件不是thesis.tex，编译时也会编译thesis.tex文件。这样可以避免每次都切换回thesis.tex编辑窗口。
 
 如果安装的是Basic版的$\mathbb{C}$\kern-.05em\TeX{}套装，则第一次编译时会自动联网下载缺少的宏包，所以会比较慢。编译完之后会自动弹出编译好的pdf论文。
 
@@ -96,14 +98,14 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 chapters     &正文目录     &使用者可复制其中的DuplicateMe.tex，创建论文的各章子文件。\\
 contents     &其他内容目录 &使用者可以通过编辑其中的文件填写论文结构的非正文部分。\\
 pics         &插图目录     &使用者在编写论文时要插入的图片放在此目录中。\\
-uestcthesis-doc.tex  &主文件 &最终得到论文需要编译这个文件，这个文件的内容应该只包含章的载入顺序。
-使用者可以重命名这个文件，但须将compile.bat中第一行的uestcthesis-doc改为相应名字。\\
-compile.bat &编译批处理   &双击编译论文，得到正确的uestcthesis-doc.pdf文件。\\
+thesis.tex  &主文件 &最终得到论文需要编译这个文件，这个文件的内容应该只包含章的载入顺序。
+使用者可以重命名这个文件，但须将compile.bat中第一行的thesis改为相应名字。\\
+compile.bat &编译批处理   &双击编译论文，得到正确的thesis.pdf文件。\\
 clean.bat&清理批处理  &双击可删除目录中全部编译过程生成的中间文件。\\
 }{}
 \section{开始编写论文}
 \subsection{确定学位信息}
-打开uestcthesis-doc.tex文件，将第三行中间的中括号内容改为bachelor、master或doctor，分别代表本科、硕士和博士。\\
+打开thesis.tex文件，将第三行中间的中括号内容改为bachelor、master或doctor，分别代表本科、硕士和博士。\\
 \verb|\documentclass[doctor]{typesetting/uestcthesis}|
 
 然后打开contents目录中的titlepage.tex。填写其中的信息。本科生注意要删除其中后一部分的信息，否则编译会出错。
@@ -111,8 +113,8 @@ clean.bat&清理批处理  &双击可删除目录中全部编译过程生成的�
 \subsubsection{新建一章}
 论文正文的每一章都是一个单独的tex文件，存放于chapters目录中。由于本模板采用UTF-8编码，所以不能用Windows记事本新建的UTF-8文本文件创建tex文件。因为Windows的UTF-8格式文件头和我们用的不一样。所以为了方便起见，chapters目录下有一个DuplicateMe.tex文件，它是一个写好文件头的空文件。新建一章时只需要将它复制一份，改一个新的文件名即可。文件名最好可以代表这一章的内容。
 
-chapters目录中的文件并不会都出现在最终的论文中，比如DuplicateMe.tex放在chapters中就不会有影响。将一章加入到论文中，需要在uestcthesis-doc.tex中加入\\
-\verb|\include{chapters/DuplicateMe}|这样的语句。\verb|\include{}|的顺序决定章的顺序。在写作中，可以将前面已经写好并检查排版没问题的章暂时从uestcthesis-doc.tex去掉，比如在\verb|\include{chapters/DuplicateMe}| 前面加一个\%，把这行注释掉。
+chapters目录中的文件并不会都出现在最终的论文中，比如DuplicateMe.tex放在chapters中就不会有影响。将一章加入到论文中，需要在thesis.tex中加入\\
+\verb|\include{chapters/DuplicateMe}|这样的语句。\verb|\include{}|的顺序决定章的顺序。在写作中，可以将前面已经写好并检查排版没问题的章暂时从thesis.tex去掉，比如在\verb|\include{chapters/DuplicateMe}| 前面加一个\%，把这行注释掉。
 
 为了跨平台着想，本模板直接采用了UTF-8编码。每个文件的第一句话都是\verb|% !Mode:: "TeX:UTF-8"|，\%后面都是注释，不会出现在文章内容中。这句话是为了让一些文本编辑器自动选择UTF-8 编码打开文件。在Windows 中，文本文件的默认编码是ANSI，虽然可以另存为UTF-8，但是依然有区别。Windows记事本的UTF-8格式多了一个BOM文件头。
 
