@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/02/12 v0.3 UESTC thesis class]
+    [2013/02/21 v0.31 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
 \RequirePackage{etoolbox}
 \RequirePackage{ifthen}
@@ -645,6 +645,17 @@ pdfpagelayout={TwoPageRight}
 }
 \RequirePackage[small]{subfigure}
 \RequirePackage{enumerate}
+\def\enumerate{%
+ \ifnum \@enumdepth >3 \@toodeep\else
+ \advance\@enumdepth \@ne
+ \edef\@enumctr{enum\romannumeral\the\@enumdepth}\fi
+ \@ifnextchar[{\@@enum@}{\@enum@}
+ \parsep=0pt
+ \itemsep=0pt
+ \parskip=0pt
+ \partopsep=0pt
+ \topsep=0pt
+ }
 \RequirePackage{color,marvosym}
 \RequirePackage[header,cols=3,hyper=true]{glossary}
 \makeglossary

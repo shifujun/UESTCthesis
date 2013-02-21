@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/02/12 v0.3 UESTC thesis class]
+    [2013/02/21 v0.31 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -1188,9 +1188,21 @@ pdfpagelayout={TwoPageRight}
 \RequirePackage[small]{subfigure}
 %    \end{macrocode}
 %
-%枚举环境宏包
+%枚举环境宏包，去除所有垂直附加距离。
+% \changes{v0.31}{2013/02/21}{去除枚举环境的所有垂直附加距离。}
 %    \begin{macrocode}
 \RequirePackage{enumerate}
+\def\enumerate{%
+ \ifnum \@enumdepth >3 \@toodeep\else
+ \advance\@enumdepth \@ne
+ \edef\@enumctr{enum\romannumeral\the\@enumdepth}\fi
+ \@ifnextchar[{\@@enum@}{\@enum@}
+ \parsep=0pt
+ \itemsep=0pt
+ \parskip=0pt
+ \partopsep=0pt
+ \topsep=0pt
+ }
 %    \end{macrocode}
 %
 %排版源代码所需宏包
