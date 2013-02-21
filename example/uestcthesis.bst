@@ -449,7 +449,7 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { s nameptr "{vv~}{ll}{ f{~}}{, jj}"
+    { s nameptr "{f.~}{vv~}{ll}{, jj}"
     format.name$
     remove.dots
      't :=

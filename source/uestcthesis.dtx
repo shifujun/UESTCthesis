@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/02/21 v0.31 UESTC thesis class]
+    [2013/02/21 v0.32 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -1306,6 +1306,8 @@ pdfpagelayout={TwoPageRight}
 % \section{参考文献样式源代码}
 % \changes{v0.3}{2013/2/12}{修复了参考文献模板bst文件中原有的问题，
 % 不再需要其他工具替换bbl中的错误。即参考文献中的“|\\.|”修正为“|\\|”。}
+% \changes{v0.32}{2013/2/21}{修改format.names，令名在前缩写，姓在后全拼。}
+%
 %    \begin{macrocode}
  %本文件基于吴凯制作的GBT7714-2005NLang.bst(1 Beta 2 测试版2012年9月20日)修改而成。
  %根据GBT7714-2005NLang.bst中copyright的要求，将文件名修改成uestcthesis.bst。
@@ -1746,7 +1748,7 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { s nameptr "{vv~}{ll}{ f{~}}{, jj}"
+    { s nameptr "{f.~}{vv~}{ll}{, jj}"
     format.name$
     remove.dots
      't :=
