@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/02/21 v0.31 UESTC thesis class]
+    [2013/02/25 v0.33 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
 \RequirePackage{etoolbox}
 \RequirePackage{ifthen}
@@ -599,7 +599,8 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \renewcommand{\theequation}{\arabic{chapter}\textendash\arabic{equation}}
 \RequirePackage{ntheorem}
 \theorembodyfont{\normalfont}%字体
-\theoremseparator{\quad}%分隔符是一个空格
+\theoremheaderfont{\normalfont \bfseries \hspace*{2em}}%设置缩进
+\theoremseparator{\enskip}%分隔符是一个空格
 \newtheorem{dingyi}{定义}[section]
 \newtheorem{gongli}{公理}[section]
 \newtheorem{dingli}{定理}[section]
