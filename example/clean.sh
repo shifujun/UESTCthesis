@@ -1,0 +1,16 @@
+rm -r *.aux 
+rm -r *.bbl 
+rm -r *.bak 
+rm -r *.blg 
+rm -r *.out 
+rm -r *.thm 
+rm -r *.toc 
+rm -r *.synctex* 
+rm -r *.glg 
+rm -r *.glo 
+rm -r *.gls 
+rm -r *.ist 
+rm -r *.idx 
+rm -r *.ilg 
+rm -r *.ind 
+rm -r *.log 

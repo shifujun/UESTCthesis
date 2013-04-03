@@ -2,6 +2,15 @@
 
 \chapter{更新日志}
 \noindent
+2013年4月4日：v0.4
+\begin{enumerate}
+\item 添加english选项，使用后将所有预定名变为英文。供我校留学生使用。这个需求是研究生院老师提出来的，同时也有研究生同学向我询问可否支持的。使用方法是在master或doctor选项后加上,english。
+    
+    例如：\verb|\documentclass[master,english]{uestcthesis}|
+\item 添加定理环境的结束符语句。但是目前所有结束符还设置为空。也就是没有任何变化。因为学校的规范中没有定义各种环境的结束符应该是什么。这个需求是一位数学学院的同学提出来的。需要用的同学可以暂时自己改，例如，将uestcthesis.cls文件的661行改为\verb|\theoremsymbol{【证毕】}|，即可在证明环境后自动加上这个标志。注意修改cls文件请使用notepad++等支持无BOM头的UTF-8编辑器。
+\end{enumerate}
+
+\noindent
 2013年2月25日：v0.33
 \begin{enumerate}
 \item 设置定理环境的缩进。

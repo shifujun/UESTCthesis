@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/02/25 v0.33 UESTC thesis class]
+    [2013/04/04 v0.4 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -155,6 +155,10 @@
 
 \newcommand{\@degree}{硕士}
 %定义申请学位级别
+
+\newcommand{\publicationsname@english}{Research Results Obtained During the Study for Master Degree}
+\newcommand{\thesisname@english}{Master Thesis of University of Electronic Science and Technology of China}
+
 }
 %    \end{macrocode}
 % \end{macro}
@@ -177,6 +181,55 @@
 
 \newcommand{\@degree}{博士}
 %定义申请学位级别
+
+\newcommand{\publicationsname@english}{Research Results Obtained During the Study for Doctor Degree}
+\newcommand{\thesisname@english}{Doctor Thesis of University of Electronic Science and Technology of China}
+
+}
+%    \end{macrocode}
+% \end{macro}
+%\changes{v0.4}{添加english选项以便将预定名修改为英文}
+%一些名称的定义统一在这里，以便在英文选项中替换成英文。
+%    \begin{macrocode}
+\newcommand{\tocname@uestcthesis}{\zihao{5}目\enspace 录}
+\newcommand{\chaptername@uestcthesis}{
+\CTEXsetup[ name={第,章},
+            number={\chinese{chapter}}
+            ]{chapter}
+            }
+\newcommand{\chaptermarkfix@uestcthesis}{
+\renewcommand{\chaptermark}[1]{\markboth{第\chinese{chapter}章~##1 }{}}
+}
+\newcommand{\acknowledgementsname@uestcthesis}{致\enspace 谢}
+\newcommand{\glossaryname@uestcthesis}{主要符号表}
+\newcommand{\entryname@uestcthesis}{符号或术语}
+\newcommand{\descriptionname@uestcthesis}{说明}
+\newcommand{\glspageheader@uestcthesis}{页码}
+%    \end{macrocode}
+% \begin{macro}{\english@uestcthesis}
+%英文选项相关设置：
+%    \begin{macrocode}
+\newcommand{\english@uestcthesis}{
+\renewcommand{\tocname@uestcthesis}{\zihao{5}Contents}
+\renewcommand{\chaptername@uestcthesis}{
+\CTEXsetup[ name={Chapter\space,},
+            number={\arabic{chapter}}
+            ]{chapter}
+            }
+\renewcommand{\chaptermarkfix@uestcthesis}{}
+\renewcommand{\chaptermark}[1]{\markboth{Chapter\space\arabic{chapter}~##1 }{}}
+
+\renewcommand{\acknowledgementsname@uestcthesis}{Acknowledgements}
+\renewcommand{\CTEX@bibname}{References}
+\renewcommand{\publicationsname@degree}{\publicationsname@english}
+\renewcommand{\thesisname@degree}{\thesisname@english}
+\renewcommand{\CTEX@figurename}{Figure}
+\renewcommand{\CTEX@tablename}{Table}
+\renewcommand{\glossaryname@uestcthesis}{Glossary}
+\renewcommand{\entryname@uestcthesis}{Notation}
+\renewcommand{\descriptionname@uestcthesis}{Description}
+\renewcommand{\glspageheader@uestcthesis}{Page}
+\renewcommand{\CTEX@appendixname}{Appendix~}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -185,6 +238,7 @@
 \DeclareOption{bachelor}{\bachelor@uestcthesis}
 \DeclareOption{master}{\master@uestcthesis}
 \DeclareOption{doctor}{\doctor@uestcthesis}
+\DeclareOption{english}{\english@uestcthesis}
 \ProcessOptions\relax
 %    \end{macrocode}
 % \subsection{版面设置}
@@ -442,7 +496,7 @@
 %    \begin{macrocode}
 \newcommand{\tocmatterfancy}{
 \fancyhf{}
-\fancyhead[C]{\zihao{5}目\enspace 录}%页眉居中打印“目　录”
+\fancyhead[C]{\tocname@uestcthesis}%页眉居中打印“目　录”
 \fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
 }
 %    \end{macrocode}
@@ -454,7 +508,7 @@
 \newcommand{\glossarymatterfancy}{%定义主要符号表版式设置
 \fancypagestyle{plain}{
 \fancyhf{}
-\fancyhead[C]{\zihao{5}主要符号表}%
+\fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%
 \fancyfoot[C]{\thepage}%
 }
 %    \end{macrocode}
@@ -463,7 +517,7 @@
 %会自动插入在主要符号表的前面。
 %    \begin{macrocode}
 \renewcommand{\glossarypreamble}{%
-\fancyhead[C]{\zihao{5}主要符号表}%页眉居中打印“主要符号表”
+\fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%页眉居中打印“主要符号表”
 }
 }
 %    \end{macrocode}
@@ -511,7 +565,7 @@
 \setcounter{page}{1}
 \pagenumbering{arabic}
 \pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{第\chinese{chapter}章~##1 }{}}%修正页眉章号显示不正确
+\chaptermarkfix@uestcthesis %修正页眉章号显示不正确
 \mainmatterfancy%设置正文的版式
 \fancypagestyle{plain}{\mainmatterfancy}
 %使章标题页使用plain版式，需要单独定义它。使它的页眉页脚与其他页一致。
@@ -965,9 +1019,8 @@
 %
 %设置章标题格式。弹性长度的距离为行距的20\%。排版规则中说明可以适当调整各级标题段后间距。
 %    \begin{macrocode}
-\CTEXsetup[ name={第,章},
-            number={\chinese{chapter}},
-            nameformat={},
+\chaptername@uestcthesis
+\CTEXsetup[ nameformat={},
             numberformat={},
             titleformat={},
             aftername={~},
@@ -1108,8 +1161,9 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %
 %调用定理设置宏包
 %\changes{v0.33}{设置定理环境的缩进}
+%\changes{v0.4}{添加设置各定理环境结束符的语句，但暂时还设置为空。}
 %    \begin{macrocode}
-\RequirePackage{ntheorem}
+\RequirePackage[amsmath,thmmarks]{ntheorem}
 \theorembodyfont{\normalfont}%字体
 \theoremheaderfont{\normalfont \bfseries \hspace*{2em}}%设置缩进
 \theoremseparator{\enskip}%分隔符是一个空格
@@ -1117,16 +1171,26 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %
 %定义四种带标号的定理环境
 %    \begin{macrocode}
+\theoremsymbol{}%定义环境结束符，下同
 \newtheorem{dingyi}{定义}[section]
+\def\enddingyi{\quad\@endtheorem}%修正环境中最后一个字符不是英文字符时，不显示结束符的BUG。下同。
+\theoremsymbol{}
 \newtheorem{gongli}{公理}[section]
+\def\endgongli{\quad\@endtheorem}
+\theoremsymbol{}
 \newtheorem{dingli}{定理}[section]
+\def\enddingli{\quad\@endtheorem}
+\theoremsymbol{}
 \newtheorem{yinli}{引理}[section]
+\def\endyinli{\quad\@endtheorem}
 %    \end{macrocode}
 %
 %定义一种不带标号的证明环境。
 %    \begin{macrocode}
 \theoremstyle{nonumberplain}
+\theoremsymbol{}
 \newtheorem{zhengming}{证明}
+\def\endzhengming{\quad\@endtheorem}
 %    \end{macrocode}
 % \subsection{参考文献设置}
 % 根据是否为研究生学位，选择是否载入multibib宏包。
@@ -1216,10 +1280,10 @@ pdfpagelayout={TwoPageRight}
 %    \begin{macrocode}
 \RequirePackage[header,cols=3,hyper=true]{glossary}
 \makeglossary
-\renewcommand{\glossaryname}{主要符号表}
-\renewcommand{\entryname}{符号或术语}
-\renewcommand{\descriptionname}{说明}
-\renewcommand{\glspageheader}{页码}
+\renewcommand{\glossaryname}{\glossaryname@uestcthesis}
+\renewcommand{\entryname}{\entryname@uestcthesis}
+\renewcommand{\descriptionname}{\descriptionname@uestcthesis}
+\renewcommand{\glspageheader}{\glspageheader@uestcthesis}
 %    \end{macrocode}
 % \begin{macro}{\ifusingglossary}
 %设置一个变量用以判断是否使用主要符号表
@@ -1264,22 +1328,22 @@ pdfpagelayout={TwoPageRight}
 
 \AtEndDocument{%插入到论文内容最后面。
 \begin{CJK}{UTF8}{rm}
-\chapter*{致\enspace 谢}%用带星号的章命令插入不带章号的致谢。
-\markboth{致\enspace 谢}{}%页眉设置
+\chapter*{\acknowledgementsname@uestcthesis}%用带星号的章命令插入不带章号的致谢。
+\markboth{\acknowledgementsname@uestcthesis}{}%页眉设置
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
-\addcontentsline{toc}{chapter}{致\enspace 谢}%将致谢编入目录
+\addcontentsline{toc}{chapter}{\acknowledgementsname@uestcthesis}%将致谢编入目录
 \input{contents/acknowledgements.tex}%插入致谢内容
 \newpage
 \bibliographystyle{uestcthesis}
 %载入参考文献样式文件uestcthesis.bst。此参考文献样式只在GBT7714-2005NLang.bst的基础上改变了参考文献条目的行距，以符合电子科技大学的要求。修改处位于uestcthesis.bst文件的3542行。另外将英文作者名由全大写改为首字母大写。
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
-\addcontentsline{toc}{chapter}{参考文献}%将参考文献编入目录
+\addcontentsline{toc}{chapter}{\CTEX@bibname}%将参考文献编入目录
 \nocite{*}%若将此命令屏蔽掉，则未引用的文献不会出现在文后的参考文献列表中。
 {\zihao{5}
 \bibliography{contents/reference}%插入参考文献
 }
 \appendix%附录版式
-\renewcommand{\chaptermark}[1]{\markboth{附录~\Alph{chapter}~\quad  #1 }{}}%附录页眉设置
+\renewcommand{\chaptermark}[1]{\markboth{\CTEX@appendixname\Alph{chapter}~  #1 }{}}%附录页眉设置
 \input{contents/appendix.tex}%插入附录内容
 \clearpage
 \ifdefstring{\degree@uestcthesis}{bachelor}{

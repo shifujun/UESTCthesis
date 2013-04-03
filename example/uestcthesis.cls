@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/02/25 v0.33 UESTC thesis class]
+    [2013/04/04 v0.4 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
 \RequirePackage{etoolbox}
 \RequirePackage{ifthen}
@@ -54,6 +54,10 @@
 \newcommand{\publicationsname@degree}{攻硕期间取得的研究成果}
 
 \newcommand{\@degree}{硕士}
+
+\newcommand{\publicationsname@english}{Research Results Obtained During the Study for Master Degree}
+\newcommand{\thesisname@english}{Master Thesis of University of Electronic Science and Technology of China}
+
 }
 \newcommand{\doctor@uestcthesis}{
 \newcommand{\degree@uestcthesis}{doctor}
@@ -67,10 +71,51 @@
 \newcommand{\publicationsname@degree}{攻博期间取得的研究成果}
 
 \newcommand{\@degree}{博士}
+
+\newcommand{\publicationsname@english}{Research Results Obtained During the Study for Doctor Degree}
+\newcommand{\thesisname@english}{Doctor Thesis of University of Electronic Science and Technology of China}
+
+}
+\newcommand{\tocname@uestcthesis}{\zihao{5}目\enspace 录}
+\newcommand{\chaptername@uestcthesis}{
+\CTEXsetup[ name={第,章},
+            number={\chinese{chapter}}
+            ]{chapter}
+            }
+\newcommand{\chaptermarkfix@uestcthesis}{
+\renewcommand{\chaptermark}[1]{\markboth{第\chinese{chapter}章~##1 }{}}
+}
+\newcommand{\acknowledgementsname@uestcthesis}{致\enspace 谢}
+\newcommand{\glossaryname@uestcthesis}{主要符号表}
+\newcommand{\entryname@uestcthesis}{符号或术语}
+\newcommand{\descriptionname@uestcthesis}{说明}
+\newcommand{\glspageheader@uestcthesis}{页码}
+\newcommand{\english@uestcthesis}{
+\renewcommand{\tocname@uestcthesis}{\zihao{5}Contents}
+\renewcommand{\chaptername@uestcthesis}{
+\CTEXsetup[ name={Chapter\space,},
+            number={\arabic{chapter}}
+            ]{chapter}
+            }
+\renewcommand{\chaptermarkfix@uestcthesis}{}
+\renewcommand{\chaptermark}[1]{\markboth{Chapter\space\arabic{chapter}~##1 }{}}
+
+\renewcommand{\acknowledgementsname@uestcthesis}{Acknowledgements}
+\renewcommand{\CTEX@bibname}{References}
+\renewcommand{\publicationsname@degree}{\publicationsname@english}
+\renewcommand{\thesisname@degree}{\thesisname@english}
+\renewcommand{\CTEX@figurename}{Figure}
+\renewcommand{\CTEX@tablename}{Table}
+\renewcommand{\glossaryname@uestcthesis}{Glossary}
+\renewcommand{\entryname@uestcthesis}{Notation}
+\renewcommand{\descriptionname@uestcthesis}{Description}
+\renewcommand{\glspageheader@uestcthesis}{Page}
+\renewcommand{\CTEX@appendixname}{Appendix~}
 }
 \DeclareOption{bachelor}{\bachelor@uestcthesis}
 \DeclareOption{master}{\master@uestcthesis}
 \DeclareOption{doctor}{\doctor@uestcthesis}
+\DeclareOption{english}{\english@uestcthesis}
 \ProcessOptions\relax
 \RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
                 top=2.75cm,left=3cm]{geometry}
@@ -182,17 +227,17 @@
 }
 \newcommand{\tocmatterfancy}{
 \fancyhf{}
-\fancyhead[C]{\zihao{5}目\enspace 录}%页眉居中打印“目　录”
+\fancyhead[C]{\tocname@uestcthesis}%页眉居中打印“目　录”
 \fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
 }
 \newcommand{\glossarymatterfancy}{%定义主要符号表版式设置
 \fancypagestyle{plain}{
 \fancyhf{}
-\fancyhead[C]{\zihao{5}主要符号表}%
+\fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%
 \fancyfoot[C]{\thepage}%
 }
 \renewcommand{\glossarypreamble}{%
-\fancyhead[C]{\zihao{5}主要符号表}%页眉居中打印“主要符号表”
+\fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%页眉居中打印“主要符号表”
 }
 }
 \newcommand{\Cabstractmatter}{
@@ -217,7 +262,7 @@
 \setcounter{page}{1}
 \pagenumbering{arabic}
 \pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{第\chinese{chapter}章~##1 }{}}%修正页眉章号显示不正确
+\chaptermarkfix@uestcthesis %修正页眉章号显示不正确
 \mainmatterfancy%设置正文的版式
 \fancypagestyle{plain}{\mainmatterfancy}
 }
@@ -524,9 +569,8 @@
 \end{titlepage}}}}{}
 \titlepage@degree
 \setcounter{secnumdepth}{3}
-\CTEXsetup[ name={第,章},
-            number={\chinese{chapter}},
-            nameformat={},
+\chaptername@uestcthesis
+\CTEXsetup[ nameformat={},
             numberformat={},
             titleformat={},
             aftername={~},
@@ -597,16 +641,26 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \renewcommand*\l@subsubsection{\@dottedtocline{3}{6em}{1em}}
 \RequirePackage{amsmath,kmath}
 \renewcommand{\theequation}{\arabic{chapter}\textendash\arabic{equation}}
-\RequirePackage{ntheorem}
+\RequirePackage[amsmath,thmmarks]{ntheorem}
 \theorembodyfont{\normalfont}%字体
 \theoremheaderfont{\normalfont \bfseries \hspace*{2em}}%设置缩进
 \theoremseparator{\enskip}%分隔符是一个空格
+\theoremsymbol{}%定义环境结束符，下同
 \newtheorem{dingyi}{定义}[section]
+\def\enddingyi{\quad\@endtheorem}%修正环境中最后一个字符不是英文字符时，不显示结束符的BUG。下同。
+\theoremsymbol{}
 \newtheorem{gongli}{公理}[section]
+\def\endgongli{\quad\@endtheorem}
+\theoremsymbol{}
 \newtheorem{dingli}{定理}[section]
+\def\enddingli{\quad\@endtheorem}
+\theoremsymbol{}
 \newtheorem{yinli}{引理}[section]
+\def\endyinli{\quad\@endtheorem}
 \theoremstyle{nonumberplain}
+\theoremsymbol{}
 \newtheorem{zhengming}{证明}
+\def\endzhengming{\quad\@endtheorem}
 \RequirePackage[numbers,sort&compress]{natbib}
 
 \newcommand{\citeup}[1]{\textsuperscript{\cite{#1}}}
@@ -660,10 +714,10 @@ pdfpagelayout={TwoPageRight}
 \RequirePackage{color,marvosym}
 \RequirePackage[header,cols=3,hyper=true]{glossary}
 \makeglossary
-\renewcommand{\glossaryname}{主要符号表}
-\renewcommand{\entryname}{符号或术语}
-\renewcommand{\descriptionname}{说明}
-\renewcommand{\glspageheader}{页码}
+\renewcommand{\glossaryname}{\glossaryname@uestcthesis}
+\renewcommand{\entryname}{\entryname@uestcthesis}
+\renewcommand{\descriptionname}{\descriptionname@uestcthesis}
+\renewcommand{\glspageheader}{\glspageheader@uestcthesis}
 \newcommand{\ifusingglossary}{}
 \newcommand{\fuhao}[3]{
 \glossary{name={#1},description={#2},sort=#3}
@@ -693,21 +747,21 @@ pdfpagelayout={TwoPageRight}
 
 \AtEndDocument{%插入到论文内容最后面。
 \begin{CJK}{UTF8}{rm}
-\chapter*{致\enspace 谢}%用带星号的章命令插入不带章号的致谢。
-\markboth{致\enspace 谢}{}%页眉设置
+\chapter*{\acknowledgementsname@uestcthesis}%用带星号的章命令插入不带章号的致谢。
+\markboth{\acknowledgementsname@uestcthesis}{}%页眉设置
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
-\addcontentsline{toc}{chapter}{致\enspace 谢}%将致谢编入目录
+\addcontentsline{toc}{chapter}{\acknowledgementsname@uestcthesis}%将致谢编入目录
 \input{contents/acknowledgements.tex}%插入致谢内容
 \newpage
 \bibliographystyle{uestcthesis}
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
-\addcontentsline{toc}{chapter}{参考文献}%将参考文献编入目录
+\addcontentsline{toc}{chapter}{\CTEX@bibname}%将参考文献编入目录
 \nocite{*}%若将此命令屏蔽掉，则未引用的文献不会出现在文后的参考文献列表中。
 {\zihao{5}
 \bibliography{contents/reference}%插入参考文献
 }
 \appendix%附录版式
-\renewcommand{\chaptermark}[1]{\markboth{附录~\Alph{chapter}~\quad  #1 }{}}%附录页眉设置
+\renewcommand{\chaptermark}[1]{\markboth{\CTEX@appendixname\Alph{chapter}~  #1 }{}}%附录页眉设置
 \input{contents/appendix.tex}%插入附录内容
 \clearpage
 \ifdefstring{\degree@uestcthesis}{bachelor}{
