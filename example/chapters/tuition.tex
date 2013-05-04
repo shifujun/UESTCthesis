@@ -2,10 +2,21 @@
 
 \chapter{更新日志}
 \noindent
+2013年5月4日：v0.4.1
+\begin{enumerate}
+\item 将封面所需的两个png文件去掉。采用pstricks宏包生成的矢量图，并嵌入到cls文类中。感谢周光耀同学帮忙！
+
+生成所需的特殊编译过程已写入到批处理脚本中。这个过程是：
+
+用filecontents环境将pstricks图片嵌入到cls文件中，令其生成logo.tex文件。然后在文类中利用write18命令正确编译logo.tex，生成logo.pdf。这个write18命令默认是不允许使用的，所以在WinEdt中执行编译是不会生成logo.pdf的，也就不会显示Logo。
+
+\end{enumerate}
+
+\noindent
 2013年4月4日：v0.4
 \begin{enumerate}
 \item 添加english选项，使用后将所有预定名变为英文。供我校留学生使用。这个需求是研究生院老师提出来的，同时也有研究生同学向我询问可否支持的。使用方法是在master或doctor选项后加上,english。
-    
+
     例如：\verb|\documentclass[master,english]{uestcthesis}|
 \item 添加定理环境的结束符语句。但是目前所有结束符还设置为空。也就是没有任何变化。因为学校的规范中没有定义各种环境的结束符应该是什么。这个需求是一位数学学院的同学提出来的。需要用的同学可以暂时自己改，例如，将uestcthesis.cls文件的661行改为\verb|\theoremsymbol{【证毕】}|，即可在证明环境后自动加上这个标志。注意修改cls文件请使用notepad++等支持无BOM头的UTF-8编辑器。
 \end{enumerate}
@@ -102,7 +113,7 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 
 安装时建议不要改变除安装路径以外的其他选项，即完整安装。由于安装包中包含非常多文件，所以某些笔记本硬盘可能会安装的比较慢。这是正常现象。安装完成后扩展名为tex 的文件应该会被自动关联。双击thesis.tex应该会自动用WinEdt打开。
 \subsection{安装模板}
-（如果从github下载本模板，并保持uestcthesis.cls, UESTC\_LOGO.png, UESTC.png 和 uestcthesis.bst四个文件在工作目录中，就不需要再安装模板了。）
+（如果从github下载本模板，并保持uestcthesis.cls 和 uestcthesis.bst两个文件在工作目录中，就不需要再安装模板了。）
 
 运行开始菜单 $\longrightarrow$ CTeX $\longrightarrow$ MiKTeX $\longrightarrow$ Maintenance (Admin) $\longrightarrow$ Package Manager (Admin)。 这个程序是管理CTeX系统中的宏包用的。点击菜单栏中的Repository $\longrightarrow$ Change Package Repository。选择第一项“Package shall be installed from the Internet”，点击下一步，选择服务器。在学校使用可以选择China 的mirrors.ustc.edu.cn。这是中科大的源，同在教育网中，速度会比较快。然后点完成。之后程序应该会立刻开始同步数据。
 
@@ -120,7 +131,7 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 
 如果安装的是Full版的$\mathbb{C}$\kern-.05em\TeX{}套装，当前版本应该没有问题。但也应该联网更新宏包。选择菜单TeX，MikTeX，MikTeX Update Wizard。然后选择“I want to get updated packages from a remote package repository”，“Let me choose a remote package repository”。同样可以选择中科大的源。
 \section{模板结构}
-下载下来的模板解压缩后应放在一个单独的目录（工作目录）中，例如UESTCthesis。其中应包含3个目录和3个文件，见表~\ref{structtab}。\\
+下载下来的模板解压缩后应放在一个单独的目录（工作目录）中，例如UESTCthesis。其中应包含3个目录和3个文件，见表~\ref{structtab}。在Github下载的压缩包中编译和清理批处理脚本压缩在zip包中了,请根据使用的操作系统选择zip解压到工作目录中。\\
 \threelinetable[htbp]{structtab}{\textwidth}{lcX}{模板结构}
 {名称&目录/文件&说明\\
 }{
@@ -130,7 +141,7 @@ pics         &插图目录     &使用者在编写论文时要插入的图片放
 thesis.tex  &主文件 &最终得到论文需要编译这个文件，这个文件的内容应该只包含章的载入顺序。
 使用者可以重命名这个文件，但须将compile.bat中第一行的thesis改为相应名字。\\
 compile.bat &编译批处理   &双击编译论文，得到正确的thesis.pdf文件。\\
-clean.bat&清理批处理  &双击可删除目录中全部编译过程生成的中间文件。\\
+clean.bat   &清理批处理  &双击可删除目录中全部编译过程生成的中间文件。\\
 }{}
 \section{开始编写论文}
 \subsection{确定学位信息}
@@ -559,9 +570,9 @@ CAJ-CD
 \input{chapters/highlight.sty}
 \input{chapters/Place_has_TrainDAO.java.tex}
 \section{Linux中编译}
-本模板已经在Linux系统中测试过，可以正常编译。在TeXLive完全安装的基础上，所有宏包包括CJK都安装了，还需要另外安装宋体和黑体。本模板使用的宋体和黑体是Windows自带的，也是Word使用的。需要在Windows中C:\\Windows\\Fonts目录中复制simhei.ttf和simsun.ttc到Linux系统中。最简单的方式是将两个字体文件放到UESTCthesis工作目录中。
+本模板已经在Linux系统中测试过，可以正常编译。在TeXLive完全安装的基础上，所有宏包包括CJK都安装了，还需要另外安装宋体和黑体。本模板使用的宋体和黑体是Windows自带的，也是Word使用的。需要在Windows中C:\\Windows\\Fonts目录中复制simhei.ttf和simsun.ttc到Linux系统中，如果依然提示缺少某个字体就一样复制过去。最简单的方式是将两个字体文件放到UESTCthesis工作目录中。
 
-编译方法参见“compile.bat”，将其改写为Shell脚本即可。
+编译脚本已经写好在zip包中，解压到工作目录即可使用。
 \section{使用\LaTeX{}时容易犯的错误}
 \begin{enumerate}
 \item 以为回车就是换行。\LaTeX{}中换行的命令是“\verb|\\|”。
