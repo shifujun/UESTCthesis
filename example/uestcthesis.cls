@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/05/04 v0.4.1 UESTC thesis class]
+    [2013/05/14 v0.4.2 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
 \RequirePackage{etoolbox}
 \RequirePackage{ifthen}
@@ -2693,12 +2693,20 @@
 \end{filecontents*}
     \immediate\write18{latex logo}%
     \immediate\write18{dvips logo}%
+    \IfFileExists{logo.dvi}{
     \immediate\write18{ps2pdf logo.ps}%
+    }{}
 \newcommand{\uestclogo}{
-\includegraphics[width=13cm]{logo.pdf}
+\IfFileExists{logo.pdf}{\includegraphics[width=13cm]{logo.pdf}}{
+{\zihao{6}此文档不是用正确编译脚本生成的。请用compile.bat或compile.sh生成才能保证编译结果完全正确，包括此处的LOGO。
+如果您是从MikTeX或CTAN.org处得到的此模板，请访问\url{https://github.com/shifujun/UESTCthesis}获取最新版本和相应的编译脚本。}
+}
 }
 \newcommand{\uestclogobadge}{
-\includegraphics*[height=5cm,trim=0 0 140cm 0]{logo.pdf}
+\IfFileExists{logo.pdf}{\includegraphics*[height=5cm,trim=0 0 140cm 0]{logo.pdf}}{
+{\zihao{6}此文档不是用正确编译脚本生成的。请用compile.bat或compile.sh生成才能保证编译结果完全正确，包括此处的LOGO。
+如果您是从MikTeX或CTAN.org处得到的此模板，请访问\url{https://github.com/shifujun/UESTCthesis}获取最新版本和相应的编译脚本。}
+}
 }
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \renewcommand{\bachelortitlepage@uestcthesis}{
@@ -3092,11 +3100,10 @@ pdfpagelayout={TwoPageRight}
 \include{contents/Eabstract}%插入英文摘要
 \tocmatter%目录版式
 \tableofcontents%插入目录
-\ifblank{\ifusingglossary}{}{%如果没有使用过\fuhao命令，则不插入主要符号表
+\newpage%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
 \glossarymatterfancy%设置主要符号表版式。
 \printglossary%插入主要符号表
 \mainmatter%修正主要符号表版式，这里是受目录版式的影响，必须在此加入\mainmatter。
-}%
 \end{CJK}
 \mainmatter%正文区版式
 \makeatletter

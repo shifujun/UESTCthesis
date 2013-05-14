@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/05/04 v0.4.1 UESTC thesis class]
+    [2013/05/14 v0.4.2 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -3114,12 +3114,21 @@
 \end{filecontents*}
     \immediate\write18{latex logo}%
     \immediate\write18{dvips logo}%
+%\changes{v0.4.2}{针对默认编译器不能使用write18命令的情况，在不能正常显示logo时显示一段说明文字。}
+    \IfFileExists{logo.dvi}{
     \immediate\write18{ps2pdf logo.ps}%
+    }{}
 \newcommand{\uestclogo}{
-\includegraphics[width=13cm]{logo.pdf}
+\IfFileExists{logo.pdf}{\includegraphics[width=13cm]{logo.pdf}}{
+{\zihao{6}此文档不是用正确编译脚本生成的。请用compile.bat或compile.sh生成才能保证编译结果完全正确，包括此处的LOGO。
+如果您是从MikTeX或CTAN.org处得到的此模板，请访问\url{https://github.com/shifujun/UESTCthesis}获取最新版本和相应的编译脚本。}
+}
 }
 \newcommand{\uestclogobadge}{
-\includegraphics*[height=5cm,trim=0 0 140cm 0]{logo.pdf}
+\IfFileExists{logo.pdf}{\includegraphics*[height=5cm,trim=0 0 140cm 0]{logo.pdf}}{
+{\zihao{6}此文档不是用正确编译脚本生成的。请用compile.bat或compile.sh生成才能保证编译结果完全正确，包括此处的LOGO。
+如果您是从MikTeX或CTAN.org处得到的此模板，请访问\url{https://github.com/shifujun/UESTCthesis}获取最新版本和相应的编译脚本。}
+}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -3674,12 +3683,12 @@ pdfpagelayout={TwoPageRight}
 \include{contents/Eabstract}%插入英文摘要
 \tocmatter%目录版式
 \tableofcontents%插入目录
-\ifblank{\ifusingglossary}{}{%如果没有使用过\fuhao命令，则不插入主要符号表
+%\changes{v0.4.2}{修复只有单页目录时页眉显示主要符号表的问题。}
+\newpage%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
 %此处遇到问题：目录之后到正文之前如果加入章节，这些章节的版式不受传统版式设置控制。估计是BUG。此处耗时6小时20分钟，终于找到了修正方案。
 \glossarymatterfancy%设置主要符号表版式。
 \printglossary%插入主要符号表
 \mainmatter%修正主要符号表版式，这里是受目录版式的影响，必须在此加入\mainmatter。
-}%
 \end{CJK}
 \mainmatter%正文区版式
 \makeatletter
