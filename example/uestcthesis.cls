@@ -29,8 +29,8 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/05/14 v0.4.2 UESTC thesis class]
-\LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
+    [2013/05/20 v0.4.3 UESTC thesis class]
+\LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{etoolbox}
 \RequirePackage{ifthen}
 \newcommand{\bachelor@uestcthesis}{
@@ -3003,9 +3003,15 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \leftskip \@tempdima \null \nobreak \hskip -\leftskip {\heiti #1}\nobreak \leaders
 \hbox {$\m@th \mkern \@dotsep mu\hbox {.}\mkern \@dotsep mu$}\hfill \nobreak
 \hb@xt@ \@pnumwidth {\hfil \normalfont \normalcolor #2}\par }\fi}
+\ifdefstring{\degree@uestcthesis}{bachelor}{
+\renewcommand*\l@section{\@dottedtocline{1}{1em}{1em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{2em}{1em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{3em}{1em}}
+}{
 \renewcommand*\l@section{\@dottedtocline{1}{2em}{1em}}
 \renewcommand*\l@subsection{\@dottedtocline{2}{4em}{1em}}
 \renewcommand*\l@subsubsection{\@dottedtocline{3}{6em}{1em}}
+}
 \RequirePackage{amsmath,kmath}
 \renewcommand{\theequation}{\arabic{chapter}\textendash\arabic{equation}}
 \RequirePackage[amsmath,thmmarks]{ntheorem}
@@ -3067,6 +3073,13 @@ pdfpagelayout={TwoPageRight}
 }
 \RequirePackage[small]{subfigure}
 \RequirePackage{enumerate}
+\newskip\@topsepadd@uestcthesis
+\def\@trivlist@uestcthesis{\if@noskipsec \leavevmode \fi \@topsepadd@uestcthesis \topsep \ifvmode \advance \@topsepadd \partopsep \else \unskip \par \fi \if@inlabel \@noparitemtrue \@noparlisttrue \else \if@newlist \@noitemerr \fi \@noparlistfalse \@topsep \@topsepadd \fi \advance \@topsep \parskip \leftskip \z@skip \rightskip \@rightskip \parfillskip \@flushglue \par@deathcycles \z@ \@setpar {\if@newlist \advance \par@deathcycles \@ne \ifnum \par@deathcycles >\@m \@noitemerr {\@@par }\fi \else {\@@par }\fi }\global \@newlisttrue \@outerparskip \parskip }
+
+\def\list@uestcthesis#1#2{\ifnum \@listdepth >5\relax \@toodeep \else \global \advance \@listdepth \@ne \fi \rightmargin \z@ \listparindent \z@ \itemindent \z@ \csname @list\romannumeral \the \@listdepth \endcsname \def \@itemlabel {#1}\let \makelabel \@mklab \@nmbrlistfalse #2\relax \@trivlist@uestcthesis \parskip \parsep \parindent \listparindent \advance \linewidth -\rightmargin \advance \linewidth -\leftmargin \advance \@totalleftmargin \leftmargin \parshape \@ne \@totalleftmargin \linewidth \ignorespaces }
+
+\def\@enum@{\list@uestcthesis {\csname label\@enumctr \endcsname }{\usecounter {\@enumctr }\def \makelabel ##1{\hss \llap {##1}}}}
+
 \def\enumerate{%
  \ifnum \@enumdepth >3 \@toodeep\else
  \advance\@enumdepth \@ne
@@ -3094,15 +3107,19 @@ pdfpagelayout={TwoPageRight}
 \AtBeginDocument{%插入到论文内容的最前面。
 \begin{CJK}{UTF8}{rm}%中文支持环境，此处内容不受ctexbook文类影响，所以必须手动加这个环境。
 \maketitle%生成并插入封面
+\clearpage{\pagestyle{empty}\cleardoublepage}
 \Cabstractmatter%设置中文摘要版式
 \include{contents/Cabstract}%插入中文摘要
+\clearpage{\pagestyle{empty}\cleardoublepage}
 \Eabstractmatter%设置英文摘要版式
 \include{contents/Eabstract}%插入英文摘要
+\clearpage{\pagestyle{empty}\cleardoublepage}
 \tocmatter%目录版式
 \tableofcontents%插入目录
-\newpage%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
+\clearpage{\pagestyle{empty}\cleardoublepage}%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
 \glossarymatterfancy%设置主要符号表版式。
 \printglossary%插入主要符号表
+\clearpage{\pagestyle{empty}\cleardoublepage}
 \mainmatter%修正主要符号表版式，这里是受目录版式的影响，必须在此加入\mainmatter。
 \end{CJK}
 \mainmatter%正文区版式
@@ -3110,15 +3127,14 @@ pdfpagelayout={TwoPageRight}
 \newcmds@uestcthesis%自定义图表命令，这些命令必须在document环境里声明才能在正文中使用，所以只能放在这里了。
 \makeatother
 }
-
-\AtEndDocument{%插入到论文内容最后面。
-\begin{CJK}{UTF8}{rm}
+\newcommand{\insertacknowledgement}{
 \chapter*{\acknowledgementsname@uestcthesis}%用带星号的章命令插入不带章号的致谢。
 \markboth{\acknowledgementsname@uestcthesis}{}%页眉设置
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\acknowledgementsname@uestcthesis}%将致谢编入目录
 \input{contents/acknowledgements.tex}%插入致谢内容
-\newpage
+}
+\newcommand{\insertreference}{
 \bibliographystyle{uestcthesis}
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\CTEX@bibname}%将参考文献编入目录
@@ -3126,6 +3142,19 @@ pdfpagelayout={TwoPageRight}
 {\zihao{5}
 \bibliography{contents/reference}%插入参考文献
 }
+}
+\AtEndDocument{%插入到论文内容最后面。
+\begin{CJK}{UTF8}{rm}
+\ifdefstring{\degree@uestcthesis}{bachelor}{%检测是否为本科论文，调换参考文献与致谢的顺序
+\insertreference
+\newpage
+\insertacknowledgement
+}{
+\insertacknowledgement
+\newpage
+\insertreference
+}
+
 \appendix%附录版式
 \renewcommand{\chaptermark}[1]{\markboth{\CTEX@appendixname\Alph{chapter}~  #1 }{}}%附录页眉设置
 \input{contents/appendix.tex}%插入附录内容
