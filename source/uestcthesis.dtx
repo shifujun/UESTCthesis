@@ -30,26 +30,16 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/05/20 v0.4.3 UESTC thesis class]
+    [2013/05/23 v0.4.4 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
 \usepackage[hyperref,UTF8]{ctex}
 \usepackage{cmap}
-\usepackage[pdftex,unicode,
-            bookmarksnumbered=true,
-            bookmarksopen=true,
-            colorlinks=false,
-            pdfborder={0 0 1},
-            citecolor=blue,
-            linkcolor=red,
-            anchorcolor=green,
-            urlcolor=blue,
-            breaklinks=true
-            ]{hyperref}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
+\usepackage{rvdtx}
 \begin{document}
   \DocInput{uestcthesis.dtx}
 \end{document}
@@ -90,7 +80,6 @@
 % \fi
 % \section{文类源代码}
 % \changes{v0.21}{2013/01/22}{将模板重构为DocStrip格式}
-%
 % \subsection{中文支持}
 %继承ctexbook文类，并调用了如下功能的选项：\par
 %cs4size:使用小四字号为缺省字体大小。\par
@@ -109,7 +98,7 @@
 %
 %调用etoolbox宏包，为了使用其提供的|\ifblank|命令。
 %    \begin{macrocode}
-\RequirePackage{etoolbox}
+\RequirePackage{etoolbox}[2011/01/03]
 %    \end{macrocode}
 %
 %调用ifthen宏包，为了使用其提供的|\ifthenelse|命令。
@@ -133,6 +122,9 @@
 
 \newcommand{\thesisname@degree}{电子科技大学学士学位论文}
 %论文全名
+
+\newcommand{\chapternumberformat@uestcthesis}{\arabic{chapter}}
+%为了根据学位不同而设置不同的章标题序号方式而定义的命令。此处设置为本科论文章标题用阿拉伯数字序号。
 }
 %    \end{macrocode}
 % \end{macro}
@@ -159,6 +151,8 @@
 \newcommand{\publicationsname@english}{Research Results Obtained During the Study for Master Degree}
 \newcommand{\thesisname@english}{Master Thesis of University of Electronic Science and Technology of China}
 
+\newcommand{\chapternumberformat@uestcthesis}{\chinese{chapter}}
+%为了根据学位不同而设置不同的章标题序号方式而定义的命令。此处设置为本科论文章标题用汉字数字序号。
 }
 %    \end{macrocode}
 % \end{macro}
@@ -185,20 +179,23 @@
 \newcommand{\publicationsname@english}{Research Results Obtained During the Study for Doctor Degree}
 \newcommand{\thesisname@english}{Doctor Thesis of University of Electronic Science and Technology of China}
 
+\newcommand{\chapternumberformat@uestcthesis}{\chinese{chapter}}
+%为了根据学位不同而设置不同的章标题序号方式而定义的命令。此处设置为本科论文章标题用汉字数字序号。
 }
 %    \end{macrocode}
 % \end{macro}
-%\changes{v0.4}{添加english选项以便将预定名修改为英文}
-%一些名称的定义统一在这里，以便在英文选项中替换成英文。
+%\changes{v0.4}{2013/04/04}{添加english选项以便将预定名修改为英文}
+%\changes{v0.4.4}{2013/05/25}{由于2013年本科管理规范中未将章标题改为和硕博一致的汉字序号，所以在此将本科论文中的章标题单独改为阿拉伯数字序号。}
+%一些名称的定义统一在这里，以便在英文选项中替换成英文。同时还有设置章标题序号的显示方式。
 %    \begin{macrocode}
 \newcommand{\tocname@uestcthesis}{\zihao{5}目\enspace 录}
 \newcommand{\chaptername@uestcthesis}{
 \CTEXsetup[ name={第,章},
-            number={\chinese{chapter}}
+            number={\chapternumberformat@uestcthesis}
             ]{chapter}
             }
 \newcommand{\chaptermarkfix@uestcthesis}{
-\renewcommand{\chaptermark}[1]{\markboth{第\chinese{chapter}章~##1 }{}}
+\renewcommand{\chaptermark}[1]{\markboth{第\chapternumberformat@uestcthesis章~##1 }{}}
 }
 \newcommand{\acknowledgementsname@uestcthesis}{致\enspace 谢}
 \newcommand{\glossaryname@uestcthesis}{主要符号表}
@@ -259,8 +256,14 @@
 %
 %按照学校要求需要设置默认行距为20磅。参数是倍数值，没有单位。这个值是通过
 %|\showthe\baselineskip|命令查看当前的行距，然后计算得到的。
+%\changes{v0.4.4}{2013/05/25}{修正可能会出现的超大段距问题，这是由于默认设置要求每页底部文字对齐，所以拉抻所有弹性间距。现取消这个设置，并加大一个不太明显的弹性段距。}
 %    \begin{macrocode}
 \linespread{1.391}
+%    \end{macrocode}
+%设置不要求每页底部文字对齐，并设置一个管理规范中没有的弹性额外段距。这使得换页位置会更美观，而段距不明显。段距为最大10磅，仅为行距一半，最小可以压缩1磅。
+%    \begin{macrocode}
+\parskip=0bp plus 10bp minus 1bp
+\raggedbottom
 %    \end{macrocode}
 % \subsection{图表设置}
 %调用宏包：
@@ -387,9 +390,11 @@
 % \end{macro}
 % \begin{macro}{\threelinetable}
 %|\threelinetable|命令生成一个独占一行、居中的三线表格。标题前后间距符合科大毕设标准。
+%\changes{v0.4.4}{2013/05/24}{修正表格字号为五号字。}
 %    \begin{macrocode}
 \newcommand{\threelinetable}[8][htbp]{
 \begin{table}[##1]
+\zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
 \begin{threeparttable}
 \caption{##5}
@@ -416,6 +421,7 @@
 %    \begin{macrocode}
 \newcommand{\longthreelinetable}[6]{
 {
+\zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
 \begin{longtable}{##4}
 \caption{##2}\label{##1}\\
@@ -756,9 +762,12 @@
 % \end{macro}
 % \begin{macro}{\uestclogo}
 %插入学校LOGO的命令
+%\changes{v0.4.1}{2013/05/04}{将学校的LOGO集成在cls文件里。}
 %    \begin{macrocode}
-%\changes{v0.4.1}{将学校的LOGO集成在cls文件里。}
 \begin{filecontents*}{logo.tex}
+%    \end{macrocode}
+% logo文件内容不显示在文档中。
+% \iffalse
 \documentclass[pstricks=true]{standalone}
 \usepackage{pstricks}
 
@@ -3110,11 +3119,13 @@
 \end{pspicture}
 
 \end{document}
-
+% \fi
+%\changes{v0.4.2}{2013/05/14}{针对默认编译器不能使用write18命令的情况，在不能正常显示logo时显示一段说明文字。}
+%    \begin{macrocode}
 \end{filecontents*}
+
     \immediate\write18{latex logo}%
     \immediate\write18{dvips logo}%
-%\changes{v0.4.2}{针对默认编译器不能使用write18命令的情况，在不能正常显示logo时显示一段说明文字。}
     \IfFileExists{logo.dvi}{
     \immediate\write18{ps2pdf logo.ps}%
     }{}
@@ -3432,13 +3443,14 @@
 %    \end{macrocode}
 % \begin{macro}{\@ckeywords}
 %定义生成中文关键词的命令。如果关键词少于3个则用“必选关键词”五个字补上，以提示作者关键词不够。同时自动加入正确的中文逗号。
+%\changes{v0.4.4}{2013/05/23}{修正bug：\@ckeywords命令和\@ekeywords命令中的每行结束应加一个\%符号，否则直接换行相当于加入了一个不该有的空格。}
 %    \begin{macrocode}
 \newcommand{\@ckeywords}{
-\ifthenelse{\equal{#1}{}}{必选关键词}{#1}
-\ifthenelse{\equal{#2}{}}{必选关键词}{，#2}
-\ifthenelse{\equal{#3}{}}{必选关键词}{，#3}
-\ifthenelse{\equal{#4}{}}{}{，#4}
-\ifthenelse{\equal{#5}{}}{}{，#5}
+\ifthenelse{\equal{#1}{}}{必选关键词}{#1}%
+\ifthenelse{\equal{#2}{}}{必选关键词}{，#2}%
+\ifthenelse{\equal{#3}{}}{必选关键词}{，#3}%
+\ifthenelse{\equal{#4}{}}{}{，#4}%
+\ifthenelse{\equal{#5}{}}{}{，#5}%
 }
 \ifthenelse{\equal{#5}{}}{
 \ifthenelse{\equal{#4}{}}{
@@ -3469,11 +3481,11 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %定义生成英文关键词的命令。如果关键词少于3个则用“必选关键词”五个字补上，以提示作者关键词不够。同时自动加入正确的英文逗号。
 %    \begin{macrocode}
 \newcommand{\@ekeywords}{
-\ifthenelse{\equal{#1}{}}{必选关键词}{#1}
-\ifthenelse{\equal{#2}{}}{必选关键词}{,#2}
-\ifthenelse{\equal{#3}{}}{必选关键词}{,#3}
-\ifthenelse{\equal{#4}{}}{}{,#4}
-\ifthenelse{\equal{#5}{}}{}{,#5}
+\ifthenelse{\equal{#1}{}}{必选关键词}{#1}%
+\ifthenelse{\equal{#2}{}}{必选关键词}{, #2}%
+\ifthenelse{\equal{#3}{}}{必选关键词}{, #3}%
+\ifthenelse{\equal{#4}{}}{}{, #4}%
+\ifthenelse{\equal{#5}{}}{}{, #5}%
 }
 %    \end{macrocode}
 % \end{macro}
@@ -3513,8 +3525,8 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %    \end{macrocode}
 %
 %设置四级标题在目录中的左缩进分别为0、2、4、6个英文字符宽。序号到题目间隔1个英文字符宽。
+%\changes{v0.4.3}{2013/05/20}{由于我的疏忽，本来应将本科规范改为和硕博一致分别缩进0,2,4,6个全角字符，但2013年的规范中写成了半角字符。这里只好先针对本科论文修改过来。}
 %    \begin{macrocode}
-%\changes{v0.4.3}{由于我的疏忽，本来应将本科规范改为和硕博一致分别缩进0,2,4,6个全角字符，但2013年的规范中写成了半角字符。这里只好先针对本科论文修改过来。}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \renewcommand*\l@section{\@dottedtocline{1}{1em}{1em}}
 \renewcommand*\l@subsection{\@dottedtocline{2}{2em}{1em}}
@@ -3537,8 +3549,8 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %    \end{macrocode}
 %
 %调用定理设置宏包
-%\changes{v0.33}{设置定理环境的缩进}
-%\changes{v0.4}{添加设置各定理环境结束符的语句，但暂时还设置为空。}
+%\changes{v0.33}{2013/02/25}{设置定理环境的缩进}
+%\changes{v0.4}{2013/04/04}{添加设置各定理环境结束符的语句，但暂时还设置为空。}
 %    \begin{macrocode}
 \RequirePackage[amsmath,thmmarks]{ntheorem}
 \theorembodyfont{\normalfont}%字体
@@ -3633,9 +3645,9 @@ pdfpagelayout={TwoPageRight}
 %
 %枚举环境宏包，去除所有垂直附加距离。
 % \changes{v0.31}{2013/02/21}{去除枚举环境的所有垂直附加距离。}
+% \changes{v0.4.3}{2013/05/20}{修复bug：枚举环境与前后文存在额外间距}
 %    \begin{macrocode}
 \RequirePackage{enumerate}
-%\changes{v0.4.3}{修复bug：枚举环境与前后文存在额外间距}
 %为了修正枚举环境与前后文存在额外间距的问题：重构枚举环境中的\@enum@命令，将其中的\list命令重构，再将\list命令中的\@trivlist命令重构。一切重构都是为了将\@trivlist命令中的第一个\@topsepadd重置为0。
 \newskip\@topsepadd@uestcthesis
 \def\@trivlist@uestcthesis{\if@noskipsec \leavevmode \fi \@topsepadd@uestcthesis \topsep \ifvmode \advance \@topsepadd \partopsep \else \unskip \par \fi \if@inlabel \@noparitemtrue \@noparlisttrue \else \if@newlist \@noitemerr \fi \@noparlistfalse \@topsep \@topsepadd \fi \advance \@topsep \parskip \leftskip \z@skip \rightskip \@rightskip \parfillskip \@flushglue \par@deathcycles \z@ \@setpar {\if@newlist \advance \par@deathcycles \@ne \ifnum \par@deathcycles >\@m \@noitemerr {\@@par }\fi \else {\@@par }\fi }\global \@newlisttrue \@outerparskip \parskip }
@@ -3687,13 +3699,16 @@ pdfpagelayout={TwoPageRight}
 %    \end{macrocode}
 % \end{macro}
 % \subsection{自动添加论文的必选结构}
+%\changes{v0.4.3}{2013/05/20}{由于目前（2013年）本科和硕博关于参考文献与致谢顺序的规定不一样，所以在这里区分设置}
+%\changes{v0.4.2}{2013/05/14}{修复只有单页目录时页眉显示主要符号表的问题。}
+%\changes{v0.4.3}{2013/05/20}{修复bug：摘要应从右页开始。前置部分都需要章起右页。}
+%\changes{v0.4.4}{2013/05/23}{本科论文中将外文资料和翻译加入目录中。}
 %    \begin{macrocode}
 % !Mode:: "TeX:UTF-8"
 
 \AtBeginDocument{%插入到论文内容的最前面。
 \begin{CJK}{UTF8}{rm}%中文支持环境，此处内容不受ctexbook文类影响，所以必须手动加这个环境。
 \maketitle%生成并插入封面
-%\changes{v0.4.3}{修复bug：摘要应从右页开始。前置部分都需要章起右页。}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \Cabstractmatter%设置中文摘要版式
 \include{contents/Cabstract}%插入中文摘要
@@ -3703,7 +3718,6 @@ pdfpagelayout={TwoPageRight}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \tocmatter%目录版式
 \tableofcontents%插入目录
-%\changes{v0.4.2}{修复只有单页目录时页眉显示主要符号表的问题。}
 \clearpage{\pagestyle{empty}\cleardoublepage}%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
 %此处遇到问题：目录之后到正文之前如果加入章节，这些章节的版式不受传统版式设置控制。估计是BUG。此处耗时6小时20分钟，终于找到了修正方案。
 \glossarymatterfancy%设置主要符号表版式。
@@ -3716,7 +3730,6 @@ pdfpagelayout={TwoPageRight}
 \newcmds@uestcthesis%自定义图表命令，这些命令必须在document环境里声明才能在正文中使用，所以只能放在这里了。
 \makeatother
 }
-%\changes{v0.4.3}{由于目前（2013年）本科和硕博关于参考文献与致谢顺序的规定不一样，所以在这里区分设置}
 \newcommand{\insertacknowledgement}{
 \chapter*{\acknowledgementsname@uestcthesis}%用带星号的章命令插入不带章号的致谢。
 \markboth{\acknowledgementsname@uestcthesis}{}%页眉设置
@@ -3753,7 +3766,13 @@ pdfpagelayout={TwoPageRight}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \renewcommand{\chaptermark}[1]{\markboth{外文资料原文}{}}
 \def\leftmark{外文资料原文}
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{外文资料原文}
 \include{contents/original}
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{外文资料译文}
 \renewcommand{\chaptermark}[1]{\markboth{外文资料译文}{}}
 \def\leftmark{外文资料译文}
 \include{contents/translation}
@@ -3773,14 +3792,16 @@ pdfpagelayout={TwoPageRight}
 % \iffalse
 %<*bst>
 % \fi
-% \section{参考文献样式源代码}
+% \section{参考文献样式}
 % \changes{v0.3}{2013/2/12}{修复了参考文献模板bst文件中原有的问题，
 % 不再需要其他工具替换bbl中的错误。即参考文献中的“|\\.|”修正为“|\\|”。}
-%    \begin{macrocode}
- %本文件基于吴凯制作的GBT7714-2005NLang.bst(1 Beta 2 测试版2012年9月20日)修改而成。
- %根据GBT7714-2005NLang.bst中copyright的要求，将文件名修改成uestcthesis.bst。
- %对吴凯的杰出工作表示感谢！
-
+%\changes{v0.4.4}{2013/05/23}{增加一个参考文献类型，主要用于在攻读期间取得成果
+% 内录入获奖等不符合参考文献规范的内容。}
+%%本文件基于吴凯制作的GBT7714-2005NLang.bst(1 Beta 2 测试版2012年9月20日)修改而成。
+%%根据GBT7714-2005NLang.bst中copyright的要求，将文件名修改成uestcthesis.bst。
+%%对吴凯的杰出工作表示感谢！
+%bst文件内容不在文档中显示。
+% \iffalse
 ENTRY
   { address
     author
@@ -6617,6 +6638,21 @@ FUNCTION {unpublished}
 }
 if$
 }
+FUNCTION {onlynote}              %定义note类型，将note项目单独原文输出，满足自定义任何条目的需求
+{
+newline$
+  "\bibitem[" write$
+  label write$
+  "]{" write$
+  cite$ write$
+  "}" write$
+  newline$
+  ""
+  before.all 'output.state :=
+  new.block
+  note output
+  fin.entry
+}
 
 FUNCTION {default.type} { book }    %wk 因为主要是基于book类型,因此将缺省类型由misc改为book
 
@@ -6979,10 +7015,11 @@ FUNCTION {end.bib}
 }
 
 EXECUTE {end.bib}
-%    \end{macrocode}
+% \fi
 % \iffalse
 %</bst>
 % \fi
+% \section{更新日志}
 % \StopEventually{\PrintChanges}
 % \Finale
 %

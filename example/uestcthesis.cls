@@ -29,9 +29,9 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/05/20 v0.4.3 UESTC thesis class]
+    [2013/05/23 v0.4.4 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
-\RequirePackage{etoolbox}
+\RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
 \newcommand{\bachelor@uestcthesis}{
 \newcommand{\degree@uestcthesis}{bachelor}
@@ -41,6 +41,8 @@
 \newcommand{\multibibflag@uestcthesis}{}
 
 \newcommand{\thesisname@degree}{电子科技大学学士学位论文}
+
+\newcommand{\chapternumberformat@uestcthesis}{\arabic{chapter}}
 }
 \newcommand{\master@uestcthesis}{
 \newcommand{\degree@uestcthesis}{master}
@@ -58,6 +60,7 @@
 \newcommand{\publicationsname@english}{Research Results Obtained During the Study for Master Degree}
 \newcommand{\thesisname@english}{Master Thesis of University of Electronic Science and Technology of China}
 
+\newcommand{\chapternumberformat@uestcthesis}{\chinese{chapter}}
 }
 \newcommand{\doctor@uestcthesis}{
 \newcommand{\degree@uestcthesis}{doctor}
@@ -75,15 +78,16 @@
 \newcommand{\publicationsname@english}{Research Results Obtained During the Study for Doctor Degree}
 \newcommand{\thesisname@english}{Doctor Thesis of University of Electronic Science and Technology of China}
 
+\newcommand{\chapternumberformat@uestcthesis}{\chinese{chapter}}
 }
 \newcommand{\tocname@uestcthesis}{\zihao{5}目\enspace 录}
 \newcommand{\chaptername@uestcthesis}{
 \CTEXsetup[ name={第,章},
-            number={\chinese{chapter}}
+            number={\chapternumberformat@uestcthesis}
             ]{chapter}
             }
 \newcommand{\chaptermarkfix@uestcthesis}{
-\renewcommand{\chaptermark}[1]{\markboth{第\chinese{chapter}章~##1 }{}}
+\renewcommand{\chaptermark}[1]{\markboth{第\chapternumberformat@uestcthesis章~##1 }{}}
 }
 \newcommand{\acknowledgementsname@uestcthesis}{致\enspace 谢}
 \newcommand{\glossaryname@uestcthesis}{主要符号表}
@@ -120,6 +124,8 @@
 \RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
                 top=2.75cm,left=3cm]{geometry}
 \linespread{1.391}
+\parskip=0bp plus 10bp minus 1bp
+\raggedbottom
 \RequirePackage{graphicx,calc,float,texnames}
 \RequirePackage[format=hang,labelsep=space]{caption}
 \intextsep=6bp
@@ -158,6 +164,7 @@
 }
 \newcommand{\threelinetable}[8][htbp]{
 \begin{table}[##1]
+\zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
 \begin{threeparttable}
 \caption{##5}
@@ -179,6 +186,7 @@
 }
 \newcommand{\longthreelinetable}[6]{
 {
+\zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
 \begin{longtable}{##4}
 \caption{##2}\label{##1}\\
@@ -2689,8 +2697,8 @@
 \end{pspicture}
 
 \end{document}
-
 \end{filecontents*}
+
     \immediate\write18{latex logo}%
     \immediate\write18{dvips logo}%
     \IfFileExists{logo.dvi}{
@@ -2959,11 +2967,11 @@
             format={\heiti\zihao{-4}\flushleft}]{subsubsection}
 \newenvironment{Cabstract}[5]{
 \newcommand{\@ckeywords}{
-\ifthenelse{\equal{#1}{}}{必选关键词}{#1}
-\ifthenelse{\equal{#2}{}}{必选关键词}{，#2}
-\ifthenelse{\equal{#3}{}}{必选关键词}{，#3}
-\ifthenelse{\equal{#4}{}}{}{，#4}
-\ifthenelse{\equal{#5}{}}{}{，#5}
+\ifthenelse{\equal{#1}{}}{必选关键词}{#1}%
+\ifthenelse{\equal{#2}{}}{必选关键词}{，#2}%
+\ifthenelse{\equal{#3}{}}{必选关键词}{，#3}%
+\ifthenelse{\equal{#4}{}}{}{，#4}%
+\ifthenelse{\equal{#5}{}}{}{，#5}%
 }
 \ifthenelse{\equal{#5}{}}{
 \ifthenelse{\equal{#4}{}}{
@@ -2982,11 +2990,11 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 }
 \newenvironment{Eabstract}[5]{
 \newcommand{\@ekeywords}{
-\ifthenelse{\equal{#1}{}}{必选关键词}{#1}
-\ifthenelse{\equal{#2}{}}{必选关键词}{,#2}
-\ifthenelse{\equal{#3}{}}{必选关键词}{,#3}
-\ifthenelse{\equal{#4}{}}{}{,#4}
-\ifthenelse{\equal{#5}{}}{}{,#5}
+\ifthenelse{\equal{#1}{}}{必选关键词}{#1}%
+\ifthenelse{\equal{#2}{}}{必选关键词}{, #2}%
+\ifthenelse{\equal{#3}{}}{必选关键词}{, #3}%
+\ifthenelse{\equal{#4}{}}{}{, #4}%
+\ifthenelse{\equal{#5}{}}{}{, #5}%
 }
 \Eabstractmatter%设置英文摘要版式
 \chapter*{ABSTRACT}%插入不带章号的ABSTRACT
@@ -3162,7 +3170,13 @@ pdfpagelayout={TwoPageRight}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \renewcommand{\chaptermark}[1]{\markboth{外文资料原文}{}}
 \def\leftmark{外文资料原文}
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{外文资料原文}
 \include{contents/original}
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{外文资料译文}
 \renewcommand{\chaptermark}[1]{\markboth{外文资料译文}{}}
 \def\leftmark{外文资料译文}
 \include{contents/translation}

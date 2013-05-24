@@ -27,10 +27,9 @@
 %%  Other files in this work's package are belongs to the respective owners.
 %% 
 
- %本文件基于吴凯制作的GBT7714-2005NLang.bst(1 Beta 2 测试版2012年9月20日)修改而成。
- %根据GBT7714-2005NLang.bst中copyright的要求，将文件名修改成uestcthesis.bst。
- %对吴凯的杰出工作表示感谢！
-
+%%本文件基于吴凯制作的GBT7714-2005NLang.bst(1 Beta 2 测试版2012年9月20日)修改而成。
+%%根据GBT7714-2005NLang.bst中copyright的要求，将文件名修改成uestcthesis.bst。
+%%对吴凯的杰出工作表示感谢！
 ENTRY
   { address
     author
@@ -2764,6 +2763,21 @@ FUNCTION {unpublished}
   fin.entry
 }
 if$
+}
+FUNCTION {onlynote}              %定义note类型，将note项目单独原文输出，满足自定义任何条目的需求
+{
+newline$
+  "\bibitem[" write$
+  label write$
+  "]{" write$
+  cite$ write$
+  "}" write$
+  newline$
+  ""
+  before.all 'output.state :=
+  new.block
+  note output
+  fin.entry
 }
 
 FUNCTION {default.type} { book }    %wk 因为主要是基于book类型,因此将缺省类型由misc改为book
