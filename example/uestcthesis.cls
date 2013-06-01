@@ -23,13 +23,13 @@
 %%  The Current Maintainer of this work is Shi Fujun <shifujun@foxmail.com>.
 %% 
 %%  This work consists of the files uestcthesis.dtx, uestcthesis.ins
-%%  and the derived file uestcthesis.cls and uestcthesis.bst.
+%%  and the derived file uestcthesis.cls, uestcthesis.bst and beamerthemeuestcthesis.sty.
 %%  Other files in this work's package are belongs to the respective owners.
 %% 
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/05/23 v0.4.4 UESTC thesis class]
+    [2013/06/01 v0.4.5 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
@@ -3168,19 +3168,57 @@ pdfpagelayout={TwoPageRight}
 \input{contents/appendix.tex}%插入附录内容
 \clearpage
 \ifdefstring{\degree@uestcthesis}{bachelor}{
+
+\gdef\thechapter{\@arabic \c@chapter}
+
+\CTEXsetup[ name={,},
+  number={}
+  ]{chapter}
+
+\setcounter{chapter}{0}
+
+\def\Hy@org@chapter[#1]#2{%
+\ifnum \c@secnumdepth >\m@ne \if@mainmatter \refstepcounter {chapter}
+\typeout {\CTEXthechapter }\else \fi \else \fi \chaptermark {#1}\addtocontents{lof}
+{\protect \addvspace {10\p@ }}\addtocontents {lot}{\protect \addvspace {10\p@ }}
+\if@twocolumn \@topnewpage [\@makechapterhead {#2}]
+\else
+\@makechapterhead {#2}
+\@afterheading \fi
+}
+
+\def\H@old@sect #1#2#3#4#5#6[#7]#8{\ifnum #2>\c@secnumdepth \let \@svsec \@empty
+\else \refstepcounter {#1}\protected@edef \@svsec {\@seccntformat {#1}\relax }\fi
+\@tempskipa #5\relax \ifdim \@tempskipa >\z@ \begingroup #6{\@hangfrom {\hskip #3
+\relax \@svsec }\interlinepenalty \@M \csname CTEX@#1@titleformat\endcsname #8
+\@@par }\endgroup \csname #1mark\endcsname {#7}\else \def \@svsechd
+ {#6{\hskip #3\relax \@svsec \csname CTEX@#1@titleformat\endcsname #8}\csname #1mark
+ \endcsname {#7}}\fi \@xsect {#5}}
+
 \renewcommand{\chaptermark}[1]{\markboth{外文资料原文}{}}
 \def\leftmark{外文资料原文}
 \newpage
 \phantomsection
 \addcontentsline{toc}{chapter}{外文资料原文}
+
+\renewcommand{\CTEX@figurename}{Figure}
+\renewcommand{\CTEX@tablename}{Table}
+
 \include{contents/original}
 \newpage
 \phantomsection
 \addcontentsline{toc}{chapter}{外文资料译文}
 \renewcommand{\chaptermark}[1]{\markboth{外文资料译文}{}}
 \def\leftmark{外文资料译文}
+
+\renewcommand{\CTEX@figurename}{图}
+\renewcommand{\CTEX@tablename}{表}
+
+\setcounter{chapter}{0}
+
 \include{contents/translation}
-}{
+}
+{
 \IfFileExists{contents/publications.bib}{%如果删除了publications.bib，则不显示这一章
 \CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。

@@ -23,7 +23,7 @@
 %%  The Current Maintainer of this work is Shi Fujun <shifujun@foxmail.com>.
 %% 
 %%  This work consists of the files uestcthesis.dtx, uestcthesis.ins
-%%  and the derived file uestcthesis.cls and uestcthesis.bst.
+%%  and the derived file uestcthesis.cls, uestcthesis.bst and beamerthemeuestcthesis.sty.
 %%  Other files in this work's package are belongs to the respective owners.
 %% 
 

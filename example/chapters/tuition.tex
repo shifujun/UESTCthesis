@@ -2,6 +2,14 @@
 
 \chapter{更新日志}
 \noindent
+2013年6月1日：v0.4.5
+\begin{enumerate}
+\item 根据一位同学的需求，将本科论文中需要的外文资料翻译部分的章节标题做了调整，英文部分题注改为英文。详见\ref{translation}节。
+\item 上一版示例中将获奖的条目类型拼错了，所以显示结果不对。
+\item 我自己临时打算继续用LaTeX的Beamer幻灯片文类做答辩幻灯片，于是新建了一个幻灯片主题。但是因为没设置完，也没有说明文档，所以还没法交给新手直接用。所以不建议动手能力弱的同学现在使用。
+\end{enumerate}
+
+\noindent
 2013年5月25日：v0.4.4
 \begin{enumerate}
 \item 修正摘要关键词的逗号之前会有一个多余的空格，而英文摘要关键词的逗号后没有空格的问题。
@@ -574,12 +582,17 @@ CAJ-CD
 \cite{liujiang2004},\cite{wanjingkun1996},\cite{dai1983}
 \subsection{攻读期间的研究成果}
 攻读期间的研究成果文件是publications.bib，其格式和编辑方法同参考文献完全一致。在WinEdt中使用编译按钮编译的结果不会显示这一章是正常现象。需要使用compile.bat编译才能得到包含这一章的正确结果。
+
+如果需要录入非参考文献标准格式的内容，例如获奖，可以使用ONLYNOTE类型的参考文献。这个类型是直接原文输出note条目的类型。可见示例\cite{onlynoteexample}。
 \subsection{致谢}
 致谢就是简单的编辑contents/acknowledgements.tex就可以了。
 \subsection{附录}
 附录中如果分章，需要全部写在contents/appendix.tex文件中，即其中写多个\verb|\chapter{}|。如果将appendix.tex 中所有内容删除，最后的论文将不会出现附录。
 \subsection{外文资料}
-外文资料原文和译文分别是contents/original.tex和contents/translation.tex。它们都和普通的正文一样。只需要注意它们使用的是带星号的\verb|\chapter*{}|，这使得它们没有章号。
+\label{translation}
+外文资料原文和译文分别是contents/original.tex和contents/translation.tex。它们都和普通的正文一样。
+
+在v0.4.5版本更新时，我将外文资料的两章，章号重置为1，但是章标题不显示章号。而节标题从1.1开始编排。同时，外文资料原文中，图表题注都改为了英文。从示例文件中可以看到，这两章的章命令改为使用标准的\verb|\chapter{}|命令，不再使用带星号的命令。
 \subsection{主要符号表}
 使用本模板可以半自动生成主要符号表。在编写论文的过程中，如果写到了需要说明的术语或符号，可以就地使用命令：\\
 \verb|\fuhao{术语名}{说明}{排序名}|\\
