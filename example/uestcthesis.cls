@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/06/01 v0.4.5 UESTC thesis class]
+    [2013/06/02 v0.4.6 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
@@ -221,28 +221,28 @@
 \fancyhf{}
 \fancyhead[OC]{\zihao{5}\leftmark}%奇数页居中打印章标题
 \fancyhead[EC]{\zihao{5}\thesisname@degree}%偶数页居中打印论文全名
-\fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
+\fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
 }
 \newcommand{\Cabstractfancy}{%
 \fancyhf{}%
 \fancyhead[C]{\zihao{5}摘要}%页眉居中打印“摘要”
-\fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
+\fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
 }
 \newcommand{\Eabstractfancy}{
 \fancyhf{}%
 \fancyhead[C]{\zihao{5}ABSTRACT}%页眉居中打印“ABSTRACT”
-\fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
+\fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
 }
 \newcommand{\tocmatterfancy}{
 \fancyhf{}
 \fancyhead[C]{\tocname@uestcthesis}%页眉居中打印“目　录”
-\fancyfoot[C]{\thepage}%页码位于页面底端，居中打印。
+\fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
 }
 \newcommand{\glossarymatterfancy}{%定义主要符号表版式设置
 \fancypagestyle{plain}{
 \fancyhf{}
 \fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%
-\fancyfoot[C]{\thepage}%
+\fancyfoot[C]{\zihao{-5}\thepage}%
 }
 \renewcommand{\glossarypreamble}{%
 \fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%页眉居中打印“主要符号表”
