@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/06/02 v0.4.6 UESTC thesis class]
+    [2013/06/03 v0.4.7 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -3669,10 +3669,32 @@ pdfpagelayout={TwoPageRight}
  \topsep=0pt
  }
 %    \end{macrocode}
-%
+% \subsection{排版源代码相关设置}
 %排版源代码所需宏包
 %    \begin{macrocode}
 \RequirePackage{color,marvosym}
+%    \end{macrocode}
+%\changes{v0.4.7}{2013/06/03}{为了使用等宽字体排版源代码，将highlight.sty内容内置进来。}
+%将Highlight程序生成的highlight.sty内容内置进来。将原本的粗体命令|\bf|改为一个
+%自定义的粗体命令，为了使用等宽的粗体。但是这里未解决数学环境内设置等宽字体。
+%    \begin{macrocode}
+\DeclareOldFontCommand{\txttbf}{\ttfamily\bfseries}{\mathbf}
+\providecommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlnum}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlesc}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlstr}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlpps}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlslc}[1]{\textcolor[rgb]{0.4,0.4,0.4}{{#1}}}
+\providecommand{\hlcom}[1]{\textcolor[rgb]{0.4,0.4,0.4}{{#1}}}
+\providecommand{\hlppc}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlipl}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hllin}[1]{\textcolor[rgb]{0.53,0.53,0.53}{#1}}
+\providecommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlkwb}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlkwd}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\definecolor{bgcolor}{rgb}{1,1,1}
 %    \end{macrocode}
 % \subsection{主要符号表设置}
 %设置术语表宏包供主要符号表使用

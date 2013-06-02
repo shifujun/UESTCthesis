@@ -2,6 +2,14 @@
 
 \chapter{更新日志}
 \noindent
+2013年6月3日：v0.4.7
+\begin{enumerate}
+\item 根据一位同学的需求，将源代码的排版改为等宽字体。为了实现这个功能，将highlight.sty的内容更改，并内置到模板中了。所以之前使用了排版源代码并用input命令加载了highlight.sty的同学需要删除那个input语句，否则会报错说一些命令已经定义过了。
+    
+    不过我并没有做到完全自动化的等宽效果。原因和解决办法见更新后的\ref{source:section}节。
+\end{enumerate}
+
+\noindent
 2013年6月2日：v0.4.6
 \begin{enumerate}
 \item 修正BUG：页脚字号改为小五。
@@ -24,7 +32,7 @@
 \item 本科论文目录中加入外文资料原文和译文。
 \item 本科论文的章标题序号改为阿拉伯数字序号。
 \item 修正表格字号，按照规范应为五号字（英文10.5磅）。
-\item 发现问题：如果\verb|\citeup|命令之前是标点符号，请暂时手动将前面的字符同\verb|\citeup|命令都放入\verb|\mbox{}|命令的括号中，例如：\verb|《新华字典\mbox{》\citeup{xxx}}|。 这样可以避免在这个标点符号之后直接换行，而将上标的[] 置于下一行行首。
+\item 发现问题：如果\verb|\citeup|命令之前是标点符号，请暂时手动将前面的字符同\verb|\citeup|命令都放入\verb|\mbox{}| 命令的括号中，例如：\verb|《新华字典\mbox{》\citeup{xxx}}|。 这样可以避免在这个标点符号之后直接换行，而将上标的[] 置于下一行行首。
 \end{enumerate}
 
 \noindent
@@ -153,7 +161,7 @@ A：使用本模板写作毕业论文，使用者是作者的角色，并不需�
 \section{安装$\mathbb{C}$\kern-.05em\TeX{}套装}
 $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{}工具的集合，包括编译器、编辑器、阅读器等一系列工具。安装后即可立刻使用。
 
-从网页\url{http://www.ctex.org/CTeXDownload}下载$\mathbb{C}$\kern-.05em\TeX{}(当前版本2.9.2.164，大小203M) 。 可以在网页上看到这个203M的版本不包含完整的宏包（插件），所以安装这个版本在第一次使用时需要联网才能正常使用。也可以直接下载1.31G的完整版（不推荐）。安装完成后，前者比后者会节约大概2GB的磁盘空间。
+从网页\url{http://www.ctex.org/CTeXDownload}下载$\mathbb{C}$\kern-.05em\TeX{}(当前版本2.9.2.164，大小203M) 。 可以在网页上看到这个203M的版本不包含完整的宏包（插件），所以安装这个版本在第一次使用时需要联网才能正常使用。也可以直接下载1.31G 的完整版（不推荐）。安装完成后，前者比后者会节约大概2GB的磁盘空间。
 
 安装时建议不要改变除安装路径以外的其他选项，即完整安装。由于安装包中包含非常多文件，所以某些笔记本硬盘可能会安装的比较慢。这是正常现象。安装完成后扩展名为tex 的文件应该会被自动关联。双击thesis.tex应该会自动用WinEdt 打开。
 \subsection{安装模板}
@@ -164,7 +172,7 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 
 运行开始菜单 $\longrightarrow$ CTeX $\longrightarrow$ MiKTeX $\longrightarrow$ Maintenance (Admin) $\longrightarrow$ Package Manager (Admin)。 这个程序是管理CTeX 系统中的宏包用的。点击菜单栏中的Repository $\longrightarrow$ Change Package Repository。 选择第一项“Package shall be installed from the Internet”，点击下一步，选择服务器。在学校使用可以选择China 的mirrors.ustc.edu.cn。这是中科大的源，同在教育网中，速度会比较快。然后点完成。之后程序应该会立刻开始同步数据。
 
-同步完成后，在工具栏右侧的Name:处填写uestcthesis，然后回车。搜索出来的就是本模板。右键点击本模板的条目，选择Install。完成后点Close关闭。
+同步完成后，在工具栏右侧的Name:处填写uestcthesis，然后回车。搜索出来的就是本模板。右键点击本模板的条目，选择Install。完成后点Close 关闭。
 
 安装完成后运行开始菜单 $\longrightarrow$ CTeX $\longrightarrow$ MiKTeX $\longrightarrow$ Maintenance (Admin) $\longrightarrow$ Settings (Admin)。依次点击按钮“Refresh FNDB” 和“Update Formats”，然后确定。
 \subsection{更新模板}
@@ -184,7 +192,7 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 \section{模板结构}\label{templatestructure}
 从GitHub上下载的zip解压后，只有example目录是一份模板。source目录是模板的源代码。example就相当于一份论文，也叫工作目录。你可以重命名这个目录。
 
-工作目录中应包含3个目录和3个文件，见表~\ref{structtab}。表中说明为Windows环境下的情况。Linux和Mac请将bat文件换为sh文件即可。example目录中还有两个zip文件：windows下编译脚本.zip和linux,mac下编译脚本.zip。选择其中一个解压到工作目录中。
+工作目录中应包含3个目录和3个文件，见表~\ref{structtab}。表中说明为Windows环境下的情况。Linux和Mac请将bat文件换为sh文件即可。example 目录中还有两个zip文件：windows下编译脚本.zip和linux,mac下编译脚本.zip。选择其中一个解压到工作目录中。
 \threelinetable[htbp]{structtab}{\textwidth}{lcX}{模板结构}
 {名称&目录/文件&说明\\
 }{
@@ -589,7 +597,7 @@ CAJ-CD
 \subsection{攻读期间的研究成果}
 攻读期间的研究成果文件是publications.bib，其格式和编辑方法同参考文献完全一致。在WinEdt中使用编译按钮编译的结果不会显示这一章是正常现象。需要使用compile.bat编译才能得到包含这一章的正确结果。
 
-如果需要录入非参考文献标准格式的内容，例如获奖，可以使用ONLYNOTE类型的参考文献。这个类型是直接原文输出note条目的类型。可见示例\cite{onlynoteexample}。
+如果需要录入非参考文献标准格式的内容，例如获奖，可以使用ONLYNOTE类型的参考文献。这个类型是直接原文输出note 条目的类型。可见示例\cite{onlynoteexample}。
 \subsection{致谢}
 致谢就是简单的编辑contents/acknowledgements.tex就可以了。
 \subsection{附录}
@@ -618,14 +626,34 @@ CAJ-CD
 这个工具界面是中文的，很容易使用。打开后，设置通用选项卡如图~\ref{highlight1}。
 \pic[htbp]{通用选项卡设置}{}{highlight1}
 
-输出细节选项卡不用动。设置格式化选项卡如图~\ref{highlight2}。其中高亮主题有很多，但是我们的论文如果要黑白打印的话，最好还是选择这个print主题。
+输出细节选项卡不用动。设置格式化选项卡如图~\ref{highlight2}。其中高亮主题在模板的v0.4.7以后已经不用选择了。模板中内置了plain黑白主题。
+
 \pic[htbp]{格式化选项卡设置}{}{highlight2}
 
 然后设置输出路径，可以设置到chapters目录中。然后选择输入文件（文件路径中不能包含中文），可以批量转换很多源文件。最后点转换文件即可。转换好的文件是以源文件名后再加.tex 扩展名命名的。在论文中需要插入的位置写入：\\
-\verb|\input{chapters/highlight.sty}|\\
 \verb|\input{chapters/Place_has_TrainDAO.java.tex}|\\
-其中第一行只需要在第一次插入时写一次即可，用于声明主题格式。第二行才是插入需要的源代码。示例结果如下：
-\input{chapters/highlight.sty}
+在2013/06/03更新的v0.4.7版本后，不再需要使用input命令导入highlight.sty。模板中已经内置了这个文件的内容，采用黑白等宽字体。使用之前版本input了highlight.sty文件的同学需要删除这个导入命令，否则会报错。
+
+如果需要完全的等宽效果，还需要手工修正一些符号。因为\LaTeX 对符号有特殊的处理，并不是普通的字体。需要按照表\ref{sourcereplace}在Highlight生成的tex文件中全文替换。
+
+\threelinetable[htbp]{sourcereplace}{\textwidth}{cll}{源代码中等宽符号替换}
+{源代码中存在符号&搜索&替换为\\
+}{
+\verb|^|        &\verb|\textasciicircum|\textvisiblespace\tnote{注} & \verb|\^{}|\\
+$|$             &\verb|\textbar|\textvisiblespace                   & \verb|\symbol{124}|\\
+$\backslash$    &\verb|$\backslash$|                                & \verb|\symbol{92}|\\
+\verb|<|        &\verb|$<$|                                         & \verb|\symbol{60}|\\
+\verb|>|        &\verb|$>$|                                         & \verb|\symbol{62}|\\
+\verb|~|        &\verb|$\sim$|                                      & \verb|\symbol{126}|\\
+\verb|_|        &\verb|\textunderscore|\textvisiblespace            & \verb|\symbol{95}|\\
+\{              &\verb|\{|                                          & \verb|\symbol{123}|\\
+\}              &\verb|\}|                                          & \verb|\symbol{125}|\\
+}{\item[注] 注意命令后有一个空格，连这个空格一起替换掉。下同。}
+
+示例结果如下：
+
+\input{chapters/test.c.tex}
+
 \input{chapters/Place_has_TrainDAO.java.tex}
 \section{Linux中编译}
 本模板已经在Linux系统中测试过，可以正常编译。在TeXLive完全安装的基础上，所有宏包包括CJK都安装了，还需要另外安装宋体和黑体。本模板使用的宋体和黑体是Windows自带的，也是Word使用的。需要在Windows中C:\\Windows\\Fonts 目录中复制simhei.ttf和simsun.ttc到Linux 系统中，如果依然提示缺少某个字体就一样复制过去。最简单的方式是将两个字体文件放到UESTCthesis工作目录中。

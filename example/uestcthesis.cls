@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/06/02 v0.4.6 UESTC thesis class]
+    [2013/06/03 v0.4.7 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
@@ -3100,6 +3100,23 @@ pdfpagelayout={TwoPageRight}
  \topsep=0pt
  }
 \RequirePackage{color,marvosym}
+\DeclareOldFontCommand{\txttbf}{\ttfamily\bfseries}{\mathbf}
+\providecommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlnum}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlesc}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlstr}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlpps}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hlslc}[1]{\textcolor[rgb]{0.4,0.4,0.4}{{#1}}}
+\providecommand{\hlcom}[1]{\textcolor[rgb]{0.4,0.4,0.4}{{#1}}}
+\providecommand{\hlppc}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlipl}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\providecommand{\hllin}[1]{\textcolor[rgb]{0.53,0.53,0.53}{#1}}
+\providecommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlkwb}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\providecommand{\hlkwd}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
+\definecolor{bgcolor}{rgb}{1,1,1}
 \RequirePackage[header,cols=3,hyper=true]{glossary}
 \makeglossary
 \renewcommand{\glossaryname}{\glossaryname@uestcthesis}
