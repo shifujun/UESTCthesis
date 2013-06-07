@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/06/03 v0.4.7 UESTC thesis class]
+    [2013/06/07 v0.4.8 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
@@ -3002,7 +3002,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 {\\[3mm]%摘要后换行空出3mm
 {\heiti Keywords:}\@ekeywords%插入关键词
 }
-\CTEXoptions[contentsname={\protect\songti\protect\zihao{-2}目\enspace 录}]
+\CTEXoptions[contentsname={\protect\heiti\protect\zihao{-3}目\enspace 录}]
 \setcounter{tocdepth}{3}
 \def\@dotsep{2}
 \def\l@chapter#1#2{\ifnum 0>\c@tocdepth \else \vskip \z@ \@plus .2\p@ {\leftskip

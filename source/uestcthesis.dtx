@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/06/03 v0.4.7 UESTC thesis class]
+    [2013/06/07 v0.4.8 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -3500,9 +3500,10 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %    \end{macrocode}
 % \end{environment}
 % \subsection{目录设置}
+% \changes{v0.4.8}{2013/06/07}{目录字体修改为黑体小三，和章标题字体一致。之前错误的设置是2008年本科规范。}
 %设置目录标题
 %    \begin{macrocode}
-\CTEXoptions[contentsname={\protect\songti\protect\zihao{-2}目\enspace 录}]
+\CTEXoptions[contentsname={\protect\heiti\protect\zihao{-3}目\enspace 录}]
 %    \end{macrocode}
 %
 %设置目录的显示深度到3级节标题。

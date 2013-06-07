@@ -2,10 +2,16 @@
 
 \chapter{更新日志}
 \noindent
+2013年6月7日：v0.4.8
+\begin{enumerate}
+\item 修正目录的标题字体。之前用了2008年本科规范的宋体小二，是错误的。
+\end{enumerate}
+
+\noindent
 2013年6月3日：v0.4.7
 \begin{enumerate}
 \item 根据一位同学的需求，将源代码的排版改为等宽字体。为了实现这个功能，将highlight.sty的内容更改，并内置到模板中了。所以之前使用了排版源代码并用input命令加载了highlight.sty的同学需要删除那个input语句，否则会报错说一些命令已经定义过了。
-    
+
     不过我并没有做到完全自动化的等宽效果。原因和解决办法见更新后的\ref{source:section}节。
 \end{enumerate}
 
@@ -161,7 +167,7 @@ A：使用本模板写作毕业论文，使用者是作者的角色，并不需�
 \section{安装$\mathbb{C}$\kern-.05em\TeX{}套装}
 $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{}工具的集合，包括编译器、编辑器、阅读器等一系列工具。安装后即可立刻使用。
 
-从网页\url{http://www.ctex.org/CTeXDownload}下载$\mathbb{C}$\kern-.05em\TeX{}(当前版本2.9.2.164，大小203M) 。 可以在网页上看到这个203M的版本不包含完整的宏包（插件），所以安装这个版本在第一次使用时需要联网才能正常使用。也可以直接下载1.31G 的完整版（不推荐）。安装完成后，前者比后者会节约大概2GB的磁盘空间。
+从网页\url{http://www.ctex.org/CTeXDownload}下载$\mathbb{C}$\kern-.05em\TeX{}(当前版本2.9.2.164，大小203M) 。 可以在网页上看到这个203M 的版本不包含完整的宏包（插件），所以安装这个版本在第一次使用时需要联网才能正常使用。也可以直接下载1.31G 的完整版（不推荐）。安装完成后，前者比后者会节约大概2GB的磁盘空间。
 
 安装时建议不要改变除安装路径以外的其他选项，即完整安装。由于安装包中包含非常多文件，所以某些笔记本硬盘可能会安装的比较慢。这是正常现象。安装完成后扩展名为tex 的文件应该会被自动关联。双击thesis.tex应该会自动用WinEdt 打开。
 \subsection{安装模板}
@@ -382,7 +388,7 @@ HomeRF&2.4GHz&FHSS\\
 这个命令其实和插入图片的命令是相像的。\par
 \pictable[htbp]{用Excel制作的表格}{width=0.5\textwidth}{excel}
 \subsection{插入数学公式}
-本模板对数学式没有做过多修改，仅添加了amsmath和kmath宏包，以提供更美观的数学字体。关于数学式的编写规则请阅读“TeXbook中文版.pdf”中的16至19 章。这本书是\TeX{}的作者高德纳写的\TeX{} 权威著作，网友xianxian翻译。
+本模板对数学式没有做过多修改，仅添加了amsmath和kmath宏包，以提供更美观的数学字体。关于数学式的编写规则请阅读“TeXbook中文版.pdf”中的16 至19 章。这本书是\TeX{}的作者高德纳写的\TeX{} 权威著作，网友xianxian翻译。
 
 行内公式：单个\$包围的行内公式。例如：\\
 \verb|若$A\in F^{n\times n}$，且对任意非负整数$p$，有|\\
@@ -419,7 +425,7 @@ A^D=\lim_{\varepsilon\rightarrow 0}(A^{p+1}+\varepsilon I)^{-1}C^{(p)}_A
 \end{dingli}
 
 \subsection{交叉引用}
-在正文的任意位置可以用命令\verb|\label{标签名}|\label{crossref}在此设置一个标签，然后在论文的其他位置可以使用命令\verb|\ref{标签名}|和\verb|\pageref{标签名}| 分别显示该标签位于的章节号和页码。例如：此例见第~\pageref{crossref}~页的第~\ref{crossref}~节。在输入\verb|\ref{标签名}| 命令时，如果其前后有是中文，可以在其与中文之间加入一个\verb|~|符号，使其空一格更美观。
+在正文的任意位置可以用命令\verb|\label{标签名}|\label{crossref}在此设置一个标签，然后在论文的其他位置可以使用命令\verb|\ref{标签名}| 和\verb|\pageref{标签名}| 分别显示该标签位于的章节号和页码。例如：此例见第~\pageref{crossref}~页的第~\ref{crossref}~节。在输入\verb|\ref{标签名}| 命令时，如果其前后有是中文，可以在其与中文之间加入一个\verb|~|符号，使其空一格更美观。
 
 \subsection{枚举环境}
 枚举环境就是如下的东西，使用方法见此处的源代码。可以引用其中编号，例如~\ref{testinenumerate}。
