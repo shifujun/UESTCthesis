@@ -1,0 +1,44 @@
+% !Mode:: "TeX:UTF-8"
+
+\chapter{时域积分方程基础}
+时域积分方程（TDIE）方法作为分析瞬态电磁波动现象最主要的数值算法之
+一，常用于求解均匀散射体和表面散射体的瞬态电磁散射问题。
+\section{时域积分方程的类型}
+\section{空间基函数与时间基函数}
+利用数值算法求解时域积分方程，首先需要选取适当的空间基函数与时间基
+函数对待求感应电流进行离散\footnote{脚注序号“①，……，⑩”的字体是“正文”，不是“上标”，序号与脚注内容文字之间空1个半角字符，脚注的段落格式为：单倍行距，段前空0磅，段后空0磅，悬挂缩进1.5字符；中文用宋体，字号为小五号，英文和数字用Times New Roman字体，字号为9磅；中英文混排时，所有标点符号（例如逗号“，”、括号“（）”等）一律使用中文输入状态下的标点符号，但小数点采用英文状态下的样式“.”。}。
+\subsection{空间基函数}
+……
+
+RWG 基函数是定义在三角形单元上的最具代表性的基函数。它的具体定义如
+下：
+\begin{equation}
+f_n(r)=
+\begin{cases}
+\frac{l_n}{2A_n^+}\rho_n^+=\frac{l_n}{2A_n^+}(r-r_+)&r\in T_n^+\\
+\frac{l_n}{2A_n^-}\rho_n^-=\frac{l_n}{2A_n^-}(r_--r)&r\in T_n^-\\
+0&\text{其它}\\
+\end{cases}
+\end{equation}
+其中，$l_n$为三角形单元$T_n^+$和$T_n^-$公共边的长度，$A_n^+$和$A_n^-$分别为三角形单元$T_n^+$和$T_n^-$的面积（如图\ref{pica}所示）。
+\pic[h]{RWG 基函数几何参数示意图}{}{pica}
+
+……
+
+\subsection{时间基函数}
+……
+\subsubsection{时域方法特有的展开函数}
+……
+\subsubsection{频域方法特有的展开函数}
+……
+\section{入射波}
+……
+
+如图\ref{picb}和图\ref{picc}所示分别给出了参数$E_0=\hat{x}$，$a_n=-\hat{z}$，$f_0=250MHz$，$f_w=50MHz$，$t_w=4.2\sigma$时，调制高斯脉冲的时域与频域归一化波形图。
+\begin{pics}[h]{调制高斯脉冲时域与频率波形}{picbc}
+\addsubpic{调制高斯脉冲时域波形}{keepaspectratio=false,height=5.95cm,width=7.3cm}{picb}
+\addsubpic{调制高斯脉冲频域波形}{keepaspectratio=false,height=5.65cm,width=6.41cm}{picc}
+\end{pics}
+\section{本章小结}
+本章首先从时域麦克斯韦方程组出发推导得到了时域电场、磁场以及混合场
+积分方程。……

@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/06/07 v0.4.8 UESTC thesis class]
+    [2013/08/10 v0.5.3 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -249,9 +249,15 @@
 %top:页面顶边与版心之间的距离。\\
 %left:双页排版的内侧边距。
 %
+% \changes{v0.5.2}{2013/08/07}{针对本科规范还没有修订，单独设置硕博的新规范要求的版面设置}
 %    \begin{macrocode}
+\ifdefstring{\degree@uestcthesis}{bachelor}{
 \RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
                 top=2.75cm,left=3cm]{geometry}
+}{
+\RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
+                top=2.08cm,left=3cm]{geometry}
+}
 %    \end{macrocode}
 %
 %按照学校要求需要设置默认行距为20磅。参数是倍数值，没有单位。这个值是通过
@@ -287,20 +293,29 @@
 \RequirePackage[format=hang,labelsep=space]{caption}
 %    \end{macrocode}
 %
-%设置浮动体在文本中间的前后间距为6磅。同时在caption宏包的belowskip选项中设置的-7mm+6bp。
+%设置浮动体在文本中间的前后间距为6磅，按照硕博标准标题前后其余的6磅另行设置。
 %
 %    \begin{macrocode}
 \intextsep=6bp
 %    \end{macrocode}
 %
-%分别设置表和图的标题与正文的距离。\\
-%aboveskip:标题与图表之间的距离。设置为0是为了将前文间距交给|\intextsep|设置。\\
-%belowskip:标题与下文之间的距离。其中-7mm是将后文间距先调为0，再加上需要的6磅。
-%这样设置是因为|\intextsep|命令设置出的效果中后文间距比6bp多出约7mm距离。
-%
+%设置浮动体在页面顶端或底端时与文本之间的距离。
 %    \begin{macrocode}
-\captionsetup[figure]{aboveskip=0bp,belowskip=-7mm+6bp}
-\captionsetup[table]{aboveskip=0bp,belowskip=0bp}
+\textfloatsep=6bp
+%    \end{macrocode}
+%设置浮动体在页面顶端或底端时多个之间的距离。
+%    \begin{macrocode}
+\floatsep=6bp
+%    \end{macrocode}
+%
+%分别设置表和图的标题与正文的距离。\\
+%aboveskip:标题与图表之间的距离。\\
+%belowskip:标题与下文之间的距离。\\
+%图的前后距离都设置为0是因为有子图标题可能在图题之后，故而不在此设置。
+% \changes{v0.5.2}{2013/08/07}{根据新的硕博规范单独设置硕博论文的图表标题前后段距}
+%    \begin{macrocode}
+\captionsetup[figure]{aboveskip=0bp,belowskip=0bp}
+\captionsetup[table]{aboveskip=0bp,belowskip=6bp}
 %    \end{macrocode}
 %
 %调用宏包：\\
@@ -355,28 +370,122 @@
 %|\pic|命令生成一个独占一行、居中的图片。标题前后间距符合科大毕设标准
 %    \begin{macrocode}
 \newcommand{\pic}[4][htbp]{
-\begin{figure}[##1]
-\centering
-  \includegraphics[##3]{##4}
-  \caption{##2}
-  \label{##4}
-\end{figure}
+\begin{figure}[##1]%
+\centering%
+  \includegraphics[##3]{##4}%
+  \caption{##2}%
+  \label{##4}%
+  \vspace{6bp}%
+\end{figure}%
 }
 %    \end{macrocode}
 % \end{macro}
-% \begin{environment}{pics}
+%\changes{v0.5.0}{2013/08/01}{改变子图的标题位置，使之符合学校标准}
+%由于子图中包含了中文，所以使用|\edef|等嵌套定义方式不能使用。故而定义了20个子图
+%名宏。
+% \begin{macro}{\clearallsubfigcaptions}
+% 既做初始化又做清空使用。
+%    \begin{macrocode}
+\newcommand{\clearallsubfigcaptions}{
+\gdef\subfigcaptionA{}\gdef\subfigcaptionB{}\gdef\subfigcaptionC{}%
+\gdef\subfigcaptionD{}\gdef\subfigcaptionE{}\gdef\subfigcaptionF{}%
+\gdef\subfigcaptionG{}\gdef\subfigcaptionH{}\gdef\subfigcaptionI{}%
+\gdef\subfigcaptionJ{}\gdef\subfigcaptionK{}\gdef\subfigcaptionL{}%
+\gdef\subfigcaptionM{}\gdef\subfigcaptionN{}\gdef\subfigcaptionO{}%
+\gdef\subfigcaptionP{}\gdef\subfigcaptionQ{}\gdef\subfigcaptionR{}%
+\gdef\subfigcaptionS{}\gdef\subfigcaptionT{}%
+}
+\clearallsubfigcaptions
+%    \end{macrocode}
+% \end{macro}
+%重定义|\@makesubfigurecaption|命令，将传入|\@makesubfigurecaption|命令中的子图
+%标题存入前面自定义的20个子图标题宏中，而不直接打印在原来的位置。
+%    \begin{macrocode}
+\def\@makesubfigurecaption ##1##2{\setbox \@tempboxa \hbox {\subcapsize {
+\subcaplabelfont ##1}{\subcapfont \ignorespaces }}\@tempdimb =-\subfigcapmargin
+\multiply \@tempdimb \tw@ \advance \@tempdimb \@tempdima \hbox to\@tempdima
+{\hss \ifdim \wd \@tempboxa >\@tempdimb \subfig@caption {##1}{}\else
+\ifsubcapnooneline \subfig@caption {##1}{}\else \box \@tempboxa \fi \fi \hss }
+\ifthenelse{\equal{\subfigcaptionA}{}}{\gdef\subfigcaptionA{{(a)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionB}{}}{\gdef\subfigcaptionB{；{(b)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionC}{}}{\gdef\subfigcaptionC{；{(c)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionD}{}}{\gdef\subfigcaptionD{；{(d)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionE}{}}{\gdef\subfigcaptionE{；{(e)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionF}{}}{\gdef\subfigcaptionF{；{(f)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionG}{}}{\gdef\subfigcaptionG{；{(g)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionH}{}}{\gdef\subfigcaptionH{；{(h)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionI}{}}{\gdef\subfigcaptionI{；{(i)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionJ}{}}{\gdef\subfigcaptionJ{；{(j)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionK}{}}{\gdef\subfigcaptionK{；{(k)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionL}{}}{\gdef\subfigcaptionL{；{(l)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionM}{}}{\gdef\subfigcaptionM{；{(m)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionN}{}}{\gdef\subfigcaptionN{；{(n)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionO}{}}{\gdef\subfigcaptionO{；{(o)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionP}{}}{\gdef\subfigcaptionP{；{(p)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionQ}{}}{\gdef\subfigcaptionQ{；{(q)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionR}{}}{\gdef\subfigcaptionR{；{(r)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionS}{}}{\gdef\subfigcaptionS{；{(s)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionT}{}}{\gdef\subfigcaptionT{；{(t)}{\ignorespaces ##2}}}
+{\gdef\subfigcaptionA{子图不能超过20个！！！}}}}}}}}}}}}}}}}}}}}}}
+%    \end{macrocode}
+% \begin{macro}{\allsubpiccaptions}
+% 该命令只是连续打印所有的子图名。
+%    \begin{macrocode}
+\newcommand{\allsubpiccaptions}{%
+\subfigcaptionA\subfigcaptionB\subfigcaptionC\subfigcaptionD\subfigcaptionE%
+\subfigcaptionF\subfigcaptionG\subfigcaptionH\subfigcaptionI\subfigcaptionJ%
+\subfigcaptionK\subfigcaptionL\subfigcaptionM\subfigcaptionN\subfigcaptionO%
+\subfigcaptionP\subfigcaptionQ\subfigcaptionR\subfigcaptionS\subfigcaptionT}
+%    \end{macrocode}
+% \end{macro}
+% 定义6个变量，分别是：多图环境整体的标签变量、多图环境整体的标题变量、
+% 临时存储子图标题的盒子（用于测量子图标题长度）、子图标题缩进量、子图标题序号
+% 缩进量（就是序号的宽度）、子图标题宽度。
+%    \begin{macrocode}
+\newcommand{\subpiclabel}{}
+\newcommand{\subpiccaption}{}
+\newsavebox{\tempsubpiccaptionbox}
+\newlength{\tempsubpiccaptionindent}
+\newlength{\tempsubpiccaptionheadindent}
+\newlength{\tempsubpiccaptionwidth}
+%    \end{macrocode}
+% \begin{environment}{pics}%
 %定义子图环境和插入子图命令
 %    \begin{macrocode}
-\newcommand{\subpiclabel}{}%定义一个空的多图环境整体的标签变量
-\newcommand{\subpiccaption}{}%定义一个空的多图环境整体的标题变量
 \newenvironment{pics}[3][htbp]{%定义多图环境
 \renewcommand{\subpiclabel}{##3}%设置多图环境整体的标签
 \renewcommand{\subpiccaption}{##2}%设置多图环境整体的标题。这里先定义两个空变量，又设置值，是因为在定义一个环境时，环境结尾中不能调用##2，##3等传入的值。所以要在环境结尾中插入标题和标签就只能这么做了。
-\begin{figure}[##1]
-\centering}
-{\caption{\subpiccaption}
-\label{\subpiclabel}
-\end{figure}
+\begin{figure}[##1]%
+\centering%
+}
+{%
+\raggedright%
+\sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
+{\zihao{5}图~\thefigure~\subpiccaption}}%
+\settowidth{\tempsubpiccaptionheadindent}{\zihao{5}图~\thefigure~}%
+%    \end{macrocode}
+%这里用一个判断语句来根据主图题是否超过一行而分别处理。按照规范，不超过一行才居中，
+%超过一行则左对齐。
+%    \begin{macrocode}
+\ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 8pt}}{%THEN
+\noindent\caption{\subpiccaption}\par%
+\noindent\hspace*{\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
+}{%ELSE
+{\centering\caption{\subpiccaption}}\par
+\sbox{\tempsubpiccaptionbox}{\zihao{5}图~\thefigure~\subpiccaption}%
+\setlength{\tempsubpiccaptionindent}{\textwidth}%
+\addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
+\setlength{\tempsubpiccaptionindent}{.5\tempsubpiccaptionindent}%
+\setlength{\tempsubpiccaptionwidth}{\textwidth}%
+\addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionindent}%
+\addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionheadindent}%
+\hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
+\parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
+}%
+\label{\subpiclabel}%
+\vspace{6bp}%
+\end{figure}%
+\clearallsubfigcaptions%
 }
 %    \end{macrocode}
 % \end{environment}
@@ -3398,10 +3507,11 @@
 %    \begin{macrocode}
 \setcounter{secnumdepth}{3}
 %    \end{macrocode}
-%
+% \changes{v0.5.2}{2013/08/07}{由于本科论文规范还未修改，单独设置硕博标题前后段距。}
 %设置章标题格式。弹性长度的距离为行距的20\%。排版规则中说明可以适当调整各级标题段后间距。
 %    \begin{macrocode}
 \chaptername@uestcthesis
+\ifdefstring{\degree@uestcthesis}{bachelor}{
 \CTEXsetup[ nameformat={},
             numberformat={},
             titleformat={},
@@ -3410,30 +3520,61 @@
             afterskip={30bp plus 6bp minus 6bp},%章标题段后30磅。
             format={\heiti\zihao{-3}\centering},
             ]{chapter}
+}{
+\CTEXsetup[ nameformat={},
+            numberformat={},
+            titleformat={},
+            aftername={~},
+            beforeskip={1.8mm},%章标题段前30磅，这里2mm是由于实际效果与MS WORD有差异而微调出的。具体测量的是页眉线到章标题文字上边的距离。
+            afterskip={18bp plus 3.6bp minus 3.6bp},%章标题段后30磅。
+            format={\heiti\zihao{-3}\centering},
+            ]{chapter}
+}
 %    \end{macrocode}
 %
 %设置1级节标题格式
 %    \begin{macrocode}
+\ifdefstring{\degree@uestcthesis}{bachelor}{
 \CTEXsetup[ aftername={~},
             beforeskip={18bp},
             afterskip={18bp plus 3.6bp minus 3.6bp},
             format={\heiti\zihao{4}\flushleft}]{section}
+}{
+\CTEXsetup[ aftername={~},
+            beforeskip={18bp},
+            afterskip={6bp plus 1.2bp minus 1.2bp},
+            format={\heiti\zihao{4}\flushleft}]{section}
+}
 %    \end{macrocode}
 %
 %设置2级节标题格式
 %    \begin{macrocode}
+\ifdefstring{\degree@uestcthesis}{bachelor}{
 \CTEXsetup[ aftername={~},
             beforeskip={12bp},
             afterskip={12bp plus 2.4bp minus 2.4bp},
             format={\heiti\zihao{4}\flushleft}]{subsection}
+}{
+\CTEXsetup[ aftername={~},
+            beforeskip={12bp},
+            afterskip={6bp plus 1.2bp minus 1.2bp},
+            format={\heiti\zihao{4}\flushleft}]{subsection}
+}
 %    \end{macrocode}
 %
 %设置3级节标题格式
 %    \begin{macrocode}
+\ifdefstring{\degree@uestcthesis}{bachelor}{
 \CTEXsetup[ aftername={~},
             beforeskip={6bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
             format={\heiti\zihao{-4}\flushleft}]{subsubsection}
+}{
+\CTEXsetup[ aftername={~},
+            beforeskip={12bp},
+            afterskip={6bp plus 1.2bp minus 1.2bp},
+            format={\heiti\zihao{-4}\flushleft}]{subsubsection}
+}
 %    \end{macrocode}
 % \subsection{摘要设置}
 %调用ifthen宏包，可提供|\ifthenelse|判断命令。
@@ -3540,9 +3681,10 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 }
 %    \end{macrocode}
 % \subsection{数学式设置}
-%amsmath和kmath宏包提供更美观的数学字体。
+%amsmath数学宏包。
+% \changes{v0.5.2}{2013/08/07}{去除kmath宏包。}
 %    \begin{macrocode}
-\RequirePackage{amsmath,kmath}
+\RequirePackage{amsmath,amsfonts,amssymb}
 %    \end{macrocode}
 %
 %使公式编号数字间加一个短横线。例如(1-1)。
@@ -3579,7 +3721,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %定义一种不带标号的证明环境。
 %    \begin{macrocode}
 \theoremstyle{nonumberplain}
-\theoremsymbol{}
+\theoremsymbol{■}
 \newtheorem{zhengming}{证明}
 \def\endzhengming{\quad\@endtheorem}
 %    \end{macrocode}
@@ -3752,6 +3894,13 @@ pdfpagelayout={TwoPageRight}
 \mainmatter%正文区版式
 \makeatletter
 \newcmds@uestcthesis%自定义图表命令，这些命令必须在document环境里声明才能在正文中使用，所以只能放在这里了。
+%    \end{macrocode}
+%设置公式与上下文之间的间距。
+%    \begin{macrocode}
+\abovedisplayskip=6bp
+\abovedisplayshortskip=6bp
+\belowdisplayskip=6bp
+\belowdisplayshortskip=6bp
 \makeatother
 }
 \newcommand{\insertacknowledgement}{
@@ -3866,6 +4015,56 @@ pdfpagelayout={TwoPageRight}
 \bibliographypublications{contents/publications}%插入攻博/硕期间发表的论文
 }}{}}
 \clearpage\end{CJK}}
+%    \end{macrocode}
+%\subsection{注脚格式排版设置}
+% \changes{v0.5.0}{2013/08/01}{添加注脚格式的排版设置}
+%修正footmisc宏包的hang选项与CTeX宏包的冲突。修正来源：\\
+%\url{http://bbs.ctex.org/forum.php?mod=viewthread&tid=76571}
+%    \begin{macrocode}
+\renewcommand*\CTEXsetfont{%
+  \begingroup
+  \settowidth\ccwd{\CTEX@spaceChar\CJKglue}%
+  \edef\x{\noexpand\ccwd\the\ccwd}%
+  \expandafter\endgroup\x
+  \ifdim\parindent=0pt\else\parindent2\ccwd\fi}
+%    \end{macrocode}
+%加载注脚宏包footmisc，使用悬挂选项hang
+%
+%    \begin{macrocode}
+\RequirePackage[hang]{footmisc}
+%    \end{macrocode}
+%设置注脚内容缩进，5.2mm是对比word中悬挂缩进1.5字符的结果测量得出的。
+%    \begin{macrocode}
+\setlength{\footnotemargin}{5.2mm}
+%    \end{macrocode}
+%重绘注脚线，其中7.4mm、5.05cm和0.02cm都是对比范文在word中的效果测量出的。
+%其中|\vfill|用于将注脚置于页面底部。因为模板禁止了底部对齐，以保证不会出现过大的段距。
+%    \begin{macrocode}
+\renewcommand{\footnoterule}{\vfill\noindent
+\vspace*{-3pt}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
+%    \end{macrocode}
+%定义注脚所用的带圆圈的序号样式
+%    \begin{macrocode}
+\RequirePackage{pifont}
+\def\@circlednumber#1{\ifcase#1\or \ding{192}\or \ding{193}\or \ding{194}\or
+ \ding{195}\or \ding{196}\or \ding{197}\or \ding{198}\or \ding{199}
+ \or \ding{200} \or \ding{201} \else\@ctrerr\fi}
+\def\circlednumber#1{\expandafter\@circlednumber\csname c@#1\endcsname}
+\renewcommand{\thefootnote}{\circlednumber{footnote}}
+%    \end{macrocode}
+%重定义注脚的格式，将序号的字体取消默认的上标样式。
+%    \begin{macrocode}
+\def\@makefntext #1{\ifFN@hangfoot \bgroup \setbox \@tempboxa \hbox {\ifdim
+\footnotemargin >0pt \hb@xt@ \footnotemargin {\hbox { \normalfont \@thefnmark}
+\hss }\else \hbox { \normalfont \@thefnmark} \fi }\leftmargin \wd \@tempboxa
+\rightmargin \z@ \linewidth \columnwidth \advance \linewidth -\leftmargin
+\parshape \@ne \leftmargin \linewidth \footnotesize \@setpar {{\@@par }}
+\leavevmode \llap {\box \@tempboxa }\parskip \hangfootparskip \relax \parindent
+\hangfootparindent \relax \else \parindent 1em \noindent \ifdim \footnotemargin
+ >\z@ \hb@xt@ \footnotemargin {\hss \hbox { \normalfont \@thefnmark} }\else
+ \ifdim \footnotemargin =\z@ \llap {\hbox { \normalfont \@thefnmark} }\else
+ \llap {\hb@xt@ -\footnotemargin {\hbox { \normalfont \@thefnmark} \hss }}
+ \fi \fi \fi \footnotelayout #1\ifFN@hangfoot \par \egroup \fi}
 %    \end{macrocode}
 % \iffalse
 %</class>
