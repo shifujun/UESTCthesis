@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/08/10 v0.5.3 UESTC thesis class]
+    [2013/10/29 v0.5.4 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -3606,11 +3606,12 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 }
 %    \end{macrocode}
 % \end{macro}
+%\changes{v0.5.4}{2013/10/29}{修改中英文摘要标题和关键词的字体，改为加粗形式。并按照范例，在“摘要”二字中间加空格。}
 %    \begin{macrocode}
-\chapter*{摘要}%插入不带章号的摘要
+\chapter*{摘\enspace 要}%插入不带章号的摘要
 }
 {\\[3mm]%摘要后换行空出3mm
-{\heiti 关键词：}\@ckeywords%插入关键词
+{\textbf{关键词：}}\@ckeywords%插入关键词
 }
 %    \end{macrocode}
 % \end{environment}
@@ -3633,10 +3634,10 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 % \end{macro}
 %    \begin{macrocode}
 \Eabstractmatter%设置英文摘要版式
-\chapter*{ABSTRACT}%插入不带章号的ABSTRACT
+\chapter*{\bf ABSTRACT}%插入不带章号的ABSTRACT
 }
 {\\[3mm]%摘要后换行空出3mm
-{\heiti Keywords:}\@ekeywords%插入关键词
+{\bf Keywords:}\@ekeywords%插入关键词
 }
 %    \end{macrocode}
 % \end{environment}
@@ -3869,11 +3870,14 @@ pdfpagelayout={TwoPageRight}
 %\changes{v0.4.2}{2013/05/14}{修复只有单页目录时页眉显示主要符号表的问题。}
 %\changes{v0.4.3}{2013/05/20}{修复bug：摘要应从右页开始。前置部分都需要章起右页。}
 %\changes{v0.4.4}{2013/05/23}{本科论文中将外文资料和翻译加入目录中。}
+%\changes{v0.5.4}{2013/10/29}{修改封面到摘要之前的部分实际的页码，避免pdf阅读器中页码冲突。}
 %    \begin{macrocode}
 % !Mode:: "TeX:UTF-8"
 
 \AtBeginDocument{%插入到论文内容的最前面。
 \begin{CJK}{UTF8}{rm}%中文支持环境，此处内容不受ctexbook文类影响，所以必须手动加这个环境。
+\setcounter{page}{1}%页码重置为1
+\pagenumbering{Alph}%页码使用大写罗马数字
 \maketitle%生成并插入封面
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \Cabstractmatter%设置中文摘要版式
