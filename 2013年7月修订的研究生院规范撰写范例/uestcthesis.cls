@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/08/10 v0.5.3 UESTC thesis class]
+    [2013/10/29 v0.5.4 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
@@ -3090,10 +3090,10 @@
 \hypersetup{%
 pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 }
-\chapter*{摘要}%插入不带章号的摘要
+\chapter*{摘\enspace 要}%插入不带章号的摘要
 }
 {\\[3mm]%摘要后换行空出3mm
-{\heiti 关键词：}\@ckeywords%插入关键词
+{\textbf{关键词：}}\@ckeywords%插入关键词
 }
 \newenvironment{Eabstract}[5]{
 \newcommand{\@ekeywords}{
@@ -3104,10 +3104,10 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \ifthenelse{\equal{#5}{}}{}{, #5}%
 }
 \Eabstractmatter%设置英文摘要版式
-\chapter*{ABSTRACT}%插入不带章号的ABSTRACT
+\chapter*{\bf ABSTRACT}%插入不带章号的ABSTRACT
 }
 {\\[3mm]%摘要后换行空出3mm
-{\heiti Keywords:}\@ekeywords%插入关键词
+{\bf Keywords:}\@ekeywords%插入关键词
 }
 \CTEXoptions[contentsname={\protect\heiti\protect\zihao{-3}目\enspace 录}]
 \setcounter{tocdepth}{3}
@@ -3238,6 +3238,8 @@ pdfpagelayout={TwoPageRight}
 
 \AtBeginDocument{%插入到论文内容的最前面。
 \begin{CJK}{UTF8}{rm}%中文支持环境，此处内容不受ctexbook文类影响，所以必须手动加这个环境。
+\setcounter{page}{1}%页码重置为1
+\pagenumbering{Alph}%页码使用大写罗马数字
 \maketitle%生成并插入封面
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \Cabstractmatter%设置中文摘要版式
