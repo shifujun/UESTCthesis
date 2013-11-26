@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/10/29 v0.5.4 UESTC thesis class]
+    [2013/11/26 v0.5.5 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -466,12 +466,13 @@
 %    \end{macrocode}
 %这里用一个判断语句来根据主图题是否超过一行而分别处理。按照规范，不超过一行才居中，
 %超过一行则左对齐。
+%\changes{v0.5.5}{2013/11/26}{修复BUG：无法引用子图的总标签问题。}
 %    \begin{macrocode}
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 8pt}}{%THEN
-\noindent\caption{\subpiccaption}\par%
+\noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
 \noindent\hspace*{\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
 }{%ELSE
-{\centering\caption{\subpiccaption}}\par
+{\centering\caption{\subpiccaption}\label{\subpiclabel}}\par
 \sbox{\tempsubpiccaptionbox}{\zihao{5}图~\thefigure~\subpiccaption}%
 \setlength{\tempsubpiccaptionindent}{\textwidth}%
 \addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
@@ -482,7 +483,6 @@
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
 \parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
 }%
-\label{\subpiclabel}%
 \vspace{6bp}%
 \end{figure}%
 \clearallsubfigcaptions%

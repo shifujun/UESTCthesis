@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/10/29 v0.5.4 UESTC thesis class]
+    [2013/11/26 v0.5.5 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
@@ -215,10 +215,10 @@
 {\zihao{5}图~\thefigure~\subpiccaption}}%
 \settowidth{\tempsubpiccaptionheadindent}{\zihao{5}图~\thefigure~}%
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 8pt}}{%THEN
-\noindent\caption{\subpiccaption}\par%
+\noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
 \noindent\hspace*{\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
 }{%ELSE
-{\centering\caption{\subpiccaption}}\par
+{\centering\caption{\subpiccaption}\label{\subpiclabel}}\par
 \sbox{\tempsubpiccaptionbox}{\zihao{5}图~\thefigure~\subpiccaption}%
 \setlength{\tempsubpiccaptionindent}{\textwidth}%
 \addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
@@ -229,7 +229,6 @@
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
 \parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
 }%
-\label{\subpiclabel}%
 \vspace{6bp}%
 \end{figure}%
 \clearallsubfigcaptions%
