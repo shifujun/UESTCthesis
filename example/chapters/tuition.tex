@@ -2,6 +2,12 @@
 
 \chapter{更新日志}
 \noindent
+2013年12月25日：v0.5.6
+\begin{enumerate}
+\item 本次更新不影响排版效果。仅仅修改了封面上校徽的颜色，使橙色和蓝色与学校识别视觉系统一致。
+\end{enumerate}
+
+\noindent
 2013年11月26日：v0.5.5
 \begin{enumerate}
 \item 在v0.5.3版本修改中，子图的标题过长，导致引用总标签失败。现修复了这个问题。并在第~\pageref{testpicslabel}~页进行了一小段测试。
@@ -207,7 +213,7 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 \subsection{测试编译}
 用WinEdt打开thesis.tex如图~\ref{winedt}（双击即可）。
 \pic[htbp]{WinEdt界面}{width=\textwidth}{winedt}
-点击图中红色箭头指向的黑色实心小三角，在下拉菜单中选择PDFLaTeX。然后点击绿色箭头指向的按钮将此文件设置为主文件。最后点击蓝色箭头指向的按钮，或按键盘上的F9按键，编译论文。用这种方式编译论文比较方便，但会缺少研究生论文所需的“攻读期间发表的成果”一章。所以正式编译时必须用compile.bat 编译论文才能得到正确的结果。
+点击图中红色箭头指向的黑色实心小三角，在下拉菜单中选择PDFLaTeX。 然后点击绿色箭头指向的按钮将此文件设置为主文件。最后点击蓝色箭头指向的按钮，或按键盘上的F9按键，编译论文。用这种方式编译论文比较方便，但会缺少研究生论文所需的“攻读期间发表的成果”一章。所以正式编译时必须用compile.bat 编译论文才能得到正确的结果。
 
 通过将此文件设置为主文件之后，以后只要thesis.tex在WinEdt中打开了，即使当前编辑的文件不是thesis.tex，编译时也会编译thesis.tex文件。这样可以避免每次都切换回thesis.tex 编辑窗口。
 
@@ -231,7 +237,7 @@ clean.bat   &清理批处理  &双击可删除目录中全部编译过程生成�
 }{}
 \section{开始编写论文}
 \subsection{确定学位信息}
-打开thesis.tex文件，将第三行中间的中括号内容改为bachelor、master或doctor，分别代表本科、硕士和博士。\\
+打开thesis.tex文件，将第三行中间的中括号内容改为bachelor、master 或doctor，分别代表本科、硕士和博士。\\
 \verb|\documentclass[doctor]{typesetting/uestcthesis}|
 
 然后打开contents目录中的titlepage.tex。填写其中的信息。本科生注意要删除其中后一部分的信息，否则编译会出错。
@@ -273,7 +279,7 @@ $\mathbb{C}$\kern-.05em\TeX{}套装自带的PDF阅读器SumatraPDF，也就是�
 
 \label{testpicslabel}测试引用图片标签。单张图片图\ref{Chrysanthemum}是一副菊花。子图效果如图\ref{picsaaaa}所示，其中有两幅子图。子图\ref{Tulips} 是郁金香，子图\ref{Penguins}是企鹅。
 \subsubsection{插入表格}
-\TeX 系统对表格的支持可能不够出色。这种说法主要是因为微软的Excel实在是太出色了，以至于人们经常用Excel 制作结构非常复杂看起来很好看的表格。其实大多数表格都可以简化。《中国高等学校自然科学学报编排规范(修订版)》中讲到：表应精心设计，为使表的结构简洁，建议采用三线表，必要时可加辅助线，如表~\ref{tab2}。
+\TeX 系统对表格的支持可能不够出色。这种说法主要是因为微软的Excel 实在是太出色了，以至于人们经常用Excel 制作结构非常复杂看起来很好看的表格。其实大多数表格都可以简化。《中国高等学校自然科学学报编排规范(修订版)》中讲到：表应精心设计，为使表的结构简洁，建议采用三线表，必要时可加辅助线，如表~\ref{tab2}。
 
 插入普通三线表可以用我定义的命令：\\
 \verb|\threelinetable[htbp]{标签}{0.4\textwidth}{lcr}{表标题}|\\
@@ -624,7 +630,7 @@ CAJ-CD
 \subsection{攻读期间的研究成果}
 攻读期间的研究成果文件是publications.bib，其格式和编辑方法同参考文献完全一致。在WinEdt中使用编译按钮编译的结果不会显示这一章是正常现象。需要使用compile.bat编译才能得到包含这一章的正确结果。
 
-如果需要录入非参考文献标准格式的内容，例如获奖，可以使用ONLYNOTE类型的参考文献。这个类型是直接原文输出note 条目的类型。可见示例\cite{onlynoteexample}。
+如果需要录入非参考文献标准格式的内容，例如获奖，可以使用ONLYNOTE 类型的参考文献。这个类型是直接原文输出note 条目的类型。可见示例\cite{onlynoteexample}。
 \subsection{致谢}
 致谢就是简单的编辑contents/acknowledgements.tex就可以了。
 \subsection{附录}
@@ -690,7 +696,7 @@ $\backslash$    &\verb|$\backslash$|                                & \verb|\sym
 \begin{enumerate}
 \item 以为回车就是换行。\LaTeX{}中换行的命令是“\verb|\\|”。
 \item 以为换行就是另起一段。\LaTeX{}中另起一段的命令是“\verb|\par|”，也可以连续输入两个以上的回车。
-\item 以为空格就是空格。\LaTeX{}中中文与中文之间的空格或回车都会被忽略掉，英文与英文之间的空格和回车有多少个都只算作1 个。这是为了避免输入时录入不正确数量的空格。如果一定要输入连续多个空格，可以使用符号\verb|~|，或者命令\verb|\nbs{}|。后者是不可换行的空格。比如英文人名Donald Ervin Knuth，如果将其中的空格改为\verb|\nbs{}|，则系统会优先保证这三个单词在同一行显示。如果实在放不下了，才会在单词的音节断开处换行。例如：
+\item 以为空格就是空格。\LaTeX{}中中文与中文之间的空格或回车都会被忽略掉，英文与英文之间的空格和回车有多少个都只算作1 个。这是为了避免输入时录入不正确数量的空格。如果一定要输入连续多个空格，可以使用符号\verb|~|，或者命令\verb|\nbs{}|。 后者是不可换行的空格。比如英文人名Donald Ervin Knuth，如果将其中的空格改为\verb|\nbs{}|，则系统会优先保证这三个单词在同一行显示。如果实在放不下了，才会在单词的音节断开处换行。例如：
     Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}Donald\nbs{}Ervin\nbs{}Knuth\nbs{}
 \end{enumerate}
 
@@ -708,7 +714,7 @@ $\backslash$    &\verb|$\backslash$|                                & \verb|\sym
 \section{修改本模板}
 可以通过用pdflatex编译uestcthesis.dtx文件得到uestcthesis.pdf。uestcthesis.pdf是源代码的说明文档。
 
-本模板源代码可在\url{http://mirror.ctan.org/macros/latex/contrib/uestcthesis/source/}获得。
+本模板源代码可在\url{http://mirror.ctan.org/macros/latex/contrib/uestcthesis/source/} 获得。
 
 修改前请注意本模板的许可协议。
 

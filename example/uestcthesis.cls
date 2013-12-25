@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/11/26 v0.5.5 UESTC thesis class]
+    [2013/12/25 v0.5.6 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
@@ -854,7 +854,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0 0.33725491 0.62352943}
+\newrgbcolor{curcolor}{0 0.36078431 0.63529412}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1297,7 +1297,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0 0.33725491 0.62352943}
+\newrgbcolor{curcolor}{0 0.36078431 0.63529412}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1316,7 +1316,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0 0.33725491 0.62352943}
+\newrgbcolor{curcolor}{0 0.36078431 0.63529412}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1339,7 +1339,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0 0.33725491 0.62352943}
+\newrgbcolor{curcolor}{0 0.36078431 0.63529412}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1356,7 +1356,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0 0.33725491 0.62352943}
+\newrgbcolor{curcolor}{0 0.36078431 0.63529412}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1475,7 +1475,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0 0.33725491 0.62352943}
+\newrgbcolor{curcolor}{0 0.36078431 0.63529412}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1504,7 +1504,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0.9137255 0.32549021 0.15686275}
+\newrgbcolor{curcolor}{0.9176471 0.46666667 0.11764706}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1521,7 +1521,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0.9137255 0.32549021 0.15686275}
+\newrgbcolor{curcolor}{0.9176471 0.46666667 0.11764706}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1535,7 +1535,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0 0.33725491 0.62352943}
+\newrgbcolor{curcolor}{0 0.36078431 0.63529412}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1546,7 +1546,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0.9137255 0.32549021 0.15686275}
+\newrgbcolor{curcolor}{0.9176471 0.46666667 0.11764706}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
@@ -1586,7 +1586,7 @@
 }
 }
 {
-\newrgbcolor{curcolor}{0.9137255 0.32549021 0.15686275}
+\newrgbcolor{curcolor}{0.9176471 0.46666667 0.11764706}
 \pscustom[linestyle=none,fillstyle=solid,fillcolor=curcolor]
 {
 \newpath
