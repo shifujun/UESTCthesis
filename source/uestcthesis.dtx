@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2013/12/25 v0.5.6 UESTC thesis class]
+    [2014/01/16 v0.6 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -95,7 +95,11 @@
 %    \begin{macrocode}
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 %    \end{macrocode}
-%
+%\changes{v0.6}{2014/01/16}{修正ttfamily为宋体，而不是默认的仿宋。}
+%修正ttfamily为宋体，而不是默认的仿宋。
+%    \begin{macrocode}
+\renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
+%    \end{macrocode}
 %调用etoolbox宏包，为了使用其提供的|\ifblank|命令。
 %    \begin{macrocode}
 \RequirePackage{etoolbox}[2011/01/03]
@@ -199,9 +203,15 @@
 }
 \newcommand{\acknowledgementsname@uestcthesis}{致\enspace 谢}
 \newcommand{\glossaryname@uestcthesis}{主要符号表}
-\newcommand{\entryname@uestcthesis}{符号或术语}
+\newcommand{\acronymname@uestcthesis}{缩略词表}
+\newcommand{\entryname@uestcthesis}{符号}
 \newcommand{\descriptionname@uestcthesis}{说明}
-\newcommand{\glspageheader@uestcthesis}{页码}
+\newcommand{\pagelistname@uestcthesis}{页码}
+\newcommand{\acronymheader@uestcthesis}{缩略词}
+\newcommand{\acronymfull@uestcthesis}{英文全称}
+\newcommand{\acronymtranslation@uestcthesis}{中文全称}
+\renewcommand{\listfigurename}{图目录}
+\renewcommand{\listtablename}{表目录}
 %    \end{macrocode}
 % \begin{macro}{\english@uestcthesis}
 %英文选项相关设置：
@@ -223,10 +233,16 @@
 \renewcommand{\CTEX@figurename}{Figure}
 \renewcommand{\CTEX@tablename}{Table}
 \renewcommand{\glossaryname@uestcthesis}{Glossary}
+\renewcommand{\acronymname@uestcthesis}{Acronyms}
 \renewcommand{\entryname@uestcthesis}{Notation}
 \renewcommand{\descriptionname@uestcthesis}{Description}
-\renewcommand{\glspageheader@uestcthesis}{Page}
+\renewcommand{\pagelistname@uestcthesis}{Page List}
+\renewcommand{\acronymheader@uestcthesis}{Acronym}
+\renewcommand{\acronymfull@uestcthesis}{Full Name}
+\renewcommand{\acronymtranslation@uestcthesis}{Chinese}
 \renewcommand{\CTEX@appendixname}{Appendix~}
+\renewcommand{\listfigurename}{List of Figures}
+\renewcommand{\listtablename}{List of Tables}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -236,6 +252,43 @@
 \DeclareOption{master}{\master@uestcthesis}
 \DeclareOption{doctor}{\doctor@uestcthesis}
 \DeclareOption{english}{\english@uestcthesis}
+%    \end{macrocode}
+% \changes{v0.6}{2014/01/11}{添加个人简历的选项：cv}
+% 添加一个cv选项。启用后用contents目录中的cv.tex（人简历及攻读硕士学位期间取得的研究成果）
+% 代替publications.bib（攻博/硕期间发表的论文）显示在论文的最后。
+%    \begin{macrocode}
+\DeclareOption{cv}{
+\newcommand{\usecv@uestcthesis}{\input{contents/cv.tex}}
+}
+%    \end{macrocode}
+% 声明选项用以决定是否添加图表目录。
+% \changes{v0.6}{2014/01/11}{添加图表目录的选项：listoffigures和listoftables}
+%    \begin{macrocode}
+\newcommand{\insertlof}{}
+\newcommand{\insertlot}{}
+\DeclareOption{listoffigures}{\renewcommand{\insertlof}{%
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\figureslistmatter
+\def\l@figure##1##2{\ifnum 0>\c@tocdepth \else \vskip \z@ \@plus .2\p@ {\leftskip
+0em\relax \rightskip \@tocrmarg \parfillskip -\rightskip \parindent 0em\relax
+\@afterindenttrue \interlinepenalty \@M \leavevmode \@tempdima 1em\relax \advance
+\leftskip \@tempdima \null \nobreak \hskip -\leftskip {\CTEX@figurename~##1}\nobreak \leaders
+\hbox {$\m@th \mkern \@dotsep mu\hbox {.}\mkern \@dotsep mu$}\hfill \nobreak
+\hb@xt@ \@pnumwidth {\hfil \normalfont \normalcolor ##2}\par }\fi}
+\listoffigures
+}}
+
+\DeclareOption{listoftables}{\renewcommand{\insertlot}{%
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\tableslistmatter
+\def\l@table##1##2{\ifnum 0>\c@tocdepth \else \vskip \z@ \@plus .2\p@ {\leftskip
+0em\relax \rightskip \@tocrmarg \parfillskip -\rightskip \parindent 0em\relax
+\@afterindenttrue \interlinepenalty \@M \leavevmode \@tempdima 1em\relax \advance
+\leftskip \@tempdima \null \nobreak \hskip -\leftskip {\CTEX@tablename~##1}\nobreak \leaders
+\hbox {$\m@th \mkern \@dotsep mu\hbox {.}\mkern \@dotsep mu$}\hfill \nobreak
+\hb@xt@ \@pnumwidth {\hfil \normalfont \normalcolor ##2}\par }\fi}
+\listoftables
+}}
 \ProcessOptions\relax
 %    \end{macrocode}
 % \subsection{版面设置}
@@ -627,13 +680,17 @@
 \fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%
 \fancyfoot[C]{\zihao{-5}\thepage}%
 }
+}
 %    \end{macrocode}
-%由于主要符号表在目录后面，而且是自动生成的。导致主要符号表的第一页页面还显示目录。
-%所以这里有一个BUG需要修正。glossary宏包提供的|\glossarypreamble|原本是空的宏，
-%会自动插入在主要符号表的前面。
+% \end{macro}
+% \begin{macro}{\acronymnamematterfancy}
+%定义缩略词表版式设置
 %    \begin{macrocode}
-\renewcommand{\glossarypreamble}{%
-\fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%页眉居中打印“主要符号表”
+\newcommand{\acronymnamematterfancy}{%定义缩略词表版式设置
+\fancypagestyle{plain}{
+\fancyhf{}
+\fancyhead[C]{\zihao{5}\acronymname@uestcthesis}%
+\fancyfoot[C]{\zihao{-5}\thepage}%
 }
 }
 %    \end{macrocode}
@@ -685,6 +742,29 @@
 \mainmatterfancy%设置正文的版式
 \fancypagestyle{plain}{\mainmatterfancy}
 %使章标题页使用plain版式，需要单独定义它。使它的页眉页脚与其他页一致。
+}
+%    \end{macrocode}
+%定义图目录表目录版式
+%    \begin{macrocode}
+\newcommand{\figureslistmatterfancy}{
+\fancyhf{}
+\fancyhead[C]{图目录}%
+\fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
+}
+\newcommand{\tableslistmatterfancy}{
+\fancyhf{}
+\fancyhead[C]{表目录}
+\fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
+}
+\newcommand{\figureslistmatter}{
+\pagestyle{fancy}
+\figureslistmatterfancy
+\fancypagestyle{plain}{\figureslistmatterfancy}
+}
+\newcommand{\tableslistmatter}{
+\pagestyle{fancy}
+\tableslistmatterfancy
+\fancypagestyle{plain}{\tableslistmatterfancy}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -867,6 +947,9 @@
 %    \begin{macrocode}
 \newcommand{\englishshcool}[1]{
 \newcommand{\@englishshcool}{#1}
+}
+\newcommand{\englishshcoolextraline}[1]{
+\newcommand{\@englishshcoolextraline}{#1}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -3366,6 +3449,9 @@
 \makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
+\ifdef{\@englishshcoolextraline}{%
+\makebox[6em][r]{}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcoolextraline\hfill}}\\[1ex]%
+}{}
 \end{center}
 \newpage
 \thispagestyle{empty}
@@ -3471,6 +3557,9 @@
 \makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
+\ifdef{\@englishshcoolextraline}{%
+\makebox[6em][r]{}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcoolextraline\hfill}}\\[1ex]%
+}{}
 \end{center}
 \newpage
 \thispagestyle{empty}
@@ -3756,18 +3845,14 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %    \end{macrocode}
 % \subsection{PDF文件相关设置}
 % 设置pdf文件中的超链接和书签
+% \changes{v0.6}{2014/01/11}{去除pdf文件中显示的超级链接有色外框}
 %    \begin{macrocode}
 \RequirePackage{cmap}%pdflatex编译时，可以生成可复制、粘贴的中文PDF文档
 \RequirePackage{hyperxmp}%在pdf中加入XMP高级元信息
 \RequirePackage[pdftex,unicode,
             bookmarksnumbered=true,
             bookmarksopen=true,
-            colorlinks=false,
-            pdfborder={0 0 1},
-            citecolor=blue,
-            linkcolor=red,
-            anchorcolor=green,
-            urlcolor=blue,
+            hidelinks=true,
             breaklinks=true,
 			pdfdisplaydoctitle=true
 			]{hyperref}
@@ -3792,27 +3877,10 @@ pdfpagelayout={TwoPageRight}
 %枚举环境宏包，去除所有垂直附加距离。
 % \changes{v0.31}{2013/02/21}{去除枚举环境的所有垂直附加距离。}
 % \changes{v0.4.3}{2013/05/20}{修复bug：枚举环境与前后文存在额外间距}
+% \changes{v0.6}{2014/01/12}{用enumitem宏包代替enumerate宏包。使枚举环境的序号缩进和正文一致。}
 %    \begin{macrocode}
-\RequirePackage{enumerate}
-%为了修正枚举环境与前后文存在额外间距的问题：重构枚举环境中的\@enum@命令，将其中的\list命令重构，再将\list命令中的\@trivlist命令重构。一切重构都是为了将\@trivlist命令中的第一个\@topsepadd重置为0。
-\newskip\@topsepadd@uestcthesis
-\def\@trivlist@uestcthesis{\if@noskipsec \leavevmode \fi \@topsepadd@uestcthesis \topsep \ifvmode \advance \@topsepadd \partopsep \else \unskip \par \fi \if@inlabel \@noparitemtrue \@noparlisttrue \else \if@newlist \@noitemerr \fi \@noparlistfalse \@topsep \@topsepadd \fi \advance \@topsep \parskip \leftskip \z@skip \rightskip \@rightskip \parfillskip \@flushglue \par@deathcycles \z@ \@setpar {\if@newlist \advance \par@deathcycles \@ne \ifnum \par@deathcycles >\@m \@noitemerr {\@@par }\fi \else {\@@par }\fi }\global \@newlisttrue \@outerparskip \parskip }
-
-\def\list@uestcthesis#1#2{\ifnum \@listdepth >5\relax \@toodeep \else \global \advance \@listdepth \@ne \fi \rightmargin \z@ \listparindent \z@ \itemindent \z@ \csname @list\romannumeral \the \@listdepth \endcsname \def \@itemlabel {#1}\let \makelabel \@mklab \@nmbrlistfalse #2\relax \@trivlist@uestcthesis \parskip \parsep \parindent \listparindent \advance \linewidth -\rightmargin \advance \linewidth -\leftmargin \advance \@totalleftmargin \leftmargin \parshape \@ne \@totalleftmargin \linewidth \ignorespaces }
-
-\def\@enum@{\list@uestcthesis {\csname label\@enumctr \endcsname }{\usecounter {\@enumctr }\def \makelabel ##1{\hss \llap {##1}}}}
-
-\def\enumerate{%
- \ifnum \@enumdepth >3 \@toodeep\else
- \advance\@enumdepth \@ne
- \edef\@enumctr{enum\romannumeral\the\@enumdepth}\fi
- \@ifnextchar[{\@@enum@}{\@enum@}
- \parsep=0pt
- \itemsep=0pt
- \parskip=0pt
- \partopsep=0pt
- \topsep=0pt
- }
+\RequirePackage{enumitem}
+\setlist[1]{topsep=0pt,partopsep=0pt,parsep=0pt,itemsep=0pt,leftmargin=*,align=left,labelindent=\parindent}
 %    \end{macrocode}
 % \subsection{排版源代码相关设置}
 %排版源代码所需宏包
@@ -3842,30 +3910,47 @@ pdfpagelayout={TwoPageRight}
 \definecolor{bgcolor}{rgb}{1,1,1}
 %    \end{macrocode}
 % \subsection{主要符号表设置}
+%\changes{v0.6}{2014/01/11}{将glossary宏包替换为新版的glossaries宏包。可同时提供缩略词表和主要符号表 。}
 %设置术语表宏包供主要符号表使用
 %    \begin{macrocode}
-\RequirePackage[header,cols=3,hyper=true]{glossary}
-\makeglossary
+\RequirePackage[style=long3colheader,description,acronym]{glossaries}
+\makeglossaries
 \renewcommand{\glossaryname}{\glossaryname@uestcthesis}
 \renewcommand{\entryname}{\entryname@uestcthesis}
 \renewcommand{\descriptionname}{\descriptionname@uestcthesis}
-\renewcommand{\glspageheader}{\glspageheader@uestcthesis}
+\renewcommand{\acronymname}{\acronymname@uestcthesis}
+\renewcommand{\pagelistname}{\pagelistname@uestcthesis}
 %    \end{macrocode}
-% \begin{macro}{\ifusingglossary}
-%设置一个变量用以判断是否使用主要符号表
-%    \begin{macrocode}
-\newcommand{\ifusingglossary}{}
-%    \end{macrocode}
-% \end{macro}
 % \begin{macro}{\fuhao}
 %包装向主要符号表中插入条目的命令
 %    \begin{macrocode}
 \newcommand{\fuhao}[3]{
-\glossary{name={#1},description={#2},sort=#3}
-\renewcommand{\ifusingglossary}{true}%设置使用主要符号表
+\newglossaryentry{#3}{name={#1},description={#2},sort=#3}
 }
 %    \end{macrocode}
 % \end{macro}
+%    \begin{macrocode}
+\newglossarystyle{acronymwithtranslation}{%
+	\setglossarystyle{long3colheader}%在long3colheader基础上修改
+	\renewcommand*{\glossaryheader}{%重定义表头
+	\bfseries\acronymheader@uestcthesis&\bfseries\acronymfull@uestcthesis&
+	\bfseries\acronymtranslation@uestcthesis\tabularnewline\endhead}%
+	\renewenvironment{theglossary}%重定义列宽
+	{\begin{longtable}{lp{\glsdescwidth}p{7em}}}%
+	{\end{longtable}}%
+	\renewcommand{\glossentry}[2]{%重定义显示什么列：缩略词、英文全称、中文全称
+	\glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}} &
+	\csname glo@##1@first\endcsname & \glossentrydesc{##1}\tabularnewline
+	}%
+	\renewcommand{\subglossentry}[3]{%
+	&
+	\glssubentryitem{##2}%
+	\glstarget{##2}{\strut}\csname glo@##2@first\endcsname &
+	\glossentrydesc{##2}\tabularnewline
+	}%
+}
+%    \end{macrocode}
+
 % \subsection{自动添加论文的必选结构}
 %\changes{v0.4.3}{2013/05/20}{由于目前（2013年）本科和硕博关于参考文献与致谢顺序的规定不一样，所以在这里区分设置}
 %\changes{v0.4.2}{2013/05/14}{修复只有单页目录时页眉显示主要符号表的问题。}
@@ -3889,8 +3974,13 @@ pdfpagelayout={TwoPageRight}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \tocmatter%目录版式
 \tableofcontents%插入目录
+\insertlof%插入图目录
+\insertlot%插入表目录
 \clearpage{\pagestyle{empty}\cleardoublepage}%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
 %此处遇到问题：目录之后到正文之前如果加入章节，这些章节的版式不受传统版式设置控制。估计是BUG。此处耗时6小时20分钟，终于找到了修正方案。
+\acronymnamematterfancy%设置缩略词表版式
+\printacronyms[style=acronymwithtranslation]
+\clearpage{\pagestyle{empty}\cleardoublepage}
 \glossarymatterfancy%设置主要符号表版式。
 \printglossary%插入主要符号表
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -4012,13 +4102,16 @@ pdfpagelayout={TwoPageRight}
 % 下面的大括号实际上是上一节判断是否为本科论文的|\ifdefstring|命令的else部分。也就是只有硕博论文才执行的命令。
 %    \begin{macrocode}
 {
-\IfFileExists{contents/publications.bib}{%如果删除了publications.bib，则不显示这一章
-\CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
-\phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
-\addcontentsline{toc}{chapter}{\publicationsname@degree}%将攻博/硕期间发表的论文编入目录
-{\zihao{5}
-\bibliographypublications{contents/publications}%插入攻博/硕期间发表的论文
-}}{}}
+\ifdef{\usecv@uestcthesis}{\usecv@uestcthesis}{
+	\IfFileExists{contents/publications.bib}{%如果删除了publications.bib，则不显示这一章
+	\CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
+	\phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
+	\addcontentsline{toc}{chapter}{\publicationsname@degree}%将攻博/硕期间发表的论文编入目录
+	{\zihao{5}
+	\bibliographypublications{contents/publications}%插入攻博/硕期间发表的论文
+	}}{}
+	}
+}
 \clearpage\end{CJK}}
 %    \end{macrocode}
 %\subsection{注脚格式排版设置}

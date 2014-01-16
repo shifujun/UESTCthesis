@@ -29,8 +29,9 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2013/12/25 v0.5.6 UESTC thesis class]
+    [2014/01/16 v0.6 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
+\renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
 \newcommand{\bachelor@uestcthesis}{
@@ -91,9 +92,15 @@
 }
 \newcommand{\acknowledgementsname@uestcthesis}{致\enspace 谢}
 \newcommand{\glossaryname@uestcthesis}{主要符号表}
-\newcommand{\entryname@uestcthesis}{符号或术语}
+\newcommand{\acronymname@uestcthesis}{缩略词表}
+\newcommand{\entryname@uestcthesis}{符号}
 \newcommand{\descriptionname@uestcthesis}{说明}
-\newcommand{\glspageheader@uestcthesis}{页码}
+\newcommand{\pagelistname@uestcthesis}{页码}
+\newcommand{\acronymheader@uestcthesis}{缩略词}
+\newcommand{\acronymfull@uestcthesis}{英文全称}
+\newcommand{\acronymtranslation@uestcthesis}{中文全称}
+\renewcommand{\listfigurename}{图目录}
+\renewcommand{\listtablename}{表目录}
 \newcommand{\english@uestcthesis}{
 \renewcommand{\tocname@uestcthesis}{\zihao{5}Contents}
 \renewcommand{\chaptername@uestcthesis}{
@@ -111,15 +118,49 @@
 \renewcommand{\CTEX@figurename}{Figure}
 \renewcommand{\CTEX@tablename}{Table}
 \renewcommand{\glossaryname@uestcthesis}{Glossary}
+\renewcommand{\acronymname@uestcthesis}{Acronyms}
 \renewcommand{\entryname@uestcthesis}{Notation}
 \renewcommand{\descriptionname@uestcthesis}{Description}
-\renewcommand{\glspageheader@uestcthesis}{Page}
+\renewcommand{\pagelistname@uestcthesis}{Page List}
+\renewcommand{\acronymheader@uestcthesis}{Acronym}
+\renewcommand{\acronymfull@uestcthesis}{Full Name}
+\renewcommand{\acronymtranslation@uestcthesis}{Chinese}
 \renewcommand{\CTEX@appendixname}{Appendix~}
+\renewcommand{\listfigurename}{List of Figures}
+\renewcommand{\listtablename}{List of Tables}
 }
 \DeclareOption{bachelor}{\bachelor@uestcthesis}
 \DeclareOption{master}{\master@uestcthesis}
 \DeclareOption{doctor}{\doctor@uestcthesis}
 \DeclareOption{english}{\english@uestcthesis}
+\DeclareOption{cv}{
+\newcommand{\usecv@uestcthesis}{\input{contents/cv.tex}}
+}
+\newcommand{\insertlof}{}
+\newcommand{\insertlot}{}
+\DeclareOption{listoffigures}{\renewcommand{\insertlof}{%
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\figureslistmatter
+\def\l@figure##1##2{\ifnum 0>\c@tocdepth \else \vskip \z@ \@plus .2\p@ {\leftskip
+0em\relax \rightskip \@tocrmarg \parfillskip -\rightskip \parindent 0em\relax
+\@afterindenttrue \interlinepenalty \@M \leavevmode \@tempdima 1em\relax \advance
+\leftskip \@tempdima \null \nobreak \hskip -\leftskip {\CTEX@figurename~##1}\nobreak \leaders
+\hbox {$\m@th \mkern \@dotsep mu\hbox {.}\mkern \@dotsep mu$}\hfill \nobreak
+\hb@xt@ \@pnumwidth {\hfil \normalfont \normalcolor ##2}\par }\fi}
+\listoffigures
+}}
+
+\DeclareOption{listoftables}{\renewcommand{\insertlot}{%
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\tableslistmatter
+\def\l@table##1##2{\ifnum 0>\c@tocdepth \else \vskip \z@ \@plus .2\p@ {\leftskip
+0em\relax \rightskip \@tocrmarg \parfillskip -\rightskip \parindent 0em\relax
+\@afterindenttrue \interlinepenalty \@M \leavevmode \@tempdima 1em\relax \advance
+\leftskip \@tempdima \null \nobreak \hskip -\leftskip {\CTEX@tablename~##1}\nobreak \leaders
+\hbox {$\m@th \mkern \@dotsep mu\hbox {.}\mkern \@dotsep mu$}\hfill \nobreak
+\hb@xt@ \@pnumwidth {\hfil \normalfont \normalcolor ##2}\par }\fi}
+\listoftables
+}}
 \ProcessOptions\relax
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
@@ -318,8 +359,12 @@
 \fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%
 \fancyfoot[C]{\zihao{-5}\thepage}%
 }
-\renewcommand{\glossarypreamble}{%
-\fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%页眉居中打印“主要符号表”
+}
+\newcommand{\acronymnamematterfancy}{%定义缩略词表版式设置
+\fancypagestyle{plain}{
+\fancyhf{}
+\fancyhead[C]{\zihao{5}\acronymname@uestcthesis}%
+\fancyfoot[C]{\zihao{-5}\thepage}%
 }
 }
 \newcommand{\Cabstractmatter}{
@@ -347,6 +392,26 @@
 \chaptermarkfix@uestcthesis %修正页眉章号显示不正确
 \mainmatterfancy%设置正文的版式
 \fancypagestyle{plain}{\mainmatterfancy}
+}
+\newcommand{\figureslistmatterfancy}{
+\fancyhf{}
+\fancyhead[C]{图目录}%
+\fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
+}
+\newcommand{\tableslistmatterfancy}{
+\fancyhf{}
+\fancyhead[C]{表目录}
+\fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
+}
+\newcommand{\figureslistmatter}{
+\pagestyle{fancy}
+\figureslistmatterfancy
+\fancypagestyle{plain}{\figureslistmatterfancy}
+}
+\newcommand{\tableslistmatter}{
+\pagestyle{fancy}
+\tableslistmatterfancy
+\fancypagestyle{plain}{\tableslistmatterfancy}
 }
 \newcommand{\stuid}[1]{
 \newcommand{\@stuid}{#1}
@@ -419,6 +484,9 @@
 }
 \newcommand{\englishshcool}[1]{
 \newcommand{\@englishshcool}{#1}
+}
+\newcommand{\englishshcoolextraline}[1]{
+\newcommand{\@englishshcoolextraline}{#1}
 }
 \begin{filecontents*}{logo.tex}
 \documentclass[pstricks=true]{standalone}
@@ -2892,6 +2960,9 @@
 \makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
+\ifdef{\@englishshcoolextraline}{%
+\makebox[6em][r]{}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcoolextraline\hfill}}\\[1ex]%
+}{}
 \end{center}
 \newpage
 \thispagestyle{empty}
@@ -2991,6 +3062,9 @@
 \makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
+\ifdef{\@englishshcoolextraline}{%
+\makebox[6em][r]{}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcoolextraline\hfill}}\\[1ex]%
+}{}
 \end{center}
 \newpage
 \thispagestyle{empty}
@@ -3165,12 +3239,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \RequirePackage[pdftex,unicode,
             bookmarksnumbered=true,
             bookmarksopen=true,
-            colorlinks=false,
-            pdfborder={0 0 1},
-            citecolor=blue,
-            linkcolor=red,
-            anchorcolor=green,
-            urlcolor=blue,
+            hidelinks=true,
             breaklinks=true,
 pdfdisplaydoctitle=true
 ]{hyperref}
@@ -3186,25 +3255,8 @@ pdflang={zh-CN},
 pdfpagelayout={TwoPageRight}
 }
 \RequirePackage[small]{subfigure}
-\RequirePackage{enumerate}
-\newskip\@topsepadd@uestcthesis
-\def\@trivlist@uestcthesis{\if@noskipsec \leavevmode \fi \@topsepadd@uestcthesis \topsep \ifvmode \advance \@topsepadd \partopsep \else \unskip \par \fi \if@inlabel \@noparitemtrue \@noparlisttrue \else \if@newlist \@noitemerr \fi \@noparlistfalse \@topsep \@topsepadd \fi \advance \@topsep \parskip \leftskip \z@skip \rightskip \@rightskip \parfillskip \@flushglue \par@deathcycles \z@ \@setpar {\if@newlist \advance \par@deathcycles \@ne \ifnum \par@deathcycles >\@m \@noitemerr {\@@par }\fi \else {\@@par }\fi }\global \@newlisttrue \@outerparskip \parskip }
-
-\def\list@uestcthesis#1#2{\ifnum \@listdepth >5\relax \@toodeep \else \global \advance \@listdepth \@ne \fi \rightmargin \z@ \listparindent \z@ \itemindent \z@ \csname @list\romannumeral \the \@listdepth \endcsname \def \@itemlabel {#1}\let \makelabel \@mklab \@nmbrlistfalse #2\relax \@trivlist@uestcthesis \parskip \parsep \parindent \listparindent \advance \linewidth -\rightmargin \advance \linewidth -\leftmargin \advance \@totalleftmargin \leftmargin \parshape \@ne \@totalleftmargin \linewidth \ignorespaces }
-
-\def\@enum@{\list@uestcthesis {\csname label\@enumctr \endcsname }{\usecounter {\@enumctr }\def \makelabel ##1{\hss \llap {##1}}}}
-
-\def\enumerate{%
- \ifnum \@enumdepth >3 \@toodeep\else
- \advance\@enumdepth \@ne
- \edef\@enumctr{enum\romannumeral\the\@enumdepth}\fi
- \@ifnextchar[{\@@enum@}{\@enum@}
- \parsep=0pt
- \itemsep=0pt
- \parskip=0pt
- \partopsep=0pt
- \topsep=0pt
- }
+\RequirePackage{enumitem}
+\setlist[1]{topsep=0pt,partopsep=0pt,parsep=0pt,itemsep=0pt,leftmargin=*,align=left,labelindent=\parindent}
 \RequirePackage{color,marvosym}
 \DeclareOldFontCommand{\txttbf}{\ttfamily\bfseries}{\mathbf}
 \providecommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}
@@ -3223,17 +3275,36 @@ pdfpagelayout={TwoPageRight}
 \providecommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
 \providecommand{\hlkwd}[1]{\textcolor[rgb]{0,0,0}{\txttbf{#1}}}
 \definecolor{bgcolor}{rgb}{1,1,1}
-\RequirePackage[header,cols=3,hyper=true]{glossary}
-\makeglossary
+\RequirePackage[style=long3colheader,description,acronym]{glossaries}
+\makeglossaries
 \renewcommand{\glossaryname}{\glossaryname@uestcthesis}
 \renewcommand{\entryname}{\entryname@uestcthesis}
 \renewcommand{\descriptionname}{\descriptionname@uestcthesis}
-\renewcommand{\glspageheader}{\glspageheader@uestcthesis}
-\newcommand{\ifusingglossary}{}
+\renewcommand{\acronymname}{\acronymname@uestcthesis}
+\renewcommand{\pagelistname}{\pagelistname@uestcthesis}
 \newcommand{\fuhao}[3]{
-\glossary{name={#1},description={#2},sort=#3}
-\renewcommand{\ifusingglossary}{true}%设置使用主要符号表
+\newglossaryentry{#3}{name={#1},description={#2},sort=#3}
 }
+\newglossarystyle{acronymwithtranslation}{%
+\setglossarystyle{long3colheader}%在long3colheader基础上修改
+\renewcommand*{\glossaryheader}{%重定义表头
+\bfseries\acronymheader@uestcthesis&\bfseries\acronymfull@uestcthesis&
+\bfseries\acronymtranslation@uestcthesis\tabularnewline\endhead}%
+\renewenvironment{theglossary}%重定义列宽
+{\begin{longtable}{lp{\glsdescwidth}p{7em}}}%
+{\end{longtable}}%
+\renewcommand{\glossentry}[2]{%重定义显示什么列：缩略词、英文全称、中文全称
+\glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}} &
+\csname glo@##1@first\endcsname & \glossentrydesc{##1}\tabularnewline
+}%
+\renewcommand{\subglossentry}[3]{%
+&
+\glssubentryitem{##2}%
+\glstarget{##2}{\strut}\csname glo@##2@first\endcsname &
+\glossentrydesc{##2}\tabularnewline
+}%
+}
+
 
 \AtBeginDocument{%插入到论文内容的最前面。
 \begin{CJK}{UTF8}{rm}%中文支持环境，此处内容不受ctexbook文类影响，所以必须手动加这个环境。
@@ -3249,7 +3320,12 @@ pdfpagelayout={TwoPageRight}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \tocmatter%目录版式
 \tableofcontents%插入目录
+\insertlof%插入图目录
+\insertlot%插入表目录
 \clearpage{\pagestyle{empty}\cleardoublepage}%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
+\acronymnamematterfancy%设置缩略词表版式
+\printacronyms[style=acronymwithtranslation]
+\clearpage{\pagestyle{empty}\cleardoublepage}
 \glossarymatterfancy%设置主要符号表版式。
 \printglossary%插入主要符号表
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -3348,13 +3424,16 @@ pdfpagelayout={TwoPageRight}
 \include{contents/translation}
 }
 {
+\ifdef{\usecv@uestcthesis}{\usecv@uestcthesis}{
 \IfFileExists{contents/publications.bib}{%如果删除了publications.bib，则不显示这一章
 \CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\publicationsname@degree}%将攻博/硕期间发表的论文编入目录
 {\zihao{5}
 \bibliographypublications{contents/publications}%插入攻博/硕期间发表的论文
-}}{}}
+}}{}
+}
+}
 \clearpage\end{CJK}}
 \renewcommand*\CTEXsetfont{%
   \begingroup
