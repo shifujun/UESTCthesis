@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2014/01/16 v0.6 UESTC thesis class]
+    [2014/01/20 v0.6.1 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -94,6 +94,10 @@
 %该选项将使得CJKfntef 宏包或者CCTfntef 宏包被自动调用。这两个宏包是下划线宏包。
 %    \begin{macrocode}
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
+%    \end{macrocode}
+%\changes{v0.6.1}{2014/01/20}{修正所有正文的英文为Times字体。抄录环境中的英文使用打印机字体，并不能用Times字体。}
+%    \begin{macrocode}
+\RequirePackage{mathptmx}
 %    \end{macrocode}
 %\changes{v0.6}{2014/01/16}{修正ttfamily为宋体，而不是默认的仿宋。}
 %修正ttfamily为宋体，而不是默认的仿宋。
@@ -3697,11 +3701,12 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %    \end{macrocode}
 % \end{macro}
 %\changes{v0.5.4}{2013/10/29}{修改中英文摘要标题和关键词的字体，改为加粗形式。并按照范例，在“摘要”二字中间加空格。}
+%\changes{v0.6.1}{2014/01/20}{修改中英文关键词换行缩进。}
 %    \begin{macrocode}
 \chapter*{摘\enspace 要}%插入不带章号的摘要
 }
 {\\[3mm]%摘要后换行空出3mm
-{\textbf{关键词：}}\@ckeywords%插入关键词
+{\textbf{关键词：}}\parbox[t]{378.59134pt}{\@ckeywords}%插入关键词
 }
 %    \end{macrocode}
 % \end{environment}
@@ -3727,7 +3732,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \chapter*{\bf ABSTRACT}%插入不带章号的ABSTRACT
 }
 {\\[3mm]%摘要后换行空出3mm
-{\bf Keywords:}\@ekeywords%插入关键词
+{\bf Keywords:}\parbox[t]{370.98836pt}{\@ekeywords}%插入关键词
 }
 %    \end{macrocode}
 % \end{environment}
@@ -3957,6 +3962,7 @@ pdfpagelayout={TwoPageRight}
 %\changes{v0.4.3}{2013/05/20}{修复bug：摘要应从右页开始。前置部分都需要章起右页。}
 %\changes{v0.4.4}{2013/05/23}{本科论文中将外文资料和翻译加入目录中。}
 %\changes{v0.5.4}{2013/10/29}{修改封面到摘要之前的部分实际的页码，避免pdf阅读器中页码冲突。}
+%\changes{v0.6.1}{2014/01/20}{添加摘要和目录到pdf书签中。}
 %    \begin{macrocode}
 % !Mode:: "TeX:UTF-8"
 
@@ -3967,12 +3973,15 @@ pdfpagelayout={TwoPageRight}
 \maketitle%生成并插入封面
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \Cabstractmatter%设置中文摘要版式
+\pdfbookmark[1]{摘要}{Cabstract}%添加中文摘要的PDF书签
 \include{contents/Cabstract}%插入中文摘要
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \Eabstractmatter%设置英文摘要版式
+\pdfbookmark[1]{Abstract}{Eabstract}%添加英文摘要的PDF书签
 \include{contents/Eabstract}%插入英文摘要
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \tocmatter%目录版式
+\pdfbookmark[1]{目录}{tableofcontents}%添加目录的PDF书签
 \tableofcontents%插入目录
 \insertlof%插入图目录
 \insertlot%插入表目录
@@ -4026,8 +4035,13 @@ pdfpagelayout={TwoPageRight}
 \newpage
 \insertreference
 }
-
+%    \end{macrocode}
+% \changes{v0.6.1}{2014/01/20}{修正附录中图表公式的标号格式。}
+%    \begin{macrocode}
 \appendix%附录版式
+\renewcommand{\thefigure}{\Alph{chapter}\textendash\arabic{figure}}
+\renewcommand{\thetable}{\Alph{chapter}\textendash\arabic{table}}
+\renewcommand{\theequation}{\Alph{chapter}\textendash\arabic{equation}}
 \renewcommand{\chaptermark}[1]{\markboth{\CTEX@appendixname\Alph{chapter}~  #1 }{}}%附录页眉设置
 \input{contents/appendix.tex}%插入附录内容
 \clearpage

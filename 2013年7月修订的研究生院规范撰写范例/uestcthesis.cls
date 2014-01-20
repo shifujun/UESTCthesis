@@ -29,8 +29,9 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/01/16 v0.6 UESTC thesis class]
+    [2014/01/20 v0.6.1 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
+\RequirePackage{mathptmx}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
@@ -3166,7 +3167,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \chapter*{摘\enspace 要}%插入不带章号的摘要
 }
 {\\[3mm]%摘要后换行空出3mm
-{\textbf{关键词：}}\@ckeywords%插入关键词
+{\textbf{关键词：}}\parbox[t]{378.59134pt}{\@ckeywords}%插入关键词
 }
 \newenvironment{Eabstract}[5]{
 \newcommand{\@ekeywords}{
@@ -3180,7 +3181,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \chapter*{\bf ABSTRACT}%插入不带章号的ABSTRACT
 }
 {\\[3mm]%摘要后换行空出3mm
-{\bf Keywords:}\@ekeywords%插入关键词
+{\bf Keywords:}\parbox[t]{370.98836pt}{\@ekeywords}%插入关键词
 }
 \CTEXoptions[contentsname={\protect\heiti\protect\zihao{-3}目\enspace 录}]
 \setcounter{tocdepth}{3}
@@ -3313,12 +3314,15 @@ pdfpagelayout={TwoPageRight}
 \maketitle%生成并插入封面
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \Cabstractmatter%设置中文摘要版式
+\pdfbookmark[1]{摘要}{Cabstract}%添加中文摘要的PDF书签
 \include{contents/Cabstract}%插入中文摘要
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \Eabstractmatter%设置英文摘要版式
+\pdfbookmark[1]{Abstract}{Eabstract}%添加英文摘要的PDF书签
 \include{contents/Eabstract}%插入英文摘要
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \tocmatter%目录版式
+\pdfbookmark[1]{目录}{tableofcontents}%添加目录的PDF书签
 \tableofcontents%插入目录
 \insertlof%插入图目录
 \insertlot%插入表目录
@@ -3367,8 +3371,10 @@ pdfpagelayout={TwoPageRight}
 \newpage
 \insertreference
 }
-
 \appendix%附录版式
+\renewcommand{\thefigure}{\Alph{chapter}\textendash\arabic{figure}}
+\renewcommand{\thetable}{\Alph{chapter}\textendash\arabic{table}}
+\renewcommand{\theequation}{\Alph{chapter}\textendash\arabic{equation}}
 \renewcommand{\chaptermark}[1]{\markboth{\CTEX@appendixname\Alph{chapter}~  #1 }{}}%附录页眉设置
 \input{contents/appendix.tex}%插入附录内容
 \clearpage
