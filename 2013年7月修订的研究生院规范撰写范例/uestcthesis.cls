@@ -3181,7 +3181,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \chapter*{\bf ABSTRACT}%插入不带章号的ABSTRACT
 }
 {\\[3mm]%摘要后换行空出3mm
-{\bf Keywords:}\parbox[t]{370.98836pt}{\@ekeywords}%插入关键词
+{\bf Keywords:\nbs}\parbox[t]{367.97586pt}{\@ekeywords}%插入关键词
 }
 \CTEXoptions[contentsname={\protect\heiti\protect\zihao{-3}目\enspace 录}]
 \setcounter{tocdepth}{3}
