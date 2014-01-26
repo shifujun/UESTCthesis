@@ -3283,8 +3283,8 @@ pdfpagelayout={TwoPageRight}
 \renewcommand{\descriptionname}{\descriptionname@uestcthesis}
 \renewcommand{\acronymname}{\acronymname@uestcthesis}
 \renewcommand{\pagelistname}{\pagelistname@uestcthesis}
-\newcommand{\fuhao}[3]{
-\newglossaryentry{#3}{name={#1},description={#2},sort=#3}
+\newcommand{\fuhao}[3]{%
+\newglossaryentry{#3}{name={#1},description={#2},sort=#3}%
 }
 \newglossarystyle{acronymwithtranslation}{%
 \setglossarystyle{long3colheader}%在long3colheader基础上修改
