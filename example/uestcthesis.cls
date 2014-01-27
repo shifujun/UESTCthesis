@@ -2931,10 +2931,14 @@
 {\zihao{-4}（作者姓名）}\\
 {\zihao{-4}~}\\
 {\zihao{5}~}\\
-{\zihao{-4}指导教师}\makebox[29em][c]{\zihao{-4}\uline{\hfill\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserCname}}{}{\@adviserBname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{\isundefined{\@adviserDname}}{}{\@adviserBname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[5bp]
+{\zihao{-4}指导教师}\makebox[29em][c]{\zihao{-4}\uline{\hfill%
+\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserCname}}{}{\@adviserCname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserDname}}{}{\@adviserDname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[5bp]
 {\zihao{-4}（姓名、职称、单位名称）}\\[8bp]
 \end{center}
 {\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@degree\hfill}}
