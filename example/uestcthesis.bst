@@ -3133,6 +3133,7 @@ FUNCTION {end.bib}
 }
 
 EXECUTE {end.bib}
+
 \endinput
 %%
 %% End of file `uestcthesis.bst'.

@@ -2,6 +2,13 @@
 
 \chapter{更新日志}
 \noindent
+2014年1月20日：v0.6.2
+\begin{enumerate}
+\item 新增一个用于检查模板所依赖的全部宏包版本的packagecheck.tex。编译它即可输出当前版本的模板所需的全部宏包的所需版本和当前已安装的版本，或者找不到需要的宏包。
+
+\end{enumerate}
+
+\noindent
 2014年1月20日：v0.6.1
 \begin{enumerate}
 \item 论文中所有正文中的英文修正为\href{http://en.wikipedia.org/wiki/Nimbus_Roman_No9_L}{Nimbus Roman No9 L字体(wiki链接)}，这个字体和Times New Roman字体高度相似。
@@ -16,7 +23,7 @@
 \begin{enumerate}
 \item 添加选项listoffigures，用以打印图目录。
 \item 添加选项listoftables，用以打印表目录。
-\item 添加命令\verb|\englishshcoolextraline|，用以在titlepage.tex文件中。当用\\ \verb|\englishshcool|命令填写学院英文名时，英文名过长一行显示不下的情况下（例如通信学院），用\verb|\englishshcoolextraline|命令将写不下的词写在下一行。
+\item 添加命令\verb|\englishshcoolextraline|，用以在titlepage.tex文件中。当用\\ \verb|\englishshcool|命令填写学院英文名时，英文名过长一行显示不下的情况下（例如通信学院），用\verb|\englishshcoolextraline| 命令将写不下的词写在下一行。
 \item 根据反馈，去掉所有超级链接的有色外框。
 \item 将枚举环境的序号缩进到和正文一致。
 \item 添加选项cv。开启后会用contents目录下的cv.tex替换publications.bib生成的攻读硕博期间发表的论文。cv.tex是按照一位通信学院的同学提供的一份往年的硕士论文中的格式做的模板。这个“个人简历及攻读硕士学位期间取得的研究成果”格式，以及“个人简历”都不是学校规范中要求的。所以如果不是自己学院要求、自己导师要求，建议不要用这个选项。
@@ -235,6 +242,8 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 
 如果是用CTeX或MikTeX安装的模板，请用Update程序更新模板。但不一定能获得最新的模板，因为模板首先在GitHub上更新。
 \subsection{测试编译}
+在v0.6.2版本中新增加了一个packagecheck.tex文件，编译它即可输出当前版本的模板所需的全部宏包的所需版本和当前已安装的版本，或者找不到需要的宏包。缺失的宏包可以通过用管理员权限编译该文件，使MikTeX自动安装缺失的宏包。版本过旧的宏包需要通过MikTeX的更新程序更新宏包。
+
 用WinEdt打开thesis.tex如图~\ref{winedt}（双击即可）。
 \pic[htbp]{WinEdt界面}{width=\textwidth}{winedt}
 点击图中红色箭头指向的黑色实心小三角，在下拉菜单中选择PDFLaTeX。 然后点击绿色箭头指向的按钮将此文件设置为主文件。最后点击蓝色箭头指向的按钮，或按键盘上的F9按键，编译论文。用这种方式编译论文比较方便，但会缺少研究生论文所需的“攻读期间发表的成果”一章。所以正式编译时必须用compile.bat 编译论文才能得到正确的结果。
@@ -247,7 +256,7 @@ $\mathbb{C}$\kern-.05em\TeX{}是Windows系统下面向中文优化的一套\TeX{
 \section{模板结构}\label{templatestructure}
 从GitHub上下载的zip解压后，只有example目录是一份模板。source目录是模板的源代码。example就相当于一份论文，也叫工作目录。你可以重命名这个目录。
 
-工作目录中应包含3个目录和3个文件，见表~\ref{structtab}。表中说明为Windows环境下的情况。Linux和Mac 请将bat文件换为sh文件即可。example 目录中还有两个zip文件：windows下编译脚本.zip和linux,mac下编译脚本.zip。选择其中一个解压到工作目录中。
+工作目录中应包含3个目录和3个文件，见表~\ref{structtab}。表中说明为Windows环境下的情况。Linux和Mac 请将bat 文件换为sh文件即可。example 目录中还有两个zip文件：windows下编译脚本.zip和linux,mac下编译脚本.zip。选择其中一个解压到工作目录中。
 \threelinetable[htbp]{structtab}{\textwidth}{lcX}{模板结构}
 {名称&目录/文件&说明\\
 }{
@@ -301,7 +310,7 @@ $\mathbb{C}$\kern-.05em\TeX{}套装自带的PDF阅读器SumatraPDF，也就是�
 \end{pics}
 这四行命令中，第一行和最后一行定义了一个子图环境，在其中可以插入若干条addsubpic 命令。当一行图片排满后可以换行到下一行。注意图片间有间距，所以两张\verb|0.5\textwidth|宽的图片不能排在一行。\par
 
-\label{testpicslabel}测试引用图片标签。单张图片图\ref{Chrysanthemum}是一副菊花。子图效果如图\ref{picsaaaa}所示，其中有两幅子图。子图\ref{Tulips} 是郁金香，子图\ref{Penguins}是企鹅。
+\label{testpicslabel}测试引用图片标签。单张图片图\ref{Chrysanthemum}是一副菊花。子图效果如图\ref{picsaaaa} 所示，其中有两幅子图。子图\ref{Tulips} 是郁金香，子图\ref{Penguins}是企鹅。
 \subsubsection{插入表格}
 \TeX 系统对表格的支持可能不够出色。这种说法主要是因为微软的Excel 实在是太出色了，以至于人们经常用Excel 制作结构非常复杂看起来很好看的表格。其实大多数表格都可以简化。《中国高等学校自然科学学报编排规范(修订版)》中讲到：表应精心设计，为使表的结构简洁，建议采用三线表，必要时可加辅助线，如表~\ref{tab2}。
 

@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/01/20 v0.6.1 UESTC thesis class]
+    [2014/02/11 v0.6.2 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
@@ -3476,6 +3476,7 @@ pdfpagelayout={TwoPageRight}
  \ifdim \footnotemargin =\z@ \llap {\hbox { \normalfont \@thefnmark} }\else
  \llap {\hb@xt@ -\footnotemargin {\hbox { \normalfont \@thefnmark} \hss }}
  \fi \fi \fi \footnotelayout #1\ifFN@hangfoot \par \egroup \fi}
+
 \endinput
 %%
 %% End of file `uestcthesis.cls'.

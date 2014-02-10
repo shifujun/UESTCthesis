@@ -1,0 +1,260 @@
+%%
+%% This is file `packagecheck.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% uestcthesis.dtx  (with options: `packagecheck')
+%% 
+%% This is a generated file.
+%% 
+%%  Copyright 2012-2013 Shi Fujun <shifujun@foxmail.com>
+%% 
+%%  This work may be distributed and/or modified under the
+%%  conditions of the LaTeX Project Public License, either version 1.3
+%%  of this license or (at your option) any later version.
+%%  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%%  and version 1.3 or later is part of all distributions of LaTeX
+%%  version 2005/12/01 or later.
+%% 
+%%  This work has the LPPL maintenance status `maintained'.
+%% 
+%%  The Current Maintainer of this work is Shi Fujun <shifujun@foxmail.com>.
+%% 
+%%  This work consists of the files uestcthesis.dtx, uestcthesis.ins
+%%  and the derived file uestcthesis.cls, uestcthesis.bst and beamerthemeuestcthesis.sty.
+%%  Other files in this work's package are belongs to the respective owners.
+%% 
+
+
+\makeatletter
+\def\version@uestcthesis{v0.6.2}
+\IfFileExists{ctexbook.cls}{
+\documentclass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
+}{
+\documentclass{article}
+}
+\def\@parse@version@checkpackage#1/#2/#3#4#5\@nil{#1/#2/#3#4 }
+\def\packagelist{}
+\newcommand{\checkpackage}[2]{%
+    \expandafter\def\csname#1@needversion\endcsname{#2}
+    \IfFileExists{#1.\@pkgextension}{%
+    \usepackage{#1}%
+        \@ifpackagelater{#1}{#2}{%
+        \expandafter\def\csname#1@checkresult\endcsname{OK!}
+        }{%
+        \expandafter\def\csname#1@checkresult\endcsname{too old!}
+        }
+        \expandafter\def\csname#1@currentversion\endcsname{%
+        \xdef\cver@checkpackage{\csname ver@#1.sty\endcsname}
+        \expandafter\@parse@version@checkpackage\cver@checkpackage\@nil%
+        }%
+    }%
+    {\expandafter\def\csname#1@checkresult\endcsname{not found!}}%
+
+    \xdef\packagelist{#1,\packagelist}
+}
+\newcommand{\checkpackagespecial}[2]{%
+    \expandafter\def\csname#1@needversion\endcsname{#2}
+    \IfFileExists{#1.\@pkgextension}{%
+    \usepackage{#1}%
+        \expandafter\def\csname#1@checkresult\endcsname{Maybe OK!}
+
+        \expandafter\def\csname#1@currentversion\endcsname{%
+        unknown!
+        }%
+    }%
+    {\expandafter\def\csname#1@checkresult\endcsname{not found!}}%
+
+    \xdef\packagelist{#1,\packagelist}
+}
+\newcommand{\checkctexbookclass}[1]{%
+    \expandafter\def\csname ctexbook@needversion\endcsname{#1}
+    \IfFileExists{ctexbook.\@clsextension}{%
+        \@ifclasslater{ctexbook}{#1}{%
+        \expandafter\def\csname ctexbook@checkresult\endcsname{OK!}
+        }{%
+        \expandafter\def\csname ctexbook@checkresult\endcsname{too old!}
+        }
+        \expandafter\def\csname ctexbook@currentversion\endcsname{%
+        \xdef\cver@checkpackage{\csname ver@ctexbook.cls\endcsname}
+        \expandafter\@parse@version@checkpackage\cver@checkpackage\@nil%
+        }%
+    }%
+    {\expandafter\def\csname ctexbook@checkresult\endcsname{not found!}}%
+
+    \xdef\packagelist{ctexbook,\packagelist}
+}
+\def\checkresult#1{%
+    \makebox[4.5cm][l]{#1}%
+    \makebox[10em][l]{\csname#1@needversion\endcsname}%
+    \makebox[10em][l]{\csname#1@currentversion\endcsname}%
+    \makebox[10em][l]{\csname#1@checkresult\endcsname}\\
+}
+
+\checkctexbookclass{2011/03/11}
+\checkpackage{mathptmx}{2005/04/12}
+\checkpackage{etoolbox}{2011/01/03}
+\checkpackage{ifthen}{2001/05/26}
+\checkpackage{geometry}{2010/09/12}
+\checkpackage{graphicx}{1999/02/16}
+\checkpackage{calc}{2007/08/22}
+\checkpackage{float}{2001/11/08}
+\checkpackagespecial{texnames}{}%这个宏包没有版本号
+\checkpackage{caption}{2013/05/02}
+\checkpackage{booktabs}{2005/04/14}
+\checkpackage{tabularx}{1999/01/07}
+\checkpackage{threeparttable}{2003/06/13}
+\checkpackage{longtable}{2004/02/01}
+\checkpackage{placeins}{2005/04/18}
+\checkpackage{flafter}{2000/07/23}
+\checkpackage{amsmath}{2013/01/14}
+\checkpackage{amsfonts}{2013/01/14}
+\checkpackage{amssymb}{2013/01/14}
+\checkpackage{ntheorem}{2011/08/15}
+\checkpackage{natbib}{2010/09/13}
+\checkpackage{multibib}{2008/12/10}
+\checkpackage{cmap}{2008/03/06}
+\checkpackage{hyperxmp}{2013/07/18}
+\checkpackage{hyperref}{2012/11/06}
+\checkpackage{subfigure}{2002/07/30}
+\checkpackage{enumitem}{2011/09/28}
+\checkpackage{color}{2005/11/14}
+\checkpackage{marvosym}{2011/07/20}
+\checkpackage{glossaries}{2013/12/05}
+\checkpackage{footmisc}{2011/06/06}
+\checkpackage{pifont}{2005/04/12}
+
+\checkpackagespecial{fontenc}{2005/09/27}
+\checkpackage{l3bootstrap}{2014/01/04}
+\checkpackage{l3names}{2014/01/04}
+\checkpackage{etex}{1998/03/26}
+\checkpackage{expl3}{2014/01/07}
+\checkpackage{l3basics}{2014/01/04}
+\checkpackage{l3expan}{2014/01/04}
+\checkpackage{l3tl}{2013/12/27}
+\checkpackage{l3seq}{2013/12/14}
+\checkpackage{l3int}{2013/08/02}
+\checkpackage{l3quark}{2013/12/14}
+\checkpackage{l3prg}{2014/01/04}
+\checkpackage{l3clist}{2013/07/28}
+\checkpackage{l3token}{2013/08/25}
+\checkpackage{l3prop}{2013/12/14}
+\checkpackage{l3msg}{2013/07/28}
+\checkpackage{l3file}{2013/10/13}
+\checkpackage{l3skip}{2013/07/28}
+\checkpackage{l3keys}{2013/12/08}
+\checkpackage{l3fp}{2014/01/04}
+\checkpackage{l3box}{2013/07/28}
+\checkpackage{l3coffins}{2013/12/14}
+\checkpackage{l3color}{2012/08/29}
+\checkpackage{l3luatex}{2013/07/28}
+\checkpackage{l3candidates}{2014/01/06}
+\checkpackage{ifpdf}{2011/01/30}
+\checkpackage{ifxetex}{2010/09/12}
+\checkpackage{keyval}{1999/03/16}
+\checkpackage{indentfirst}{1995/11/23}
+\checkpackage{fix-cm}{2006/09/13}
+\checkpackage{CJKutf8}{2012/05/07}
+\checkpackage{inputenc}{2008/03/30}
+\checkpackage{CJK}{2012/05/07}
+\checkpackage{MULEenc}{2012/05/07}
+\checkpackage{CJKpunct}{2009/05/06}
+\checkpackage{CJKfntef}{2012/05/07}
+\checkpackage{CJKulem}{2012/05/07}
+\checkpackage{ulem}{2012/05/18}
+\checkpackage{ifvtex}{2010/03/01}
+\checkpackage{graphics}{2009/02/05}
+\checkpackage{trig}{1999/03/16}
+\checkpackage{infwarerr}{2010/04/08}
+\checkpackage{ltxcmds}{2011/11/09}
+\checkpackage{caption3}{2013/05/02}
+\checkpackage{array}{2008/09/09}
+\checkpackage{amstext}{2000/06/29}
+\checkpackage{amsbsy}{1999/11/29}
+\checkpackage{amsopn}{1999/12/14}
+\checkpackage{atenddvi}{2007/04/17}
+\checkpackage{zref-abspage}{2012/04/04}
+\checkpackage{zref-base}{2012/04/04}
+\checkpackage{kvsetkeys}{2012/04/25}
+\checkpackage{etexcmds}{2011/02/16}
+\checkpackage{ifluatex}{2010/03/01}
+\checkpackage{kvdefinekeys}{2011/04/07}
+\checkpackage{pdftexcmds}{2011/11/29}
+\checkpackage{auxhook}{2011/03/04}
+\checkpackage{atbegshi}{2011/10/05}
+\checkpackage{zref-lastpage}{2012/04/04}
+\checkpackage{atveryend}{2011/06/30}
+\checkpackage{kvoptions}{2011/06/30}
+\checkpackage{pdfescape}{2011/11/25}
+\checkpackage{stringenc}{2011/12/02}
+\checkpackage{intcalc}{2007/09/27}
+\checkpackage{hobsub-hyperref}{2012/04/25}
+\checkpackage{hobsub-generic}{2012/04/25}
+\checkpackage{hobsub}{2012/04/25}
+\checkpackage{bigintcalc}{2012/04/08}
+\checkpackage{bitset}{2011/01/30}
+\checkpackage{uniquecounter}{2011/01/30}
+\checkpackage{letltxmacro}{2010/09/02}
+\checkpackage{hopatch}{2011/06/24}
+\checkpackage{xcolor-patch}{2011/01/30}
+\checkpackage{refcount}{2011/10/16}
+\checkpackage{hycolor}{2011/01/30}
+\checkpackage{url}{2006/04/12}
+\checkpackage{rerunfilecheck}{2011/04/15}
+\checkpackage{xkeyval}{2012/10/14}
+\checkpackage{mfirstuc}{2013/11/04}
+\checkpackage{textcase}{2004/10/07}
+\checkpackage{xfor}{2009/02/05}
+\checkpackage{datatool-base}{2013/09/06}
+\checkpackage{substr}{2009/10/20}
+\checkpackage{datatool-fp}{2013/08/29}
+\checkpackage{fp}{1995/04/02}
+\checkpackage{defpattern}{1994/10/12}
+\checkpackage{fp-basic}{1996/05/13}
+\checkpackage{fp-addons}{1995/03/15}
+\checkpackage{fp-snap}{1995/04/05}
+\checkpackage{fp-exp}{1995/04/03}
+\checkpackage{fp-trigo}{1995/04/14}
+\checkpackage{fp-pas}{1994/08/29}
+\checkpackage{fp-random}{1995/02/23}
+\checkpackage{fp-eqn}{1995/04/03}
+\checkpackage{fp-upn}{1996/10/21}
+\checkpackage{fp-eval}{1995/04/03}
+\checkpackage{glossaries-compatible-307}{2013/11/14}
+\checkpackage{glossary-hypernav}{2013/11/14}
+\checkpackage{glossary-list}{2013/11/14}
+\checkpackage{glossary-long}{2013/11/14}
+\checkpackage{glossary-super}{2013/11/14}
+\checkpackage{supertabular}{2004/02/20}
+\checkpackage{glossary-tree}{2013/11/14}
+\checkpackage{ltcaption}{2013/02/03}
+\checkpackage{nameref}{2012/10/27}
+\checkpackage{gettitlestring}{2010/12/03}
+\makeatother
+\begin{document}
+\chapter{Packages Check}
+\makeatletter%
+\noindent NOTICE:This report is prepared for uestcthesis \version@uestcthesis.
+
+\noindent\makebox[4.5cm][l]{\bf Package}\makebox[10em][l]{\bf Need}\makebox[10em][l]{\bf Have}\makebox[10em][l]{\bf Check Result}\\
+\newif\iflisthasnext
+\def\poppackagename#1,#2\@nil{%
+\checkresult{#1}%
+\def\packagelist{#2}%
+}
+\loop
+\expandafter\poppackagename\packagelist\@nil%
+\ifx\packagelist\empty\listhasnextfalse %
+\else\listhasnexttrue%
+\fi%
+\iflisthasnext%
+\repeat%
+\makeatother
+\end{document}
+
+
+\endinput
+%%
+%% End of file `packagecheck.tex'.
