@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/02/11 v0.6.2 UESTC thesis class]
+    [2014/02/24 v0.6.3 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
@@ -2887,6 +2887,50 @@
 {\zihao{3}\@date}
 \end{center}
 \end{titlepage}}}}{}
+\newcommand{\secondtitlepage}{%
+\newpage
+\thispagestyle{empty}
+\vspace*{-4.1mm}
+\noindent
+{\zihao{-4}分类号}\makebox[6.35cm][l]{\zihao{5}\uline{~~~\@classnumber\hfill}}
+{\zihao{-4}密级}\makebox[5.24cm][l]{\zihao{4}\uline{~~~\@securityclassification\hfill}}\\[2.3mm]
+{\zihao{-4}UDC\zihao{-5}\textsuperscript{~注1}\!}\makebox[6.48cm][l]{\zihao{5}\uline{~~~\@UDC\hfill}}\\[1.1mm]
+\begin{center}
+{\zihao{-0}学\quad{}位\quad{}论\quad{}文}\\
+{\zihao{3}~}\\[3.3mm]
+\makebox[14.99cm][c]{\zihao{3}\uline{\hfill}}\\[0.82cm]
+\makebox[14.99cm][c]{\zihao{3}\uline{\hfill}}\\
+\vspace{-2.47cm}
+\noindent\parbox[t][2cm][t]{34em}{\centering\zihao{2}\baselineskip=39.13766pt\@title}\\[6.8mm]
+{\zihao{-4}（题名和副题名）}\\
+{\zihao{5}~}\\
+\vspace{-3mm}
+\makebox[4.13cm][c]{\zihao{3}\@author}\\\vspace{-0.58cm}
+\makebox[4.13cm][c]{\zihao{3}\uline{\hfill}}\\[3mm]
+{\zihao{-4}（作者姓名）}\\
+{\zihao{-4}~}\\
+{\zihao{5}~}\\
+\vspace{-5mm}
+{\zihao{-4}指导教师}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill%
+\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserCname}}{}{\@adviserCname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserDname}}{}{\@adviserDname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[6.5mm]
+{\zihao{-4}（姓名、职称、单位名称）}\\
+\vspace{-3mm}
+\end{center}
+{\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{3}\uline{\hfill\@degree\hfill}}
+{\zihao{-4}学科专业}\makebox[15em][l]{\zihao{3}\uline{\hfill\@major\hfill}}\\[13bp]
+{\zihao{-4}提交论文日期}\makebox[10em][l]{\zihao{3}\uline{\hfill\@date\hfill}}
+{\zihao{-4}论文答辩日期}\makebox[13em][l]{\zihao{3}\uline{\hfill\@oraldefensedate\hfill}}\\[13bp]
+{\zihao{-4}学位授予单位和日期}\makebox[26em][l]{\zihao{3}\uline{\hfill 电子科技大学\hfill\@awarddate}}\\[13bp]
+{\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{3}\uline{\hfill\@chairman\hfill}}\\[13bp]
+{\zihao{-4}评阅人}\makebox[32em][l]{\zihao{3}\uline{\hfill\@appraiser\hfill}}\\[3mm]
+{\zihao{5}注1：注明《国际十进分类法UDC》的类号。}%
+}%
 \ifdefstring{\degree@uestcthesis}{master}{
 \renewcommand{\mastertitlepage@uestcthesis}{
 \renewcommand{\maketitle}{%定义封面的格式
@@ -2914,42 +2958,7 @@
 {\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
 {\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
 \end{center}
-\newpage
-\thispagestyle{empty}
-\noindent
-{\zihao{-4}分类号}\makebox[15em][l]{\zihao{-4}\uline{~~~\@classnumber\hfill}}
-{\zihao{-4}密级}\makebox[15em][l]{\zihao{-4}\uline{~~~\@securityclassification\hfill}}\\
-{\zihao{-4}UDC\textsuperscript{注1}\!}\makebox[15em][l]{\zihao{-4}\uline{~~~\@UDC\hfill}}\\
-\begin{center}
-{\zihao{-0}学\quad{}位\quad{}论\quad{}文}\\
-{\zihao{3}~}\\
-\makebox[\linewidth][c]{\zihao{3}\uline{\hfill\@title\hfill}}\\
-{\zihao{-4}（题名和副题名）}\\
-{\zihao{5}~}\\
-{\zihao{5}~}\\
-\makebox[10em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\
-{\zihao{-4}（作者姓名）}\\
-{\zihao{-4}~}\\
-{\zihao{5}~}\\
-{\zihao{-4}指导教师}\makebox[29em][c]{\zihao{-4}\uline{\hfill%
-\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
-\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
-\isundefined{\@adviserCname}}{}{\@adviserCname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
-\isundefined{\@adviserDname}}{}{\@adviserDname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[5bp]
-{\zihao{-4}（姓名、职称、单位名称）}\\[8bp]
-\end{center}
-{\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@degree\hfill}}
-{\zihao{-4}学科专业}\makebox[15em][l]{\zihao{-4}\uline{\hfill\@major\hfill}}\\[13bp]
-{\zihao{-4}提交论文日期}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@date\hfill}}
-{\zihao{-4}论文答辩日期}\makebox[13em][l]{\zihao{-4}\uline{\hfill\@oraldefensedate\hfill}}\\[13bp]
-{\zihao{-4}学位授予单位和日期}\makebox[26em][l]{\zihao{3}\uline{\hfill 电子科技大学\hfill\@awarddate}}\\[13bp]
-{\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{-4}\uline{\hfill\@chairman\hfill}}\\[13bp]
-{\zihao{-4}评阅人}\makebox[32em][l]{\zihao{-4}\uline{\hfill\@appraiser\hfill}}\\
-\vfill
-{\zihao{5}注1：注明《国际十进分类法UDC》的类号。}
+\secondtitlepage
 \newpage
 \thispagestyle{empty}
 \begin{center}
@@ -3020,42 +3029,7 @@
 {\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
 {\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
 \end{center}
-\newpage
-\thispagestyle{empty}
-\noindent
-{\zihao{-4}分类号}\makebox[15em][l]{\zihao{-4}\uline{~~~\@classnumber\hfill}}
-{\zihao{-4}密级}\makebox[15em][l]{\zihao{-4}\uline{~~~\@securityclassification\hfill}}\\
-{\zihao{-4}UDC\textsuperscript{注1}\!}\makebox[15em][l]{\zihao{-4}\uline{~~~\@UDC\hfill}}\\
-\begin{center}
-{\zihao{-0}学\quad{}位\quad{}论\quad{}文}\\
-{\zihao{3}~}\\
-\makebox[\linewidth][c]{\zihao{3}\uline{\hfill\@title\hfill}}\\
-{\zihao{-4}（题名和副题名）}\\
-{\zihao{5}~}\\
-{\zihao{5}~}\\
-\makebox[10em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\
-{\zihao{-4}（作者姓名）}\\
-{\zihao{-4}~}\\
-{\zihao{5}~}\\
-{\zihao{-4}指导教师}\makebox[29em][c]{\zihao{-4}\uline{\hfill%
-\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
-\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
-\isundefined{\@adviserCname}}{}{\@adviserCname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
-{\zihao{-4}\qquad\qquad}\makebox[29em][c]{\zihao{-4}\uline{\hfill\ifthenelse{%
-\isundefined{\@adviserDname}}{}{\@adviserDname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[5bp]
-{\zihao{-4}（姓名、职称、单位名称）}\\[8bp]
-\end{center}
-{\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@degree\hfill}}
-{\zihao{-4}学科专业}\makebox[15em][l]{\zihao{-4}\uline{\hfill\@major\hfill}}\\[13bp]
-{\zihao{-4}提交论文日期}\makebox[10em][l]{\zihao{-4}\uline{\hfill\@date\hfill}}
-{\zihao{-4}论文答辩日期}\makebox[13em][l]{\zihao{-4}\uline{\hfill\@oraldefensedate\hfill}}\\[13bp]
-{\zihao{-4}学位授予单位和日期}\makebox[26em][l]{\zihao{3}\uline{\hfill 电子科技大学\hfill\@awarddate}}\\[13bp]
-{\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{-4}\uline{\hfill\@chairman\hfill}}\\[13bp]
-{\zihao{-4}评阅人}\makebox[32em][l]{\zihao{-4}\uline{\hfill\@appraiser\hfill}}\\
-\vfill
-{\zihao{5}注1：注明《国际十进分类法UDC》的类号。}
+\secondtitlepage
 \newpage
 \thispagestyle{empty}
 \begin{center}
