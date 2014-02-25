@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/02/24 v0.6.3 UESTC thesis class]
+    [2014/02/25 v0.6.4 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
@@ -63,6 +63,9 @@
 \newcommand{\thesisname@english}{Master Thesis of University of Electronic Science and Technology of China}
 
 \newcommand{\chapternumberformat@uestcthesis}{\chinese{chapter}}
+\renewcommand{\firsttitlepage}{\firsttitlepage@master}
+\renewcommand{\secondtitlepage}{\secondtitlepage@Academic}
+\renewcommand{\thirdtitlepage}{\thirdtitlepage@Master}
 }
 \newcommand{\doctor@uestcthesis}{
 \newcommand{\degree@uestcthesis}{doctor}
@@ -81,6 +84,9 @@
 \newcommand{\thesisname@english}{Doctor Thesis of University of Electronic Science and Technology of China}
 
 \newcommand{\chapternumberformat@uestcthesis}{\chinese{chapter}}
+\renewcommand{\firsttitlepage}{\firsttitlepage@doctor}
+\renewcommand{\secondtitlepage}{\secondtitlepage@Academic}
+\renewcommand{\thirdtitlepage}{\thirdtitlepage@Doctor}
 }
 \newcommand{\tocname@uestcthesis}{\zihao{5}目\enspace 录}
 \newcommand{\chaptername@uestcthesis}{
@@ -130,10 +136,39 @@
 \renewcommand{\listfigurename}{List of Figures}
 \renewcommand{\listtablename}{List of Tables}
 }
+\newcommand{\firsttitlepage}{\newpage 错误：没有指定封面！}
+\newcommand{\secondtitlepage}{\newpage 错误：没有指定中文扉页！}
+\newcommand{\thirdtitlepage}{\newpage 错误：没有指定英文扉页！}
 \DeclareOption{bachelor}{\bachelor@uestcthesis}
 \DeclareOption{master}{\master@uestcthesis}
 \DeclareOption{doctor}{\doctor@uestcthesis}
 \DeclareOption{english}{\english@uestcthesis}
+\DeclareOption{engineeringmaster}{%
+\master@uestcthesis
+\renewcommand{\secondtitlepage}{\secondtitlepage@Engineering}
+}
+\DeclareOption{engineeringdoctor}{%
+\doctor@uestcthesis
+\renewcommand{\firsttitlepage}{\firsttitlepage@engineeringdoctor}
+\renewcommand{\secondtitlepage}{\secondtitlepage@Engineering}
+}
+\DeclareOption{professionalmaster}{%
+\master@uestcthesis
+\renewcommand{\firsttitlepage}{\firsttitlepage@professionalmaster}
+\renewcommand{\secondtitlepage}{\secondtitlepage@Professional}
+}
+\DeclareOption{researchreport}{%
+\master@uestcthesis
+\renewcommand{\secondtitlepage}{\secondtitlepage@ResearchReport}
+\renewcommand{\thirdtitlepage}{\thirdtitlepage@MasterResearchReport}
+}
+\DeclareOption{withoutforepages}{
+\newcommand{\withoutforepages@uestcthesis}{}
+}
+\DeclareOption{onlychapters}{
+\newcommand{\withoutforepages@uestcthesis}{}
+\newcommand{\onlychapters@uestcthesis}{}
+}
 \DeclareOption{cv}{
 \newcommand{\usecv@uestcthesis}{\input{contents/cv.tex}}
 }
@@ -488,6 +523,9 @@
 }
 \newcommand{\englishshcoolextraline}[1]{
 \newcommand{\@englishshcoolextraline}{#1}
+}
+\newcommand{\majortype}[1]{
+\newcommand{\@majortype}{#1}
 }
 \begin{filecontents*}{logo.tex}
 \documentclass[pstricks=true]{standalone}
@@ -2841,7 +2879,7 @@
 
 \end{document}
 \end{filecontents*}
-
+\ifdef{\withoutforepages@uestcthesis}{}{%withoutforepages选项效果
     \immediate\write18{latex logo}%
     \immediate\write18{dvips logo}%
     \IfFileExists{logo.dvi}{
@@ -2859,9 +2897,12 @@
 如果您是从MikTeX或CTAN.org处得到的此模板，请访问\url{https://github.com/shifujun/UESTCthesis}获取最新版本和相应的编译脚本。}
 }
 }
+}%这个大括号是前面withoutforepages选项判断的ifdef命令的一部分。
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \renewcommand{\bachelortitlepage@uestcthesis}{
 \renewcommand{\maketitle}{
+\setcounter{page}{1}%页码重置为1
+\pagenumbering{Alph}%页码使用大写罗马数字
 \begin{titlepage}
 \begin{center}
 \zihao{3}
@@ -2886,8 +2927,113 @@
 {\zihao{3}指导单位~}\makebox[20em][c]{\uline{\hfill\@university\hfill}}\\[5mm]
 {\zihao{3}\@date}
 \end{center}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 \end{titlepage}}}}{}
-\newcommand{\secondtitlepage}{%
+\newcommand{\firsttitlepage@doctor}{%
+\begin{center}
+{\zihao{2}电\enspace{}子\enspace{}科\enspace{}技\enspace{}大\enspace{}学}\\
+{\zihao{-4}UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA}\\
+~\\
+~\\
+{\zihao{0}博士学位论文}\\[12bp]
+{\bf\zihao{3}DOCTORAL DISSERTATION}\\[2cm]
+\uestclogobadge\\[2cm]
+\renewcommand{\ULthickness}{0.8pt}
+\renewcommand{\CJKunderlinecolor}{\color{black}}
+\linespread{1.25}
+\noindent
+\parbox[t][14ex][t]{\linewidth}{\centering
+{\zihao{-2} 论文题目~~}{\zihao{3}\uline{\@title}}
+}\\[3mm]
+\linespread{1.391}
+\renewcommand{\ULthickness}{0.4pt}
+{\zihao{3}~}\\
+{\zihao{3}学科专业~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@major\hfill}}\\[5mm]
+{\zihao{3}学\qquad 号~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@stuid\hfill}}\\[5mm]
+{\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
+{\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
+\end{center}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+\newcommand{\firsttitlepage@engineeringdoctor}{%
+\begin{center}
+{\zihao{2}电\enspace{}子\enspace{}科\enspace{}技\enspace{}大\enspace{}学}\\
+{\zihao{-4}UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA}\\
+~\\
+~\\
+{\zihao{0}工程博士学位论文}\\[12bp]
+{\bf\zihao{3}ENGINEERING DOCTORAL DISSERTATION}\\[2cm]
+\uestclogobadge\\[2cm]
+\renewcommand{\ULthickness}{0.8pt}
+\renewcommand{\CJKunderlinecolor}{\color{black}}
+\linespread{1.25}
+\noindent
+\parbox[t][14ex][t]{\linewidth}{\centering
+{\zihao{-2} 论文题目~~}{\zihao{3}\uline{\@title}}
+}\\[3mm]
+\linespread{1.391}
+\renewcommand{\ULthickness}{0.4pt}
+{\zihao{3}~}\\
+{\zihao{3}工程领域~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@major\hfill}}\\[5mm]
+{\zihao{3}学\qquad 号~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@stuid\hfill}}\\[5mm]
+{\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
+{\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
+\end{center}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+\newcommand{\firsttitlepage@master}{%
+\begin{center}
+{\zihao{2}电\enspace{}子\enspace{}科\enspace{}技\enspace{}大\enspace{}学}\\
+{\zihao{-4}UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA}\\
+~\\
+~\\
+{\zihao{0}硕士学位论文}\\[12bp]
+{\bf\zihao{3}MASTER THESIS}\\[2cm]
+\uestclogobadge\\[2cm]
+\renewcommand{\ULthickness}{0.8pt}
+\renewcommand{\CJKunderlinecolor}{\color{black}}
+\linespread{1.25}
+\noindent
+\parbox[t][14ex][t]{\linewidth}{\centering
+{\zihao{-2} 论文题目~~}{\zihao{3}\uline{\@title}}
+}\\[3mm]
+\linespread{1.391}
+\renewcommand{\ULthickness}{0.4pt}
+{\zihao{3}~}\\
+{\zihao{3}学科专业~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@major\hfill}}\\[5mm]
+{\zihao{3}学\qquad 号~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@stuid\hfill}}\\[5mm]
+{\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
+{\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
+\end{center}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+\newcommand{\firsttitlepage@professionalmaster}{%
+\begin{center}
+{\zihao{2}电\enspace{}子\enspace{}科\enspace{}技\enspace{}大\enspace{}学}\\
+{\zihao{-4}UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA}\\
+~\\
+~\\
+{\zihao{0}专业学位硕士学位论文}\\[12bp]
+{\bf\zihao{3}MASTER THESIS FOR PROFESSIONAL DEGREE}\\[2cm]
+\uestclogobadge\\[2cm]
+\renewcommand{\ULthickness}{0.8pt}
+\renewcommand{\CJKunderlinecolor}{\color{black}}
+\linespread{1.25}
+\noindent
+\parbox[t][14ex][t]{\linewidth}{\centering
+{\zihao{-2} 论文题目~~}{\zihao{3}\uline{\@title}}
+}\\[3mm]
+\linespread{1.391}
+\renewcommand{\ULthickness}{0.4pt}
+{\zihao{3}~}\\
+\makebox[12em][s]{\zihao{3}专业学位类别}~\makebox[9.26cm][c]{\zihao{3}\uline{\hfill\@majortype\hfill}}\\[5mm]
+\makebox[12em][s]{\zihao{3}学号}~\makebox[9.26cm][c]{\zihao{3}\uline{\hfill\@stuid\hfill}}\\[5mm]
+\makebox[12em][s]{\zihao{3}作者姓名}~\makebox[9.26cm][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
+\makebox[12em][s]{\zihao{3}指导教师}~\makebox[9.26cm][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
+\end{center}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+\newcommand{\secondtitlepage@Academic}{%
 \newpage
 \thispagestyle{empty}
 \vspace*{-4.1mm}
@@ -2930,106 +3076,145 @@
 {\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{3}\uline{\hfill\@chairman\hfill}}\\[13bp]
 {\zihao{-4}评阅人}\makebox[32em][l]{\zihao{3}\uline{\hfill\@appraiser\hfill}}\\[3mm]
 {\zihao{5}注1：注明《国际十进分类法UDC》的类号。}%
+\clearpage{\pagestyle{empty}\cleardoublepage}
 }%
-\ifdefstring{\degree@uestcthesis}{master}{
-\renewcommand{\mastertitlepage@uestcthesis}{
-\renewcommand{\maketitle}{%定义封面的格式
-\begin{titlepage}
-\begin{center}
-{\zihao{2}电\enspace{}子\enspace{}科\enspace{}技\enspace{}大\enspace{}学}\\
-{\zihao{-4}UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA}\\
-~\\
-~\\
-{\zihao{0}硕士学位论文}\\[12bp]
-{\bf\zihao{3}MASTER THESIS}\\[2cm]
-\uestclogobadge\\[2cm]
-\renewcommand{\ULthickness}{0.8pt}
-\renewcommand{\CJKunderlinecolor}{\color{black}}
-\linespread{1.25}
-\noindent
-\parbox[t][14ex][t]{\linewidth}{\centering
-{\zihao{-2} 论文题目~~}{\zihao{3}\uline{\@title}}
-}\\[3mm]
-\linespread{1.391}
-\renewcommand{\ULthickness}{0.4pt}
-{\zihao{3}~}\\
-{\zihao{3}学科专业~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@major\hfill}}\\[5mm]
-{\zihao{3}学\qquad 号~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@stuid\hfill}}\\[5mm]
-{\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
-{\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
-\end{center}
-\secondtitlepage
+\newcommand{\secondtitlepage@Engineering}{%
 \newpage
 \thispagestyle{empty}
+\vspace*{-4.1mm}
+\noindent
+{\zihao{-4}分类号}\makebox[6.35cm][l]{\zihao{5}\uline{~~~\@classnumber\hfill}}
+{\zihao{-4}密级}\makebox[5.24cm][l]{\zihao{4}\uline{~~~\@securityclassification\hfill}}\\[2.3mm]
+{\zihao{-4}UDC\zihao{-5}\textsuperscript{~注1}\!}\makebox[6.48cm][l]{\zihao{5}\uline{~~~\@UDC\hfill}}\\[1.1mm]
 \begin{center}
+{\zihao{-0}学\quad{}位\quad{}论\quad{}文}\\
+{\zihao{3}~}\\[3.3mm]
+\makebox[14.99cm][c]{\zihao{3}\uline{\hfill}}\\[0.82cm]
+\makebox[14.99cm][c]{\zihao{3}\uline{\hfill}}\\
+\vspace{-2.47cm}
+\noindent\parbox[t][2cm][t]{34em}{\centering\zihao{2}\baselineskip=39.13766pt\@title}\\[6.8mm]
+{\zihao{-4}（题名和副题名）}\\
+{\zihao{5}~}\\
+\vspace{-3mm}
+\makebox[4.13cm][c]{\zihao{3}\@author}\\\vspace{-0.58cm}
+\makebox[4.13cm][c]{\zihao{3}\uline{\hfill}}\\[3mm]
+{\zihao{-4}（作者姓名）}\\
 {\zihao{-4}~}\\
-{\zihao{-4}~}\\
-{\zihao{-4}~}\\
-{\bf\zihao{-2}\@englishtitle}\\
-\vfill
-{\zihao{-3}A Thesis Submitted to}\\[1ex]
-{\zihao{-3}University of Electronic Science and Technology of China}\\
-\vspace{3cm}
-\makebox[6em][r]{\zihao{4}Major:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishmajor\hfill}}\\[1ex]
-\makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
-\makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
-\makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
-\ifdef{\@englishshcoolextraline}{%
-\makebox[6em][r]{}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcoolextraline\hfill}}\\[1ex]%
-}{}
+{\zihao{5}~}\\
+\vspace{-5mm}
+{\zihao{-4}指导教师}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill%
+\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserCname}}{}{\@adviserCname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserDname}}{}{\@adviserDname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[6.5mm]
+{\zihao{-4}（姓名、职称、单位名称）}\\
+\vspace{-3mm}
 \end{center}
+{\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{3}\uline{\hfill\@degree\hfill}}
+{\zihao{-4}专业学位类别}\makebox[13em][l]{\zihao{3}\uline{\hfill\@majortype\hfill}}\\[13bp]
+{\zihao{-4}工程领域名称}\makebox[29em][l]{\zihao{3}\uline{\hfill\@major\hfill}}\\[13bp]
+{\zihao{-4}提交论文日期}\makebox[10em][l]{\zihao{3}\uline{\hfill\@date\hfill}}
+{\zihao{-4}论文答辩日期}\makebox[13em][l]{\zihao{3}\uline{\hfill\@oraldefensedate\hfill}}\\[13bp]
+{\zihao{-4}学位授予单位和日期}\makebox[26em][l]{\zihao{3}\uline{\hfill 电子科技大学\hfill\@awarddate}}\\[13bp]
+{\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{3}\uline{\hfill\@chairman\hfill}}\\[13bp]
+{\zihao{-4}评阅人}\makebox[32em][l]{\zihao{3}\uline{\hfill\@appraiser\hfill}}\\[3mm]
+{\zihao{5}注1：注明《国际十进分类法UDC》的类号。}%
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}%
+\newcommand{\secondtitlepage@Professional}{%
 \newpage
 \thispagestyle{empty}
-\linespread{1.5}
-\begin{center}
-{\bf\zihao{-2}独创性声明}\par
-\end{center}
-{\zihao{4}\qquad 本人声明所呈交的学位论文是本人在导师指导下进行的研究工作及取得的研究成果。据我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包含为获得电子科技大学或其它教育机构的学位或证书而使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示谢意。\par
-~\par
-作者签名：\makebox[5em][l]{\uline{\hfill}}\hfill
-日期：\qquad{}年\qquad{}月\qquad{}日 \par
-~\par
-\begin{center}
-{\bf\zihao{-2}论文使用授权}\par
-\end{center}
-{\zihao{4}\qquad 本学位论文作者完全了解电子科技大学有关保留、使用学位论文的规定，有权保留并向国家有关部门或机构送交论文的复印件和磁盘，允许论文被查阅和借阅。本人授权电子科技大学可以将学位论文的全部或部分内容编入有关数据库进行检索，可以采用影印、缩印或扫描等复制手段保存、汇编学位论文。\par
-（保密的学位论文在解密后应遵守此规定） \par
-~\par
-}
-\qquad 作者签名：\makebox[5em][l]{\uline{\hfill}}\hfill
-导师签名：\makebox[7em][l]{\uline{\hfill}}\par
-\hfill 日期：\qquad{}年\qquad{}月\qquad{}日 \par
-}
-\linespread{1.391}
-\end{titlepage}}}}{}
-\ifdefstring{\degree@uestcthesis}{doctor}{
-\renewcommand{\doctortitlepage@uestcthesis}{
-\renewcommand{\maketitle}{%定义封面的格式
-\begin{titlepage}
-\begin{center}
-{\zihao{2}电\enspace{}子\enspace{}科\enspace{}技\enspace{}大\enspace{}学}\\
-{\zihao{-4}UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA}\\
-~\\
-~\\
-{\zihao{0}博士学位论文}\\[12bp]
-{\bf\zihao{3}DOCTORAL DISSERTATION}\\[2cm]
-\uestclogobadge\\[2cm]
-\renewcommand{\ULthickness}{0.8pt}
-\renewcommand{\CJKunderlinecolor}{\color{black}}
-\linespread{1.25}
+\vspace*{-4.1mm}
 \noindent
-\parbox[t][14ex][t]{\linewidth}{\centering
-{\zihao{-2} 论文题目~~}{\zihao{3}\uline{\@title}}
-}\\[3mm]
-\linespread{1.391}
-\renewcommand{\ULthickness}{0.4pt}
-{\zihao{3}~}\\
-{\zihao{3}学科专业~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@major\hfill}}\\[5mm]
-{\zihao{3}学\qquad 号~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@stuid\hfill}}\\[5mm]
-{\zihao{3}作者姓名~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@author\hfill}}\\[5mm]
-{\zihao{3}指导教师~}\makebox[20em][c]{\zihao{3}\uline{\hfill\@advisername\hfill}}\\[5mm]
+{\zihao{-4}分类号}\makebox[6.35cm][l]{\zihao{5}\uline{~~~\@classnumber\hfill}}
+{\zihao{-4}密级}\makebox[5.24cm][l]{\zihao{4}\uline{~~~\@securityclassification\hfill}}\\[2.3mm]
+{\zihao{-4}UDC\zihao{-5}\textsuperscript{~注1}\!}\makebox[6.48cm][l]{\zihao{5}\uline{~~~\@UDC\hfill}}\\[1.1mm]
+\begin{center}
+{\zihao{-0}学\quad{}位\quad{}论\quad{}文}\\
+{\zihao{3}~}\\[3.3mm]
+\makebox[14.99cm][c]{\zihao{3}\uline{\hfill}}\\[0.82cm]
+\makebox[14.99cm][c]{\zihao{3}\uline{\hfill}}\\
+\vspace{-2.47cm}
+\noindent\parbox[t][2cm][t]{34em}{\centering\zihao{2}\baselineskip=39.13766pt\@title}\\[6.8mm]
+{\zihao{-4}（题名和副题名）}\\
+{\zihao{5}~}\\
+\vspace{-3mm}
+\makebox[4.13cm][c]{\zihao{3}\@author}\\\vspace{-0.58cm}
+\makebox[4.13cm][c]{\zihao{3}\uline{\hfill}}\\[3mm]
+{\zihao{-4}（作者姓名）}\\
+{\zihao{-4}~}\\
+{\zihao{5}~}\\
+\vspace{-5mm}
+{\zihao{-4}指导教师}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill%
+\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserCname}}{}{\@adviserCname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserDname}}{}{\@adviserDname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[6.5mm]
+{\zihao{-4}（姓名、职称、单位名称）}\\
+\vspace{-3mm}
 \end{center}
-\secondtitlepage
+{\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{3}\uline{\hfill\@degree\hfill}}
+{\zihao{-4}专业学位类别}\makebox[13em][l]{\zihao{3}\uline{\hfill\@majortype\hfill}}\\[13bp]
+{\zihao{-4}提交论文日期}\makebox[10em][l]{\zihao{3}\uline{\hfill\@date\hfill}}
+{\zihao{-4}论文答辩日期}\makebox[13em][l]{\zihao{3}\uline{\hfill\@oraldefensedate\hfill}}\\[13bp]
+{\zihao{-4}学位授予单位和日期}\makebox[26em][l]{\zihao{3}\uline{\hfill 电子科技大学\hfill\@awarddate}}\\[13bp]
+{\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{3}\uline{\hfill\@chairman\hfill}}\\[13bp]
+{\zihao{-4}评阅人}\makebox[32em][l]{\zihao{3}\uline{\hfill\@appraiser\hfill}}\\[3mm]
+{\zihao{5}注1：注明《国际十进分类法UDC》的类号。}%
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}%
+\newcommand{\secondtitlepage@ResearchReport}{%
+\newpage
+\thispagestyle{empty}
+\vspace*{-4.1mm}
+\noindent
+{\zihao{-4}分类号}\makebox[6.35cm][l]{\zihao{5}\uline{~~~\@classnumber\hfill}}
+{\zihao{-4}密级}\makebox[5.24cm][l]{\zihao{4}\uline{~~~\@securityclassification\hfill}}\\[2.3mm]
+{\zihao{-4}UDC\zihao{-5}\textsuperscript{~注1}\!}\makebox[6.48cm][l]{\zihao{5}\uline{~~~\@UDC\hfill}}\\[1.1mm]
+\begin{center}
+{\zihao{-0}研\quad{}究\quad{}报\quad{}告}\\
+{\zihao{3}~}\\[3.3mm]
+\makebox[14.99cm][c]{\zihao{3}\uline{\hfill}}\\[0.82cm]
+\makebox[14.99cm][c]{\zihao{3}\uline{\hfill}}\\
+\vspace{-2.47cm}
+\noindent\parbox[t][2cm][t]{34em}{\centering\zihao{2}\baselineskip=39.13766pt\@title}\\[6.8mm]
+{\zihao{-4}（题名和副题名）}\\
+{\zihao{5}~}\\
+\vspace{-3mm}
+\makebox[4.13cm][c]{\zihao{3}\@author}\\\vspace{-0.58cm}
+\makebox[4.13cm][c]{\zihao{3}\uline{\hfill}}\\[3mm]
+{\zihao{-4}（作者姓名）}\\
+{\zihao{-4}~}\\
+{\zihao{5}~}\\
+\vspace{-5mm}
+{\zihao{-4}指导教师}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill%
+\@advisername 、\@advisertitle 、\@adviserinstitution \hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserBname}}{}{\@adviserBname 、\@adviserBtitle 、\@adviserBinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserCname}}{}{\@adviserCname 、\@adviserCtitle 、\@adviserCinstitution }\hfill}}\\[5bp]
+{\zihao{-4}\qquad\qquad}\makebox[11.35cm][c]{\zihao{3}\uline{\hfill\ifthenelse{%
+\isundefined{\@adviserDname}}{}{\@adviserDname 、\@adviserDtitle 、\@adviserDinstitution }\hfill}}\\[6.5mm]
+{\zihao{-4}（姓名、职称、单位名称）}\\
+\vspace{-3mm}
+\end{center}
+{\zihao{-4}申请学位级别}\makebox[10em][l]{\zihao{3}\uline{\hfill\@degree\hfill}}
+{\zihao{-4}学科专业}\makebox[15em][l]{\zihao{3}\uline{\hfill\@major\hfill}}\\[13bp]
+{\zihao{-4}提交论文日期}\makebox[10em][l]{\zihao{3}\uline{\hfill\@date\hfill}}
+{\zihao{-4}论文答辩日期}\makebox[13em][l]{\zihao{3}\uline{\hfill\@oraldefensedate\hfill}}\\[13bp]
+{\zihao{-4}学位授予单位和日期}\makebox[26em][l]{\zihao{3}\uline{\hfill 电子科技大学\hfill\@awarddate}}\\[13bp]
+{\zihao{-4}答辩委员会主席}\makebox[16em][l]{\zihao{3}\uline{\hfill\@chairman\hfill}}\\[13bp]
+{\zihao{-4}评阅人}\makebox[32em][l]{\zihao{3}\uline{\hfill\@appraiser\hfill}}\\[3mm]
+{\zihao{5}注1：注明《国际十进分类法UDC》的类号。}%
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}%
+\newcommand{\thirdtitlepage@Doctor}{%
 \newpage
 \thispagestyle{empty}
 \begin{center}
@@ -3045,10 +3230,57 @@
 \makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
 \makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
-\ifdef{\@englishshcoolextraline}{%
+\ifdef{\@englishshcoolextraline}{%可能有的额外一行学院英文名称。为一行显示不下的学院英文名称准备。
 \makebox[6em][r]{}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcoolextraline\hfill}}\\[1ex]%
 }{}
 \end{center}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+\newcommand{\thirdtitlepage@Master}{%
+\newpage
+\thispagestyle{empty}
+\begin{center}
+{\zihao{-4}~}\\
+{\zihao{-4}~}\\
+{\zihao{-4}~}\\
+{\bf\zihao{-2}\@englishtitle}\\
+\vfill
+{\zihao{-3}A Master Thesis Submitted to}\\[1ex]
+{\zihao{-3}University of Electronic Science and Technology of China}\\
+\vspace{3cm}
+\makebox[6em][r]{\zihao{4}Major:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishmajor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
+\ifdef{\@englishshcoolextraline}{%可能有的额外一行学院英文名称。为一行显示不下的学院英文名称准备。
+\makebox[6em][r]{}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcoolextraline\hfill}}\\[1ex]%
+}{}
+\end{center}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+\newcommand{\thirdtitlepage@MasterResearchReport}{%
+\newpage
+\thispagestyle{empty}
+\begin{center}
+{\zihao{-4}~}\\
+{\zihao{-4}~}\\
+{\zihao{-4}~}\\
+{\bf\zihao{-2}\@englishtitle}\\
+\vfill
+{\zihao{-3}A Master Research Report Submitted to}\\[1ex]
+{\zihao{-3}University of Electronic Science and Technology of China}\\
+\vspace{3cm}
+\makebox[6em][r]{\zihao{4}Major:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishmajor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}Author:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishauthor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}Advisor:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishadvisor\hfill}}\\[1ex]
+\makebox[6em][r]{\zihao{4}School:}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcool\hfill}}\\[1ex]
+\ifdef{\@englishshcoolextraline}{%可能有的额外一行学院英文名称。为一行显示不下的学院英文名称准备。
+\makebox[6em][r]{}\makebox[25em][l]{\zihao{4}\uline{\hfill\@englishshcoolextraline\hfill}}\\[1ex]%
+}{}
+\end{center}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+\newcommand{\fourthtitlepage}{%
 \newpage
 \thispagestyle{empty}
 \linespread{1.5}
@@ -3071,6 +3303,30 @@
 导师签名：\makebox[7em][l]{\uline{\hfill}}\par
 \hfill 日期：\qquad{}年\qquad{}月\qquad{}日 \par
 }
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+\ifdefstring{\degree@uestcthesis}{master}{
+\renewcommand{\mastertitlepage@uestcthesis}{
+\renewcommand{\maketitle}{%定义封面的格式
+\setcounter{page}{1}%页码重置为1
+\pagenumbering{Alph}%页码使用大写罗马数字
+\begin{titlepage}
+\firsttitlepage%插入封面
+\secondtitlepage%插入中文扉页
+\thirdtitlepage%插入英文扉页
+\fourthtitlepage%插入独创性声明和论文使用授权
+\linespread{1.391}
+\end{titlepage}}}}{}
+\ifdefstring{\degree@uestcthesis}{doctor}{
+\renewcommand{\doctortitlepage@uestcthesis}{
+\renewcommand{\maketitle}{%定义封面的格式
+\setcounter{page}{1}%页码重置为1
+\pagenumbering{Alph}%页码使用大写罗马数字
+\begin{titlepage}
+\firsttitlepage%插入封面
+\secondtitlepage%插入中文扉页
+\thirdtitlepage%插入英文扉页
+\fourthtitlepage%插入独创性声明和论文使用授权
 \linespread{1.391}
 \end{titlepage}}}}{}
 \titlepage@degree
@@ -3291,10 +3547,10 @@ pdfpagelayout={TwoPageRight}
 
 \AtBeginDocument{%插入到论文内容的最前面。
 \begin{CJK}{UTF8}{rm}%中文支持环境，此处内容不受ctexbook文类影响，所以必须手动加这个环境。
-\setcounter{page}{1}%页码重置为1
-\pagenumbering{Alph}%页码使用大写罗马数字
+\ifdef{\withoutforepages@uestcthesis}{}{%withoutforepages选项效果
 \maketitle%生成并插入封面
-\clearpage{\pagestyle{empty}\cleardoublepage}
+}%
+\ifdef{\onlychapters@uestcthesis}{}{%onlychapters选项效果
 \Cabstractmatter%设置中文摘要版式
 \pdfbookmark[1]{摘要}{Cabstract}%添加中文摘要的PDF书签
 \include{contents/Cabstract}%插入中文摘要
@@ -3316,6 +3572,7 @@ pdfpagelayout={TwoPageRight}
 \printglossary%插入主要符号表
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \mainmatter%修正主要符号表版式，这里是受目录版式的影响，必须在此加入\mainmatter。
+}%
 \end{CJK}
 \mainmatter%正文区版式
 \makeatletter
@@ -3326,6 +3583,7 @@ pdfpagelayout={TwoPageRight}
 \belowdisplayshortskip=6bp
 \makeatother
 }
+\ifdef{\onlychapters@uestcthesis}{}{%onlychapters选项效果
 \newcommand{\insertacknowledgement}{
 \chapter*{\acknowledgementsname@uestcthesis}%用带星号的章命令插入不带章号的致谢。
 \markboth{\acknowledgementsname@uestcthesis}{}%页眉设置
@@ -3423,6 +3681,7 @@ pdfpagelayout={TwoPageRight}
 }
 }
 \clearpage\end{CJK}}
+}%这是大括号是前面onlychapters选项的ifdef命令的一部分。
 \renewcommand*\CTEXsetfont{%
   \begingroup
   \settowidth\ccwd{\CTEX@spaceChar\CJKglue}%

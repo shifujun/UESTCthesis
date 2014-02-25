@@ -2,6 +2,21 @@
 
 \chapter{更新日志}
 \noindent
+2014年2月25日：v0.6.4
+\begin{enumerate}
+\item 添加了研究生院规范中附件1,2,3的所有封面、中文扉页、英文扉页。具体使用方式见第~\ref{degree:subsection}~节。
+\item 添加了两个选项，分别用于使模板不生成摘要之前内容或正文之外的所有内容。详见第~\ref{options:subsection}~节。
+
+\end{enumerate}
+
+\noindent
+2014年2月24日：v0.6.3
+\begin{enumerate}
+\item 修订硕博封面第2页，使之和学校范例尽量一样。
+
+\end{enumerate}
+
+\noindent
 2014年1月20日：v0.6.2
 \begin{enumerate}
 \item 新增一个用于检查模板所依赖的全部宏包版本的packagecheck.tex。编译它即可输出当前版本的模板所需的全部宏包的所需版本和当前已安装的版本，或者找不到需要的宏包。
@@ -269,11 +284,27 @@ compile.bat &编译批处理   &双击编译论文，得到正确的thesis.pdf�
 clean.bat   &清理批处理  &双击可删除目录中全部编译过程生成的中间文件。\\
 }{}
 \section{开始编写论文}
-\subsection{确定学位信息}
-打开thesis.tex文件，将第三行中间的中括号内容改为bachelor、master 或doctor，分别代表本科、硕士和博士。\\
-\verb|\documentclass[doctor]{typesetting/uestcthesis}|
+\subsection{确定学位信息}\label{degree:subsection}
+打开thesis.tex文件，第三行如下：\\
+\verb|\documentclass[doctor]{typesetting/uestcthesis}|\\
+修改第三行中间的中括号中的doctor为其他的选项。bachelor代表学士学位；master代表学术型硕士学位；doctor代表博士学位；engineeringmaster代表工程硕士学位；professionalmaster代表专业硕士学位；researchreport代表留学生研究报告； engineeringdoctor代表工程博士学位；
+
+这些选项选择好之后，模板会自动添加相应的封面、扉页等前置必备页面。
 
 然后打开contents目录中的titlepage.tex。填写其中的信息。本科生注意要删除其中后一部分的信息，否则编译会出错。
+\subsection{模板的其他选项}\label{options:subsection}
+本模板还有如下可选选项：\\
+选项listoffigures，用以生成图目录。\\
+选项listoftables，用以生成表目录。\\
+选项cv。开启后会用contents目录下的cv.tex替换publications.bib生成的攻读硕博期间发表的论文。cv.tex是按照一位通信学院的同学提供的一份
+往年的硕士论文中的格式做的模板。这个“个人简历及攻读硕士学位期间取得的研究成果”格式，以及“个人简历”都不是学校规范中要求的。所以如果不是自己学院要求、自己导师要求，建议不要用这个选项。\\
+选项withoutforepages。启用后不编译摘要之前的部分（封面、中文扉页、英文扉页、独创性声明和论文使用授权）。\\
+选项onlychapters。启用后只编译正文部分。\\
+最后两个选项都是方便撰写论文时加快编译用的。为了这个目的，还可以使用draft选项。这个选项会不真正插入图片。如果在撰写论文正文中经常需要编译查看改动结果，在不涉及图片、参考文献等附加内容的情况下，建议开启onlychapters和draft选项。同时只需要运行一次pdflatex命令编译即可。编译脚本执行的正确编译会连续编译3次，所以会比较慢。
+
+以上这些选项的启动方式形如：\\
+\verb|\documentclass[doctor,onlychapters,draft,listoftables]{typesetting/uestcthesis}|\\
+
 \subsection{编写正文}
 \subsubsection{新建一章}
 论文正文的每一章都是一个单独的tex文件，存放于chapters目录中。由于本模板采用UTF-8 编码，所以不能用Windows 记事本新建的UTF-8文本文件创建tex 文件。因为Windows的UTF-8 格式文件头和我们用的不一样。所以为了方便起见，chapters 目录下有一个DuplicateMe.tex文件，它是一个写好文件头的空文件。新建一章时只需要将它复制一份，改一个新的文件名即可。文件名最好可以代表这一章的内容。
