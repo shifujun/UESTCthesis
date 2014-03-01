@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2014/02/25 v0.6.4 UESTC thesis class]
+    [2014/03/01 v0.6.5 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -516,6 +516,7 @@
 }
 %    \end{macrocode}
 % \end{macro}
+% \subsubsection{子图环境设置}
 %\changes{v0.5.0}{2013/08/01}{改变子图的标题位置，使之符合学校标准}
 %由于子图中包含了中文，所以使用|\edef|等嵌套定义方式不能使用。故而定义了20个子图
 %名宏。
@@ -536,6 +537,7 @@
 % \end{macro}
 %重定义|\@makesubfigurecaption|命令，将传入|\@makesubfigurecaption|命令中的子图
 %标题存入前面自定义的20个子图标题宏中，而不直接打印在原来的位置。
+%\changes{v0.6.5}{2014/03/01}{修复BUG：子图有不居中的情况。}
 %    \begin{macrocode}
 \def\@makesubfigurecaption ##1##2{\setbox \@tempboxa \hbox {\subcapsize {
 \subcaplabelfont ##1}{\subcapfont \ignorespaces }}\@tempdimb =-\subfigcapmargin
@@ -592,9 +594,10 @@
 \renewcommand{\subpiclabel}{##3}%设置多图环境整体的标签
 \renewcommand{\subpiccaption}{##2}%设置多图环境整体的标题。这里先定义两个空变量，又设置值，是因为在定义一个环境时，环境结尾中不能调用##2，##3等传入的值。所以要在环境结尾中插入标题和标签就只能这么做了。
 \begin{figure}[##1]%
-\centering%
-}
+\begin{center}%
+}%
 {%
+\end{center}%
 \raggedright%
 \sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
 {\zihao{5}图~\thefigure~\subpiccaption}}%
@@ -603,10 +606,12 @@
 %这里用一个判断语句来根据主图题是否超过一行而分别处理。按照规范，不超过一行才居中，
 %超过一行则左对齐。
 %\changes{v0.5.5}{2013/11/26}{修复BUG：无法引用子图的总标签问题。}
+%\changes{v0.6.5}{2014/03/01}{修复BUG：当子图环境整体标题和子图标题都超过一行时，子图标题没有悬挂缩进的问题。}
 %    \begin{macrocode}
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 8pt}}{%THEN
 \noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
-\noindent\hspace*{\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
+\noindent\hspace*{\tempsubpiccaptionheadindent}%
+\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
 }{%ELSE
 {\centering\caption{\subpiccaption}\label{\subpiclabel}}\par
 \sbox{\tempsubpiccaptionbox}{\zihao{5}图~\thefigure~\subpiccaption}%

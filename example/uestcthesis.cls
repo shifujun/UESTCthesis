@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/02/25 v0.6.4 UESTC thesis class]
+    [2014/03/01 v0.6.5 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
@@ -284,16 +284,18 @@
 \renewcommand{\subpiclabel}{##3}%设置多图环境整体的标签
 \renewcommand{\subpiccaption}{##2}%设置多图环境整体的标题。这里先定义两个空变量，又设置值，是因为在定义一个环境时，环境结尾中不能调用##2，##3等传入的值。所以要在环境结尾中插入标题和标签就只能这么做了。
 \begin{figure}[##1]%
-\centering%
-}
+\begin{center}%
+}%
 {%
+\end{center}%
 \raggedright%
 \sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
 {\zihao{5}图~\thefigure~\subpiccaption}}%
 \settowidth{\tempsubpiccaptionheadindent}{\zihao{5}图~\thefigure~}%
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 8pt}}{%THEN
 \noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
-\noindent\hspace*{\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
+\noindent\hspace*{\tempsubpiccaptionheadindent}%
+\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
 }{%ELSE
 {\centering\caption{\subpiccaption}\label{\subpiclabel}}\par
 \sbox{\tempsubpiccaptionbox}{\zihao{5}图~\thefigure~\subpiccaption}%
