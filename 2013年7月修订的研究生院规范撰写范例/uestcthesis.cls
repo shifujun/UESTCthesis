@@ -3475,6 +3475,33 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \mb@addtocontents \let \@auxout \@auxoutpublications \let \jobname
 \@auxoutpublicationsname \bibliography {#1}}
 }
+\renewcommand*\CTEXsetfont{%
+  \begingroup
+  \settowidth\ccwd{\CTEX@spaceChar\CJKglue}%
+  \edef\x{\noexpand\ccwd\the\ccwd}%
+  \expandafter\endgroup\x
+  \ifdim\parindent=0pt\else\parindent2\ccwd\fi}
+\RequirePackage[hang]{footmisc}
+\setlength{\footnotemargin}{5.2mm}
+\renewcommand{\footnoterule}{\vfill\noindent
+\vspace*{-3pt}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
+\RequirePackage{pifont}
+\def\@circlednumber#1{\ifcase#1\or \ding{192}\or \ding{193}\or \ding{194}\or
+ \ding{195}\or \ding{196}\or \ding{197}\or \ding{198}\or \ding{199}
+ \or \ding{200} \or \ding{201} \else\@ctrerr\fi}
+\def\circlednumber#1{\expandafter\@circlednumber\csname c@#1\endcsname}
+\renewcommand{\thefootnote}{\circlednumber{footnote}}
+\def\@makefntext #1{\ifFN@hangfoot \bgroup \setbox \@tempboxa \hbox {\ifdim
+\footnotemargin >0pt \hb@xt@ \footnotemargin {\hbox { \normalfont \@thefnmark}
+\hss }\else \hbox { \normalfont \@thefnmark} \fi }\leftmargin \wd \@tempboxa
+\rightmargin \z@ \linewidth \columnwidth \advance \linewidth -\leftmargin
+\parshape \@ne \leftmargin \linewidth \footnotesize \@setpar {{\@@par }}
+\leavevmode \llap {\box \@tempboxa }\parskip \hangfootparskip \relax \parindent
+\hangfootparindent \relax \else \parindent 1em \noindent \ifdim \footnotemargin
+ >\z@ \hb@xt@ \footnotemargin {\hss \hbox { \normalfont \@thefnmark} }\else
+ \ifdim \footnotemargin =\z@ \llap {\hbox { \normalfont \@thefnmark} }\else
+ \llap {\hb@xt@ -\footnotemargin {\hbox { \normalfont \@thefnmark} \hss }}
+ \fi \fi \fi \footnotelayout #1\ifFN@hangfoot \par \egroup \fi}
 \RequirePackage{cmap}%pdflatex编译时，可以生成可复制、粘贴的中文PDF文档
 \RequirePackage{hyperxmp}%在pdf中加入XMP高级元信息
 \RequirePackage[pdftex,unicode,
@@ -3684,33 +3711,6 @@ pdfpagelayout={TwoPageRight}
 }
 \clearpage\end{CJK}}
 }%这是大括号是前面onlychapters选项的ifdef命令的一部分。
-\renewcommand*\CTEXsetfont{%
-  \begingroup
-  \settowidth\ccwd{\CTEX@spaceChar\CJKglue}%
-  \edef\x{\noexpand\ccwd\the\ccwd}%
-  \expandafter\endgroup\x
-  \ifdim\parindent=0pt\else\parindent2\ccwd\fi}
-\RequirePackage[hang]{footmisc}
-\setlength{\footnotemargin}{5.2mm}
-\renewcommand{\footnoterule}{\vfill\noindent
-\vspace*{-3pt}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
-\RequirePackage{pifont}
-\def\@circlednumber#1{\ifcase#1\or \ding{192}\or \ding{193}\or \ding{194}\or
- \ding{195}\or \ding{196}\or \ding{197}\or \ding{198}\or \ding{199}
- \or \ding{200} \or \ding{201} \else\@ctrerr\fi}
-\def\circlednumber#1{\expandafter\@circlednumber\csname c@#1\endcsname}
-\renewcommand{\thefootnote}{\circlednumber{footnote}}
-\def\@makefntext #1{\ifFN@hangfoot \bgroup \setbox \@tempboxa \hbox {\ifdim
-\footnotemargin >0pt \hb@xt@ \footnotemargin {\hbox { \normalfont \@thefnmark}
-\hss }\else \hbox { \normalfont \@thefnmark} \fi }\leftmargin \wd \@tempboxa
-\rightmargin \z@ \linewidth \columnwidth \advance \linewidth -\leftmargin
-\parshape \@ne \leftmargin \linewidth \footnotesize \@setpar {{\@@par }}
-\leavevmode \llap {\box \@tempboxa }\parskip \hangfootparskip \relax \parindent
-\hangfootparindent \relax \else \parindent 1em \noindent \ifdim \footnotemargin
- >\z@ \hb@xt@ \footnotemargin {\hss \hbox { \normalfont \@thefnmark} }\else
- \ifdim \footnotemargin =\z@ \llap {\hbox { \normalfont \@thefnmark} }\else
- \llap {\hb@xt@ -\footnotemargin {\hbox { \normalfont \@thefnmark} \hss }}
- \fi \fi \fi \footnotelayout #1\ifFN@hangfoot \par \egroup \fi}
 
 \endinput
 %%

@@ -4207,6 +4207,57 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \@auxoutpublicationsname \bibliography {#1}}
 }
 %    \end{macrocode}
+%\subsection{注脚格式排版设置}
+% \changes{v0.5.0}{2013/08/01}{添加注脚格式的排版设置}
+% \changes{v0.6.5}{2014/03/01}{修复BUG：注脚在pdf中超级链接跳转失效的问题。}
+%修正footmisc宏包的hang选项与CTeX宏包的冲突。修正来源：\\
+%\url{http://bbs.ctex.org/forum.php?mod=viewthread&tid=76571}
+%    \begin{macrocode}
+\renewcommand*\CTEXsetfont{%
+  \begingroup
+  \settowidth\ccwd{\CTEX@spaceChar\CJKglue}%
+  \edef\x{\noexpand\ccwd\the\ccwd}%
+  \expandafter\endgroup\x
+  \ifdim\parindent=0pt\else\parindent2\ccwd\fi}
+%    \end{macrocode}
+%加载注脚宏包footmisc，使用悬挂选项hang
+%
+%    \begin{macrocode}
+\RequirePackage[hang]{footmisc}
+%    \end{macrocode}
+%设置注脚内容缩进，5.2mm是对比word中悬挂缩进1.5字符的结果测量得出的。
+%    \begin{macrocode}
+\setlength{\footnotemargin}{5.2mm}
+%    \end{macrocode}
+%重绘注脚线，其中7.4mm、5.05cm和0.02cm都是对比范文在word中的效果测量出的。
+%其中|\vfill|用于将注脚置于页面底部。因为模板禁止了底部对齐，以保证不会出现过大的段距。
+%    \begin{macrocode}
+\renewcommand{\footnoterule}{\vfill\noindent
+\vspace*{-3pt}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
+%    \end{macrocode}
+%定义注脚所用的带圆圈的序号样式
+%    \begin{macrocode}
+\RequirePackage{pifont}
+\def\@circlednumber#1{\ifcase#1\or \ding{192}\or \ding{193}\or \ding{194}\or
+ \ding{195}\or \ding{196}\or \ding{197}\or \ding{198}\or \ding{199}
+ \or \ding{200} \or \ding{201} \else\@ctrerr\fi}
+\def\circlednumber#1{\expandafter\@circlednumber\csname c@#1\endcsname}
+\renewcommand{\thefootnote}{\circlednumber{footnote}}
+%    \end{macrocode}
+%重定义注脚的格式，将序号的字体取消默认的上标样式。
+%    \begin{macrocode}
+\def\@makefntext #1{\ifFN@hangfoot \bgroup \setbox \@tempboxa \hbox {\ifdim
+\footnotemargin >0pt \hb@xt@ \footnotemargin {\hbox { \normalfont \@thefnmark}
+\hss }\else \hbox { \normalfont \@thefnmark} \fi }\leftmargin \wd \@tempboxa
+\rightmargin \z@ \linewidth \columnwidth \advance \linewidth -\leftmargin
+\parshape \@ne \leftmargin \linewidth \footnotesize \@setpar {{\@@par }}
+\leavevmode \llap {\box \@tempboxa }\parskip \hangfootparskip \relax \parindent
+\hangfootparindent \relax \else \parindent 1em \noindent \ifdim \footnotemargin
+ >\z@ \hb@xt@ \footnotemargin {\hss \hbox { \normalfont \@thefnmark} }\else
+ \ifdim \footnotemargin =\z@ \llap {\hbox { \normalfont \@thefnmark} }\else
+ \llap {\hb@xt@ -\footnotemargin {\hbox { \normalfont \@thefnmark} \hss }}
+ \fi \fi \fi \footnotelayout #1\ifFN@hangfoot \par \egroup \fi}
+%    \end{macrocode}
 % \subsection{PDF文件相关设置}
 % 设置pdf文件中的超链接和书签
 % \changes{v0.6}{2014/01/11}{去除pdf文件中显示的超级链接有色外框}
@@ -4490,56 +4541,6 @@ pdfpagelayout={TwoPageRight}
 }
 \clearpage\end{CJK}}
 }%这是大括号是前面onlychapters选项的ifdef命令的一部分。
-%    \end{macrocode}
-%\subsection{注脚格式排版设置}
-% \changes{v0.5.0}{2013/08/01}{添加注脚格式的排版设置}
-%修正footmisc宏包的hang选项与CTeX宏包的冲突。修正来源：\\
-%\url{http://bbs.ctex.org/forum.php?mod=viewthread&tid=76571}
-%    \begin{macrocode}
-\renewcommand*\CTEXsetfont{%
-  \begingroup
-  \settowidth\ccwd{\CTEX@spaceChar\CJKglue}%
-  \edef\x{\noexpand\ccwd\the\ccwd}%
-  \expandafter\endgroup\x
-  \ifdim\parindent=0pt\else\parindent2\ccwd\fi}
-%    \end{macrocode}
-%加载注脚宏包footmisc，使用悬挂选项hang
-%
-%    \begin{macrocode}
-\RequirePackage[hang]{footmisc}
-%    \end{macrocode}
-%设置注脚内容缩进，5.2mm是对比word中悬挂缩进1.5字符的结果测量得出的。
-%    \begin{macrocode}
-\setlength{\footnotemargin}{5.2mm}
-%    \end{macrocode}
-%重绘注脚线，其中7.4mm、5.05cm和0.02cm都是对比范文在word中的效果测量出的。
-%其中|\vfill|用于将注脚置于页面底部。因为模板禁止了底部对齐，以保证不会出现过大的段距。
-%    \begin{macrocode}
-\renewcommand{\footnoterule}{\vfill\noindent
-\vspace*{-3pt}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
-%    \end{macrocode}
-%定义注脚所用的带圆圈的序号样式
-%    \begin{macrocode}
-\RequirePackage{pifont}
-\def\@circlednumber#1{\ifcase#1\or \ding{192}\or \ding{193}\or \ding{194}\or
- \ding{195}\or \ding{196}\or \ding{197}\or \ding{198}\or \ding{199}
- \or \ding{200} \or \ding{201} \else\@ctrerr\fi}
-\def\circlednumber#1{\expandafter\@circlednumber\csname c@#1\endcsname}
-\renewcommand{\thefootnote}{\circlednumber{footnote}}
-%    \end{macrocode}
-%重定义注脚的格式，将序号的字体取消默认的上标样式。
-%    \begin{macrocode}
-\def\@makefntext #1{\ifFN@hangfoot \bgroup \setbox \@tempboxa \hbox {\ifdim
-\footnotemargin >0pt \hb@xt@ \footnotemargin {\hbox { \normalfont \@thefnmark}
-\hss }\else \hbox { \normalfont \@thefnmark} \fi }\leftmargin \wd \@tempboxa
-\rightmargin \z@ \linewidth \columnwidth \advance \linewidth -\leftmargin
-\parshape \@ne \leftmargin \linewidth \footnotesize \@setpar {{\@@par }}
-\leavevmode \llap {\box \@tempboxa }\parskip \hangfootparskip \relax \parindent
-\hangfootparindent \relax \else \parindent 1em \noindent \ifdim \footnotemargin
- >\z@ \hb@xt@ \footnotemargin {\hss \hbox { \normalfont \@thefnmark} }\else
- \ifdim \footnotemargin =\z@ \llap {\hbox { \normalfont \@thefnmark} }\else
- \llap {\hb@xt@ -\footnotemargin {\hbox { \normalfont \@thefnmark} \hss }}
- \fi \fi \fi \footnotelayout #1\ifFN@hangfoot \par \egroup \fi}
 %    \end{macrocode}
 % \iffalse
 %</class>
