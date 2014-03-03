@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2014/03/01 v0.6.5 UESTC thesis class]
+    [2014/03/03 v0.6.6 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -4210,6 +4210,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %\subsection{注脚格式排版设置}
 % \changes{v0.5.0}{2013/08/01}{添加注脚格式的排版设置}
 % \changes{v0.6.5}{2014/03/01}{修复BUG：注脚在pdf中超级链接跳转失效的问题。}
+% \changes{v0.6.6}{2014/03/03}{修复BUG：按照学校规范，注脚应该每页重新编号。}
 %修正footmisc宏包的hang选项与CTeX宏包的冲突。修正来源：\\
 %\url{http://bbs.ctex.org/forum.php?mod=viewthread&tid=76571}
 %    \begin{macrocode}
@@ -4223,7 +4224,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %加载注脚宏包footmisc，使用悬挂选项hang
 %
 %    \begin{macrocode}
-\RequirePackage[hang]{footmisc}
+\RequirePackage[hang,perpage]{footmisc}
 %    \end{macrocode}
 %设置注脚内容缩进，5.2mm是对比word中悬挂缩进1.5字符的结果测量得出的。
 %    \begin{macrocode}
@@ -4231,9 +4232,10 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %    \end{macrocode}
 %重绘注脚线，其中7.4mm、5.05cm和0.02cm都是对比范文在word中的效果测量出的。
 %其中|\vfill|用于将注脚置于页面底部。因为模板禁止了底部对齐，以保证不会出现过大的段距。
+% \changes{v0.6.6}{2014/03/03}{修正注脚线和内容的距离。}
 %    \begin{macrocode}
 \renewcommand{\footnoterule}{\vfill\noindent
-\vspace*{-3pt}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
+\vspace*{0.9mm}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
 %    \end{macrocode}
 %定义注脚所用的带圆圈的序号样式
 %    \begin{macrocode}
@@ -4534,7 +4536,11 @@ pdfpagelayout={TwoPageRight}
 	\CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
 	\phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 	\addcontentsline{toc}{chapter}{\publicationsname@degree}%将攻博/硕期间发表的论文编入目录
-	{\zihao{5}
+	{\zihao{5}%
+%    \end{macrocode}
+% footmisc宏包的perpage选项会向每个aux文件中写入一个命令。由于publications没有tex文件，只有aux文件。所以出现了错误。这里将要写入aux文件的内容清空。
+%    \begin{macrocode}
+	\def\footnotehint{}%
 	\bibliographypublications{contents/publications}%插入攻博/硕期间发表的论文
 	}}{}
 	}

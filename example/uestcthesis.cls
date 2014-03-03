@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/03/01 v0.6.5 UESTC thesis class]
+    [2014/03/03 v0.6.6 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
@@ -3481,10 +3481,10 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
   \edef\x{\noexpand\ccwd\the\ccwd}%
   \expandafter\endgroup\x
   \ifdim\parindent=0pt\else\parindent2\ccwd\fi}
-\RequirePackage[hang]{footmisc}
+\RequirePackage[hang,perpage]{footmisc}
 \setlength{\footnotemargin}{5.2mm}
 \renewcommand{\footnoterule}{\vfill\noindent
-\vspace*{-3pt}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
+\vspace*{0.9mm}\hspace{7.4mm}\rule{5.05cm}{0.02cm}\vspace*{2.6pt}}
 \RequirePackage{pifont}
 \def\@circlednumber#1{\ifcase#1\or \ding{192}\or \ding{193}\or \ding{194}\or
  \ding{195}\or \ding{196}\or \ding{197}\or \ding{198}\or \ding{199}
@@ -3704,7 +3704,8 @@ pdfpagelayout={TwoPageRight}
 \CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\publicationsname@degree}%将攻博/硕期间发表的论文编入目录
-{\zihao{5}
+{\zihao{5}%
+\def\footnotehint{}%
 \bibliographypublications{contents/publications}%插入攻博/硕期间发表的论文
 }}{}
 }
