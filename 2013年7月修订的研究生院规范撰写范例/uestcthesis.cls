@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/03/03 v0.6.6 UESTC thesis class]
+    [2014/03/04 v0.6.7 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
@@ -392,18 +392,14 @@
 \fancyfoot[C]{\zihao{-5}\thepage}%页码位于页面底端，居中打印。
 }
 \newcommand{\glossarymatterfancy}{%定义主要符号表版式设置
-\fancypagestyle{plain}{
 \fancyhf{}
 \fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%
 \fancyfoot[C]{\zihao{-5}\thepage}%
 }
-}
 \newcommand{\acronymnamematterfancy}{%定义缩略词表版式设置
-\fancypagestyle{plain}{
 \fancyhf{}
 \fancyhead[C]{\zihao{5}\acronymname@uestcthesis}%
 \fancyfoot[C]{\zihao{-5}\thepage}%
-}
 }
 \newcommand{\Cabstractmatter}{
 \setcounter{page}{1}%页码重置为1
@@ -450,6 +446,16 @@
 \pagestyle{fancy}
 \tableslistmatterfancy
 \fancypagestyle{plain}{\tableslistmatterfancy}
+}
+\newcommand{\glossarymatter}{
+\pagestyle{fancy}
+\glossarymatterfancy
+\fancypagestyle{plain}{\glossarymatterfancy}
+}
+\newcommand{\acronymnamematter}{
+\pagestyle{fancy}
+\acronymnamematterfancy
+\fancypagestyle{plain}{\acronymnamematterfancy}
 }
 \newcommand{\stuid}[1]{
 \newcommand{\@stuid}{#1}
@@ -3441,7 +3447,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \renewcommand*\l@subsection{\@dottedtocline{2}{4em}{1em}}
 \renewcommand*\l@subsubsection{\@dottedtocline{3}{6em}{1em}}
 }
-\RequirePackage{amsmath,amsfonts,amssymb}
+\RequirePackage{amsmath,amsfonts,amssymb,bm}
 \renewcommand{\theequation}{\arabic{chapter}\textendash\arabic{equation}}
 \RequirePackage[amsmath,thmmarks]{ntheorem}
 \theorembodyfont{\normalfont}%字体
@@ -3594,10 +3600,10 @@ pdfpagelayout={TwoPageRight}
 \insertlof%插入图目录
 \insertlot%插入表目录
 \clearpage{\pagestyle{empty}\cleardoublepage}%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
-\acronymnamematterfancy%设置缩略词表版式
+\acronymnamematter%设置缩略词表版式
 \printacronyms[style=acronymwithtranslation]
 \clearpage{\pagestyle{empty}\cleardoublepage}
-\glossarymatterfancy%设置主要符号表版式。
+\glossarymatter%设置主要符号表版式。
 \printglossary%插入主要符号表
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \mainmatter%修正主要符号表版式，这里是受目录版式的影响，必须在此加入\mainmatter。

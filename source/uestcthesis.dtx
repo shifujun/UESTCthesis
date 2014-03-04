@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2014/03/03 v0.6.6 UESTC thesis class]
+    [2014/03/04 v0.6.7 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -714,6 +714,7 @@
 % \end{macro}
 % \subsection{页眉页脚设置}
 % \changes{v0.4.6}{2013/06/02}{修正bug：页脚字号改为小五}
+% \changes{v0.6.7}{2014/03/04}{修正bug：缩略词表和主要符号表各自的第二页页眉不正确的问题。}
 % \begin{macro}{\mainmatterfancy}
 %定义正文版式设置
 %    \begin{macrocode}
@@ -763,11 +764,9 @@
 %定义主要符号表版式设置
 %    \begin{macrocode}
 \newcommand{\glossarymatterfancy}{%定义主要符号表版式设置
-\fancypagestyle{plain}{
 \fancyhf{}
 \fancyhead[C]{\zihao{5}\glossaryname@uestcthesis}%
 \fancyfoot[C]{\zihao{-5}\thepage}%
-}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -775,11 +774,9 @@
 %定义缩略词表版式设置
 %    \begin{macrocode}
 \newcommand{\acronymnamematterfancy}{%定义缩略词表版式设置
-\fancypagestyle{plain}{
 \fancyhf{}
 \fancyhead[C]{\zihao{5}\acronymname@uestcthesis}%
 \fancyfoot[C]{\zihao{-5}\thepage}%
-}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -853,6 +850,16 @@
 \pagestyle{fancy}
 \tableslistmatterfancy
 \fancypagestyle{plain}{\tableslistmatterfancy}
+}
+\newcommand{\glossarymatter}{
+\pagestyle{fancy}
+\glossarymatterfancy
+\fancypagestyle{plain}{\glossarymatterfancy}
+}
+\newcommand{\acronymnamematter}{
+\pagestyle{fancy}
+\acronymnamematterfancy
+\fancypagestyle{plain}{\acronymnamematterfancy}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -4138,8 +4145,9 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 % \subsection{数学式设置}
 %amsmath数学宏包。
 % \changes{v0.5.2}{2013/08/07}{去除kmath宏包。}
+% \changes{v0.6.7}{2014/03/04}{添加希腊字母等粗体的bm宏包}
 %    \begin{macrocode}
-\RequirePackage{amsmath,amsfonts,amssymb}
+\RequirePackage{amsmath,amsfonts,amssymb,bm}
 %    \end{macrocode}
 %
 %使公式编号数字间加一个短横线。例如(1-1)。
@@ -4400,10 +4408,10 @@ pdfpagelayout={TwoPageRight}
 \insertlot%插入表目录
 \clearpage{\pagestyle{empty}\cleardoublepage}%目录之后另起一页，这样无论目录后有没有主要符号表，主要符号表的页眉设置命令都会应用到下一页。
 %此处遇到问题：目录之后到正文之前如果加入章节，这些章节的版式不受传统版式设置控制。估计是BUG。此处耗时6小时20分钟，终于找到了修正方案。
-\acronymnamematterfancy%设置缩略词表版式
+\acronymnamematter%设置缩略词表版式
 \printacronyms[style=acronymwithtranslation]
 \clearpage{\pagestyle{empty}\cleardoublepage}
-\glossarymatterfancy%设置主要符号表版式。
+\glossarymatter%设置主要符号表版式。
 \printglossary%插入主要符号表
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \mainmatter%修正主要符号表版式，这里是受目录版式的影响，必须在此加入\mainmatter。
@@ -7790,7 +7798,7 @@ EXECUTE {end.bib}
 % !Mode:: "TeX:UTF-8"
 
 \makeatletter
-\def\version@uestcthesis{v0.6.2}
+\def\version@uestcthesis{v0.6.7}
 \IfFileExists{ctexbook.cls}{
 \documentclass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
 }{
@@ -7880,6 +7888,7 @@ EXECUTE {end.bib}
 \checkpackage{amsmath}{2013/01/14}
 \checkpackage{amsfonts}{2013/01/14}
 \checkpackage{amssymb}{2013/01/14}
+\checkpackage{bm}{2004/02/26}
 \checkpackage{ntheorem}{2011/08/15}
 \checkpackage{natbib}{2010/09/13}
 \checkpackage{multibib}{2008/12/10}
