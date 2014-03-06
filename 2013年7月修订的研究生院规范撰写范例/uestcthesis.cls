@@ -29,9 +29,10 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/03/04 v0.6.7 UESTC thesis class]
+    [2014/03/06 v0.6.8 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
+\DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}

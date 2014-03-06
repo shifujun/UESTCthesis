@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2014/03/04 v0.6.7 UESTC thesis class]
+    [2014/03/06 v0.6.8 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -98,6 +98,11 @@
 %\changes{v0.6.1}{2014/01/20}{修正所有正文的英文为Times字体。抄录环境中的英文使用打印机字体，并不能用Times字体。}
 %    \begin{macrocode}
 \RequirePackage{mathptmx}
+%    \end{macrocode}
+%\changes{v0.6.8}{2014/03/06}{将公式中的字体改回v0.6.1之前的CM字体。}
+% mathptmx宏包同时将公式中的字体也改为了Times字体。因为公式中还是用默认CM字体较多，所以这里还需要修改回来。
+%    \begin{macrocode}
+\DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}
 %    \end{macrocode}
 %\changes{v0.6}{2014/01/16}{修正ttfamily为宋体，而不是默认的仿宋。}
 %修正ttfamily为宋体，而不是默认的仿宋。
@@ -7798,7 +7803,7 @@ EXECUTE {end.bib}
 % !Mode:: "TeX:UTF-8"
 
 \makeatletter
-\def\version@uestcthesis{v0.6.7}
+\def\version@uestcthesis{v0.6.8}
 \IfFileExists{ctexbook.cls}{
 \documentclass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
 }{
