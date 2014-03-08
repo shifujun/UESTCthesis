@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/03/06 v0.6.8 UESTC thesis class]
+    [2014/03/08 v0.6.9 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}
@@ -293,7 +293,7 @@
 \sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
 {\zihao{5}图~\thefigure~\subpiccaption}}%
 \settowidth{\tempsubpiccaptionheadindent}{\zihao{5}图~\thefigure~}%
-\ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 8pt}}{%THEN
+\ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 16pt}}{%THEN
 \noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
 \noindent\hspace*{\tempsubpiccaptionheadindent}%
 \parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%

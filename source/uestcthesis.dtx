@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2014/03/06 v0.6.8 UESTC thesis class]
+    [2014/03/08 v0.6.9 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -612,8 +612,9 @@
 %超过一行则左对齐。
 %\changes{v0.5.5}{2013/11/26}{修复BUG：无法引用子图的总标签问题。}
 %\changes{v0.6.5}{2014/03/01}{修复BUG：当子图环境整体标题和子图标题都超过一行时，子图标题没有悬挂缩进的问题。}
+%\changes{v0.6.9}{2014/03/08}{修复BUG：当子图环境整体标题中存在下标时错误判断为标题超出一行。}
 %    \begin{macrocode}
-\ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 8pt}}{%THEN
+\ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 16pt}}{%THEN
 \noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
 \noindent\hspace*{\tempsubpiccaptionheadindent}%
 \parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
@@ -7803,7 +7804,7 @@ EXECUTE {end.bib}
 % !Mode:: "TeX:UTF-8"
 
 \makeatletter
-\def\version@uestcthesis{v0.6.8}
+\def\version@uestcthesis{v0.6.9}
 \IfFileExists{ctexbook.cls}{
 \documentclass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
 }{
