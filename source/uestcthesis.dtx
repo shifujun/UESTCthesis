@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2014/03/08 v0.6.9 UESTC thesis class]
+    [2014/03/12 v1.0.0 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -78,6 +78,11 @@
 % \iffalse
 %<*class>
 % \fi
+% \section{文类版本号说明}
+% \changes{v1.0.0}{2014/03/12}{因学校正式推荐使用本模板，版本号改为1.0.0。}
+% 本模板的版本号由3段组成。在v1.0.0之前，第一段是0，表示模板处于测试期。从2014年3月12日起，
+% 学校正式推荐使用本模板，故将版本号第一段改为1，表示转为正式版。第二段每次增加1点，表示模板功能上有所增加。
+% 第三段每次增加1点，表示功能没有增加，只修复了Bug。
 % \section{文类源代码}
 % \changes{v0.21}{2013/01/22}{将模板重构为DocStrip格式}
 % \subsection{中文支持}
@@ -4361,7 +4366,7 @@ pdfpagelayout={TwoPageRight}
 %    \end{macrocode}
 % \end{macro}
 %    \begin{macrocode}
-\newglossarystyle{acronymwithtranslation}{%
+\newglossarystyle{acronymwithtranslation}{%缩略词表样式定义
 	\setglossarystyle{long3colheader}%在long3colheader基础上修改
 	\renewcommand*{\glossaryheader}{%重定义表头
 	\bfseries\acronymheader@uestcthesis&\bfseries\acronymfull@uestcthesis&
@@ -7804,7 +7809,7 @@ EXECUTE {end.bib}
 % !Mode:: "TeX:UTF-8"
 
 \makeatletter
-\def\version@uestcthesis{v0.6.9}
+\def\version@uestcthesis{v1.0.0}
 \IfFileExists{ctexbook.cls}{
 \documentclass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}
 }{

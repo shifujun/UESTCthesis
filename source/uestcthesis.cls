@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/03/08 v0.6.9 UESTC thesis class]
+    [2014/03/12 v1.0.0 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}
@@ -3560,7 +3560,7 @@ pdfpagelayout={TwoPageRight}
 \newcommand{\fuhao}[3]{%
 \newglossaryentry{#3}{name={#1},description={#2},sort=#3}%
 }
-\newglossarystyle{acronymwithtranslation}{%
+\newglossarystyle{acronymwithtranslation}{%缩略词表样式定义
 \setglossarystyle{long3colheader}%在long3colheader基础上修改
 \renewcommand*{\glossaryheader}{%重定义表头
 \bfseries\acronymheader@uestcthesis&\bfseries\acronymfull@uestcthesis&

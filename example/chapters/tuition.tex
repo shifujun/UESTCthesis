@@ -2,6 +2,13 @@
 
 \chapter{更新日志}
 \noindent
+2014年3月12日：v1.0.0
+\begin{enumerate}
+\item 因研究生院正式推荐使用本模板，故将版本号改为v1.0.0。可称为正式版了。
+\item 本版本除版本号外，和v0.6.9完全一致。
+\end{enumerate}
+
+\noindent
 2014年3月8日：v0.6.9
 \begin{enumerate}
 \item 修复BUG：当子图环境整体标题中存在下标时错误判断为标题超出一行。
@@ -219,6 +226,14 @@
 \begin{enumerate}
 \item 完成本硕博三种格式论文所需的全部结构。
 \end{enumerate}
+\chapter{注意事项}
+\begin{enumerate}
+\item 本模板不能帮用户更改图片中的字体、字号，使之符合学校规范。请注意学校规范中对图片中字体、字号的要求。
+\item 插入图片、表格如不使用模板封装好的命令，需自行注意学校规范对于图表标题的要求。
+\item 插入参考文献，必须对照本说明文档的范例，如果对照范例缺少项目，则不能保证参考文献格式正确。本说明文档的范例包含所有类型的参考文献，必能找到对应的范例。
+\item 欲求完美的排版效果，不能完全依赖本模板。必须在论文完全定稿后，文字不再变化时，参考各类\LaTeX{}书籍，对换页、图片位置、公式中的间距进行微调。这些微调方式本说明文档中暂无介绍。
+\item 本模板已尽量保持对\LaTeX{}原本命令的兼容性，遇到问题可参照互联网上绝大多数的解决方案。
+\end{enumerate}
 
 \chapter{模板使用说明}
 \section{简介}
@@ -321,7 +336,7 @@ clean.bat   &清理批处理  &双击可删除目录中全部编译过程生成�
 \section{开始编写论文}
 \subsection{确定学位信息}\label{degree:subsection}
 打开thesis.tex文件，第三行如下：\\
-\verb|\documentclass[doctor]{typesetting/uestcthesis}|\\
+\verb|\documentclass[doctor]{uestcthesis}|\\
 修改第三行中间的中括号中的doctor为其他的选项。bachelor代表学士学位；master代表学术型硕士学位；doctor代表博士学位；engineeringmaster代表工程硕士学位；professionalmaster代表专业硕士学位；researchreport代表留学生研究报告； engineeringdoctor代表工程博士学位；
 
 这些选项选择好之后，模板会自动添加相应的封面、扉页等前置必备页面。
@@ -338,7 +353,7 @@ clean.bat   &清理批处理  &双击可删除目录中全部编译过程生成�
 最后两个选项都是方便撰写论文时加快编译用的。为了这个目的，还可以使用draft选项。这个选项会不真正插入图片。如果在撰写论文正文中经常需要编译查看改动结果，在不涉及图片、参考文献等附加内容的情况下，建议开启onlychapters和draft选项。同时只需要运行一次pdflatex命令编译即可。编译脚本执行的正确编译会连续编译3次，所以会比较慢。
 
 以上这些选项的启动方式形如：\\
-\verb|\documentclass[doctor,onlychapters,draft,listoftables]{typesetting/uestcthesis}|\\
+\verb|\documentclass[doctor,onlychapters,draft,listoftables]{uestcthesis}|\\
 
 \subsection{编写正文}
 \subsubsection{新建一章}
