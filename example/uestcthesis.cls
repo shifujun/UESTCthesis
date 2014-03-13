@@ -29,10 +29,16 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2014/03/12 v1.0.0 UESTC thesis class]
+    [2014/03/13 v1.0.1 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}
+\DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
+\DeclareSymbolFont{operators} {OT1}{cmr} {m}{n}
+\DeclareSymbolFont{letters} {OML}{cmm} {m}{it}
+\SetSymbolFont{operators}{bold}{OT1}{cmr} {bx}{n}
+\SetSymbolFont{letters} {bold}{OML}{cmm} {b}{it}
+\SetSymbolFont{symbols} {bold}{OMS}{cmsy}{b}{n}
 \renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
