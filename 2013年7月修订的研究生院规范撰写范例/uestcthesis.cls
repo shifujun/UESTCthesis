@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2015/02/13 v1.1.0 UESTC thesis class]
+    [2015/03/03 v1.1.1 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}
@@ -821,12 +821,12 @@ pdfdisplaydoctitle=true
  %主条目第一列缩略词，第二列说明，第三列中文全称：
  \renewcommand{\glossentry}[2]{%
  \glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}} &
- \csname glo@##1@first\endcsname & \glossentrydesc{##1}\tabularnewline
+ \glsentrylong{##1} & \glossentrydesc{##1}\tabularnewline
  }%
  %子条目第一列空置，第二列说明，第三列中文全称：
  \renewcommand{\subglossentry}[3]{%
  &
- \csname glo@##1@first\endcsname & \glossentrydesc{##1}\tabularnewline
+ \glsentrylong{##1} & \glossentrydesc{##1}\tabularnewline
  }%
  %定义分组间空白:
  \renewcommand*{\glsgroupskip}{%

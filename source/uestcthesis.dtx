@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2015/02/13 v1.1.0 UESTC thesis class]
+    [2015/03/03 v1.1.1 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -1363,6 +1363,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 % \subsection{主要符号表设置}
 %\changes{v0.6}{2014/01/11}{将glossary宏包替换为新版的glossaries宏包。可同时提供缩略词表和主要符号表 。}
 %\changes{v1.1.0}{2015/02/12}{以显式方式定义主要符号表、缩略词表的风格，还重定义了缩略词引用风格。方便用户修改。}
+%\changes{v1.1.1}{2015/03/03}{修正BUG：缩略词表英文全称显示为缩写。}
 %设置术语表宏包供主要符号表使用
 %    \begin{macrocode}
 \RequirePackage[description,acronym]{glossaries}
@@ -1435,12 +1436,12 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
  %主条目第一列缩略词，第二列说明，第三列中文全称：
  \renewcommand{\glossentry}[2]{%
  \glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}} &
- \csname glo@##1@first\endcsname & \glossentrydesc{##1}\tabularnewline
+ \glsentrylong{##1} & \glossentrydesc{##1}\tabularnewline
  }%
  %子条目第一列空置，第二列说明，第三列中文全称：
  \renewcommand{\subglossentry}[3]{%
  &
- \csname glo@##1@first\endcsname & \glossentrydesc{##1}\tabularnewline
+ \glsentrylong{##1} & \glossentrydesc{##1}\tabularnewline
  }%
  %定义分组间空白:
  \renewcommand*{\glsgroupskip}{%

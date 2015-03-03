@@ -1,4 +1,4 @@
-# 最新版本：v1.1.0 #
+# 最新版本：v1.1.1 #
 升级请参考Wiki：[如何从v1.0.x升级到v1.1.0](https://github.com/shifujun/UESTCthesis/wiki/%E5%A6%82%E4%BD%95%E4%BB%8Ev1.0.x%E5%8D%87%E7%BA%A7%E5%88%B0v1.1.0)
 # 简介 #
 UESTCthesis是电子科技大学毕业论文官方发布的LaTeX模板。同时支持本科、各种硕士、各种博士的学位论文排版。
@@ -20,6 +20,8 @@ UESTCthesis是电子科技大学毕业论文官方发布的LaTeX模板。同时�
 加群连接：[http://url.cn/S1QIdM](http://url.cn/S1QIdM)
 
 # 更新日志 #
+##2015年3月3日： v1.1.1  ##
+- 修正BUG：缩略词表中的英文全称显示为缩写形式。
 
 ##2015年2月13日： v1.1.0 ##
 
