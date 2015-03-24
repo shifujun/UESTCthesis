@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2015/03/03 v1.1.1 UESTC thesis class]
+    [2015/03/25 v1.1.2 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -364,6 +364,7 @@
 \raggedbottom
 %    \end{macrocode}
 % \subsection{图表设置}
+% \changes{v1.1.2}{2015/03/25}{根据新的硕博规范单独设置硕博论文的图表标题前后段距}
 %\changes{v1.1.0}{2015/02/13}{为所有图表命令新增一个带B的版本，都在标题参数前加一个参数：图表目录标题。}
 %调用宏包：
 %graphicx插图宏包\\
@@ -386,10 +387,10 @@
 \RequirePackage[format=hang,labelsep=space]{caption}
 %    \end{macrocode}
 %
-%设置浮动体在文本中间的前后间距为6磅，按照硕博标准标题前后其余的6磅另行设置。
+%设置浮动体在文本中间的前后间距为0磅。
 %
 %    \begin{macrocode}
-\intextsep=6bp
+\intextsep=0bp
 %    \end{macrocode}
 %
 %设置浮动体在页面顶端或底端时与文本之间的距离。
@@ -408,7 +409,7 @@
 % \changes{v0.5.2}{2013/08/07}{根据新的硕博规范单独设置硕博论文的图表标题前后段距}
 %    \begin{macrocode}
 \captionsetup[figure]{aboveskip=0bp,belowskip=0bp}
-\captionsetup[table]{aboveskip=0bp,belowskip=6bp}
+\captionsetup[table]{aboveskip=2mm,belowskip=0bp}
 %    \end{macrocode}
 %
 %调用宏包：\\
@@ -465,10 +466,12 @@
 \newcommand{\pic}[4][htbp]{
 \begin{figure}[##1]%
 \centering%
+  \vspace{3.118mm}%
   \includegraphics[##3]{##4}%
+  \vspace{3.118mm}%
   \caption{##2}%
   \label{##4}%
-  \vspace{6bp}%
+  \vspace{2.736mm}%
 \end{figure}%
 }
 %    \end{macrocode}
@@ -477,10 +480,12 @@
 \newcommand{\picB}[5][htbp]{
 \begin{figure}[##1]%
 \centering%
+  \vspace{3.118mm}%
   \includegraphics[##4]{##5}%
+  \vspace{3.118mm}%
   \caption[##2]{##3}%
   \label{##5}%
-  \vspace{6bp}%
+  \vspace{2.736mm}%
 \end{figure}%
 }
 %    \end{macrocode}
@@ -563,10 +568,12 @@
 \renewcommand{\subpiclabel}{##3}%设置多图环境整体的标签
 \renewcommand{\subpiccaption}{##2}%设置多图环境整体的标题。这里先定义两个空变量，又设置值，是因为在定义一个环境时，环境结尾中不能调用##2，##3等传入的值。所以要在环境结尾中插入标题和标签就只能这么做了。
 \begin{figure}[##1]%
+\vspace{1.218mm}%
 \begin{center}%
 }%
 {%
 \end{center}%
+\vspace{-0.582mm}%
 \raggedright%
 \sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
 {\zihao{5}图~\thefigure~\subpiccaption}}%
@@ -594,7 +601,7 @@
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
 \parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
 }%
-\vspace{6bp}%
+\vspace{12bp}%
 \end{figure}%
 \clearallsubfigcaptions%
 }
@@ -609,10 +616,12 @@
 \renewcommand{\subpiccaption}{##3}%设置多图环境整体的标题。这里先定义两个空变量，又设置值，是因为在定义一个环境时，环境结尾中不能调用##2，##3等传入的值。所以要在环境结尾中插入标题和标签就只能这么做了。
 \renewcommand{\subpiclofcaption}{##2}%
 \begin{figure}[##1]%
+\vspace{1.218mm}%
 \begin{center}%
 }%
 {%
 \end{center}%
+\vspace{-0.582mm}%
 \raggedright%
 \sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
 {\zihao{5}图~\thefigure~\subpiccaption}}%
@@ -640,7 +649,7 @@
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
 \parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
 }%
-\vspace{6bp}%
+\vspace{12bp}%
 \end{figure}%
 \clearallsubfigcaptions%
 }
@@ -676,8 +685,9 @@
 \begin{table}[##1]
 \zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
+\vspace{6.5mm}%
 \begin{threeparttable}
-\caption{##5}
+\caption{##5}%
 \label{##2}
 \begin{tabularx}{##3}{##4}
 \toprule[0.1em]
@@ -692,6 +702,7 @@
 \end{tablenotes}
 }
 \end{threeparttable}
+\vspace{-1mm}%
 \end{table}
 }
 %    \end{macrocode}
@@ -703,8 +714,9 @@
 \begin{table}[##1]
 \zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
+\vspace{6.5mm}%
 \begin{threeparttable}
-\caption[##5]{##6}
+\caption[##5]{##6}%
 \label{##2}
 \begin{tabularx}{##3}{##4}
 \toprule[0.1em]
@@ -719,6 +731,7 @@
 \end{tablenotes}
 }
 \end{threeparttable}
+\vspace{-1mm}%
 \end{table}
 }
 %    \end{macrocode}
@@ -730,6 +743,7 @@
 {
 \zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
+\vspace{3mm}%
 \begin{longtable}{##4}
 \caption{##2}\label{##1}\\
 \toprule[0.1em]
@@ -748,6 +762,7 @@
 \endlastfoot
 ##6
 \end{longtable}
+\vspace{-5.8mm}%
 }
 }
 %    \end{macrocode}
@@ -759,6 +774,7 @@
 {
 \zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
+\vspace{3mm}%
 \begin{longtable}{##5}
 \caption[##2]{##3}\label{##1}\\
 \toprule[0.1em]
@@ -777,6 +793,7 @@
 \endlastfoot
 ##7
 \end{longtable}
+\vspace{-5.8mm}%
 }
 }
 %    \end{macrocode}
@@ -787,9 +804,11 @@
 \newcommand{\pictable}[4][htbp]{
 \begin{table}[##1]
 \centering
-\caption{##2}
+\vspace{6.4mm}%
+\caption{##2}%
 \label{##4}
 \includegraphics[##3]{##4}
+\vspace{-1mm}%
 \end{table}
 }
 %    \end{macrocode}
@@ -800,9 +819,12 @@
 \newcommand{\pictableB}[5][htbp]{
 \begin{table}[##1]
 \centering
-\caption[##2]{##3}
+\vspace{6.4mm}%
+\caption[##2]{##3}%
+\vspace{6bp}%
 \label{##5}
 \includegraphics[##4]{##5}
+\vspace{-1mm}%
 \end{table}
 }
 %    \end{macrocode}
@@ -1011,9 +1033,9 @@
             format={\heiti\zihao{4}\flushleft}]{section}
 }{
 \CTEXsetup[ aftername={~},
-            beforeskip={18bp},
+            beforeskip={0mm},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\heiti\zihao{4}\flushleft}]{section}
+            format={\vspace{1.9mm}\heiti\zihao{4}\flushleft}]{section}
 }
 %    \end{macrocode}
 %
@@ -1026,7 +1048,7 @@
             format={\heiti\zihao{4}\flushleft}]{subsection}
 }{
 \CTEXsetup[ aftername={~},
-            beforeskip={12bp},
+            beforeskip={0mm},
             afterskip={6bp plus 1.2bp minus 1.2bp},
             format={\heiti\zihao{4}\flushleft}]{subsection}
 }
@@ -1043,7 +1065,7 @@
 \CTEXsetup[ aftername={~},
             beforeskip={12bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\heiti\zihao{-4}\flushleft}]{subsubsection}
+            format={\vspace*{-0.5mm}\heiti\zihao{-4}\flushleft}]{subsubsection}
 }
 %    \end{macrocode}
 % \subsection{摘要设置}

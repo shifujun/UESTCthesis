@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2015/03/03 v1.1.1 UESTC thesis class]
+    [2015/03/25 v1.1.2 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}
@@ -186,11 +186,11 @@
 \raggedbottom
 \RequirePackage{graphicx,calc,float,texnames}
 \RequirePackage[format=hang,labelsep=space]{caption}
-\intextsep=6bp
+\intextsep=0bp
 \textfloatsep=6bp
 \floatsep=6bp
 \captionsetup[figure]{aboveskip=0bp,belowskip=0bp}
-\captionsetup[table]{aboveskip=0bp,belowskip=6bp}
+\captionsetup[table]{aboveskip=2mm,belowskip=0bp}
 \RequirePackage{booktabs,tabularx,threeparttable,longtable}
 \DeclareCaptionFont{capfont}{\zihao{5}}
 \captionsetup{font=capfont}
@@ -203,19 +203,23 @@
 \newcommand{\pic}[4][htbp]{
 \begin{figure}[##1]%
 \centering%
+  \vspace{3.118mm}%
   \includegraphics[##3]{##4}%
+  \vspace{3.118mm}%
   \caption{##2}%
   \label{##4}%
-  \vspace{6bp}%
+  \vspace{2.736mm}%
 \end{figure}%
 }
 \newcommand{\picB}[5][htbp]{
 \begin{figure}[##1]%
 \centering%
+  \vspace{3.118mm}%
   \includegraphics[##4]{##5}%
+  \vspace{3.118mm}%
   \caption[##2]{##3}%
   \label{##5}%
-  \vspace{6bp}%
+  \vspace{2.736mm}%
 \end{figure}%
 }
 \newcommand{\clearallsubfigcaptions}{
@@ -269,10 +273,12 @@
 \renewcommand{\subpiclabel}{##3}%设置多图环境整体的标签
 \renewcommand{\subpiccaption}{##2}%设置多图环境整体的标题。这里先定义两个空变量，又设置值，是因为在定义一个环境时，环境结尾中不能调用##2，##3等传入的值。所以要在环境结尾中插入标题和标签就只能这么做了。
 \begin{figure}[##1]%
+\vspace{1.218mm}%
 \begin{center}%
 }%
 {%
 \end{center}%
+\vspace{-0.582mm}%
 \raggedright%
 \sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
 {\zihao{5}图~\thefigure~\subpiccaption}}%
@@ -293,7 +299,7 @@
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
 \parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
 }%
-\vspace{6bp}%
+\vspace{12bp}%
 \end{figure}%
 \clearallsubfigcaptions%
 }
@@ -303,10 +309,12 @@
 \renewcommand{\subpiccaption}{##3}%设置多图环境整体的标题。这里先定义两个空变量，又设置值，是因为在定义一个环境时，环境结尾中不能调用##2，##3等传入的值。所以要在环境结尾中插入标题和标签就只能这么做了。
 \renewcommand{\subpiclofcaption}{##2}%
 \begin{figure}[##1]%
+\vspace{1.218mm}%
 \begin{center}%
 }%
 {%
 \end{center}%
+\vspace{-0.582mm}%
 \raggedright%
 \sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
 {\zihao{5}图~\thefigure~\subpiccaption}}%
@@ -327,7 +335,7 @@
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
 \parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
 }%
-\vspace{6bp}%
+\vspace{12bp}%
 \end{figure}%
 \clearallsubfigcaptions%
 }
@@ -346,8 +354,9 @@
 \begin{table}[##1]
 \zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
+\vspace{6.5mm}%
 \begin{threeparttable}
-\caption{##5}
+\caption{##5}%
 \label{##2}
 \begin{tabularx}{##3}{##4}
 \toprule[0.1em]
@@ -362,14 +371,16 @@
 \end{tablenotes}
 }
 \end{threeparttable}
+\vspace{-1mm}%
 \end{table}
 }
 \newcommand{\threelinetableB}[9][htbp]{
 \begin{table}[##1]
 \zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
+\vspace{6.5mm}%
 \begin{threeparttable}
-\caption[##5]{##6}
+\caption[##5]{##6}%
 \label{##2}
 \begin{tabularx}{##3}{##4}
 \toprule[0.1em]
@@ -384,12 +395,14 @@
 \end{tablenotes}
 }
 \end{threeparttable}
+\vspace{-1mm}%
 \end{table}
 }
 \newcommand{\longthreelinetable}[6]{
 {
 \zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
+\vspace{3mm}%
 \begin{longtable}{##4}
 \caption{##2}\label{##1}\\
 \toprule[0.1em]
@@ -408,12 +421,14 @@
 \endlastfoot
 ##6
 \end{longtable}
+\vspace{-5.8mm}%
 }
 }
 \newcommand{\longthreelinetableB}[7]{
 {
 \zihao{5}%管理规范中要求表格中文字为五号字。
 \centering
+\vspace{3mm}%
 \begin{longtable}{##5}
 \caption[##2]{##3}\label{##1}\\
 \toprule[0.1em]
@@ -432,22 +447,28 @@
 \endlastfoot
 ##7
 \end{longtable}
+\vspace{-5.8mm}%
 }
 }
 \newcommand{\pictable}[4][htbp]{
 \begin{table}[##1]
 \centering
-\caption{##2}
+\vspace{6.4mm}%
+\caption{##2}%
 \label{##4}
 \includegraphics[##3]{##4}
+\vspace{-1mm}%
 \end{table}
 }
 \newcommand{\pictableB}[5][htbp]{
 \begin{table}[##1]
 \centering
-\caption[##2]{##3}
+\vspace{6.4mm}%
+\caption[##2]{##3}%
+\vspace{6bp}%
 \label{##5}
 \includegraphics[##4]{##5}
+\vspace{-1mm}%
 \end{table}
 }
 }%\newcmds@uestcthesis定义完毕
@@ -568,9 +589,9 @@
             format={\heiti\zihao{4}\flushleft}]{section}
 }{
 \CTEXsetup[ aftername={~},
-            beforeskip={18bp},
+            beforeskip={0mm},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\heiti\zihao{4}\flushleft}]{section}
+            format={\vspace{1.9mm}\heiti\zihao{4}\flushleft}]{section}
 }
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \CTEXsetup[ aftername={~},
@@ -579,7 +600,7 @@
             format={\heiti\zihao{4}\flushleft}]{subsection}
 }{
 \CTEXsetup[ aftername={~},
-            beforeskip={12bp},
+            beforeskip={0mm},
             afterskip={6bp plus 1.2bp minus 1.2bp},
             format={\heiti\zihao{4}\flushleft}]{subsection}
 }
@@ -592,7 +613,7 @@
 \CTEXsetup[ aftername={~},
             beforeskip={12bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\heiti\zihao{-4}\flushleft}]{subsubsection}
+            format={\vspace*{-0.5mm}\heiti\zihao{-4}\flushleft}]{subsubsection}
 }
 \newenvironment{Cabstract}[5]{
 \newcommand{\@ckeywords}{
