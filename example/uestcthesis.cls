@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2015/03/25 v1.1.2 UESTC thesis class]
+    [2015/04/08 v1.2.0 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \RequirePackage{mathptmx}
 \DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}

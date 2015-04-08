@@ -28,6 +28,7 @@
 %% 
 
 %%本文件基于吴凯制作的GBT7714-2005NLang.bst(1 Beta 2 测试版2012年9月20日)修改而成。
+%%修改内容包括将英文作者的名放前姓放后，设置行距。删除原有的参考文献类型，重新定义了10个参考文献类型。使用方法需要参考本模板的WIKI。
 %%根据GBT7714-2005NLang.bst中copyright的要求，将文件名修改成uestcthesis.bst。
 %%对吴凯的杰出工作表示感谢！
 ENTRY
@@ -361,8 +362,7 @@ FUNCTION {output.bibitem}
 }
 
 FUNCTION {fin.entry}
-{ add.period$
-  write$
+{ write$
   newline$
 }
 
@@ -424,7 +424,6 @@ FUNCTION {boldface}
     { "{\bf " swap$ * "}" * }
   if$
 }
-
 
 %%%%%%%%%%%%%%%%%%%
 Function{upcase}
@@ -1935,56 +1934,78 @@ FUNCTION {format.incoll.inproc.crossref}
 { "In "
   " \cite{" * crossref * "}" *
 }
+FUNCTION {format.comma.pages}
+{ pages empty$
+    { "" }
+    { pages multi.page.check
+        { "," pages n.dashify tie.or.space.connect * }
+        { "," pages tie.or.space.connect  * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.conference.title}
+{title empty$
+    { "" }
+    {
+       format.title "[C]" * title output.check
+    }
+if$
+}
 
 FUNCTION {article}
 {language empty$
 { output.bibitem
-  format.authors "author" output.check
-  author format.key output
+  format.authors output.nonnull
   new.block
   format.article.title output
   new.block
-  crossref missing$
-    { journal                           %  Don't change
-      "journal" output.check                                %  case.
-      output.article.year.check   output
-      format.article.vol.num.date.pages output
-      format.date.modifydate.citedate output
-    }
-    { format.article.crossref output.nonnull
-      format.pages output
-    }
-  if$
+  journal output
+  output.article.year.check   output
+  format.article.vol.num.date.pages output
+  format.date.modifydate.citedate output
   new.block
-  format.url output
-  new.block
-  note output
-
   fin.entry
 }
 
 { output.bibitem
-  format.cauthors "author" output.check
-  author format.key output
+  format.cauthors output.nonnull
   new.block
-  format.carticle.title output
+  format.article.title output
   new.block
-  crossref missing$
-    {journal                               % Don't change    %wk
-     "journal" output.check                                %  case.
-      output.carticle.year.check   output                                      %wk
-      format.carticle.vol.num.date.pages output                      %wk
-      format.date.modifydate.citedate output
-      new.block
-    }
-    { format.article.crossref output.nonnull
-      format.pages output
-    }
-  if$
+  journal output
+  output.article.year.check   output
+  format.article.vol.num.date.pages output
+  format.date.modifydate.citedate output
   new.block
-  format.url output
+  fin.entry
+}
+if$
+}
+
+FUNCTION {conference}
+{language empty$
+{ output.bibitem
+  format.authors output.nonnull
   new.block
-  note output
+  format.conference.title output
+  new.block
+      publisher ", " * address * output
+      year output
+      format.comma.pages output
+  new.block
+  fin.entry
+}
+{ output.bibitem
+  format.cauthors output.nonnull
+  new.block
+  format.conference.title output
+  new.block
+      publisher ", " * address * output
+      year output
+      format.comma.pages output
+  new.block
   fin.entry
 }
 if$
@@ -1993,773 +2014,249 @@ if$
 FUNCTION {book}
 {language empty$
 { output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      editor format.key output
-    }
-    { format.authors output.nonnull
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
+  format.authors output.nonnull
   new.block
   format.book.title output
   new.block
-  crossref missing$
-    { format.edition output
-      new.block
-      format.book.continue.vol.num ouput
-      booklike.series.volume.number output
-      new.block
-      format.addr.pub "publisher" output.check
-      output.continue.year.check  ouput
-      format.date.modifydate.citedate output
-      format.pages output
-    }
-    { format.book.crossref output.nonnull
-    }
-  if$
+  address ": " * publisher * output
+  year output
+  format.comma.pages output
   new.block
-  format.url output
-  new.block
-  note output
   fin.entry
 }
-
 { output.bibitem
-  author empty$
-    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
-      editor format.key output
-    }
-    { format.cauthors output.nonnull
-      crossref missing$
-        {"author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.cbook.title output                       %wk
-  new.block
-  crossref missing$
-    {
-     format.cedition output                                 %wk   edition->cedition
-      new.block
-      format.cbook.continue.vol.num ouput
-      new.block
-      format.caddr.pub "publisher" output.check
-      output.continue.cyear.check  ouput                                     %wk
-      cbooklike.series.volume.number.pages output
-      format.date.modifydate.citedate output
-     }
-    {  format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-if$
-}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {booklet}
-{language empty$
-{ output.bibitem
-  format.authors output
-  author format.key output
-  output.year.month.check
-  new.block
-  format.btitle "title" output.check
-  new.block
-  howpublished output
-  address output
-  output.year.check
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-
-{ output.bibitem
-  format.cauthors output                                      %wk
-  author  format.key output
-  format.btitle "title" output.check                         %wk
-  new.block
-  howpublished output
-  address output
-  output.cyear.month.check                                    %wk
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-if$
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {inbook}
-{language empty$
-{ output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      editor format.key output
-    }
-    { format.authors output.nonnull
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
+  format.cauthors output.nonnull
   new.block
   format.book.title output
   new.block
-  crossref missing$
-    { format.edition output
-      booklike.series.volume.number output
-      new.block
-      format.addr.pub "publisher" output.check
-      output.year.check output
-      format.date.modifydate.citedate output
-      format.pages output
-    }
-    { format.book.crossref output.nonnull
-    }
-  if$
+  address ": " * publisher * output
+  year output
+  format.comma.pages output
   new.block
-  format.url output
-  new.block
-  note output
   fin.entry
 }
+if$
+}
 
-{ output.bibitem
-  author empty$
-    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
-      editor format.key output
-    }
-    { format.cauthors output.nonnull
-      crossref missing$
-        {"author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.cbook.title output                       %wk
-  new.block
-  crossref missing$
+FUNCTION {format.thesis.title}
+{title empty$
+    { "" }
     {
-     format.cedition output                                 %wk   edition->cedition
-      new.block
-      format.caddr.pub "publisher" output.check
-      output.cyear.check                                       %wk
-      cbooklike.series.volume.number.pages output
-      format.date.modifydate.citedate output
-     }
-    {  format.book.crossref output.nonnull
+       format.title "[D]" * title output.check
     }
-  if$
+if$
+}
+
+FUNCTION {thesis}
+{language empty$
+{ output.bibitem
+  format.authors output.nonnull
   new.block
-  format.url output
+  format.thesis.title output
   new.block
-  note output
+  address ": " * school * output
+  year output
+  format.comma.pages output
+  new.block
+  fin.entry
+}
+{ output.bibitem
+  format.cauthors output.nonnull
+  new.block
+  format.thesis.title output
+  new.block
+  address ": " * school * output
+  year output
+  format.comma.pages output
+  new.block
   fin.entry
 }
 if$
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {incollection}                                     %wk
-{language empty$
-{ output.bibitem
-  author empty$
-    { format.editors "editor" output.check                  %wk    format.editors->format.ceditors
-      editor format.key output             }
-    { format.authors "author" output.check                   %wk
-      author format.key output             }
-  if$
-  new.block
-  format.incollection.title output
-  crossref missing$                                         %  Chapter and/or
+FUNCTION {format.newspaper.title}
+{title empty$
+    { "" }
     {
-    before.all 'output.state :=
-    format.in.ed.booktitle output                         %  page numbers can
-      format.edition output                                 %  come out via this         %wk  edition->cedition
-      new.block
-      format.addr.pub "publisher" output.check
-      output.year.check
-      incollectionlike.series.volume.number.pages output          %  route, too.
-      format.date.modifydate.citedate output
+       format.title "[N]" * title output.check
     }
-    { format.incoll.inproc.crossref output.nonnull
-      new.block
-    }
-  if$
-
-  format.url output
-  new.block
-  note output
-  fin.entry
+if$
 }
 
+FUNCTION {newspaper}
+{language empty$
 { output.bibitem
-  author empty$
-    { format.ceditors "editor" output.check                  %wk    format.editors->format.ceditors
-      editor format.key output             }
-    { format.cauthors "author" output.check                   %wk
-      author format.key output             }
-  if$
+  format.authors output.nonnull
   new.block
-  format.cincollection.title output
-  crossref missing$                                         %  Chapter and/or
-    { format.in.ced.booktitle output                         %  page numbers can
-      format.cedition output                                 %  come out via this         %wk  edition->cedition
-      new.block
-      format.caddr.pub "publisher" output.check
-      output.cyear.check   output
-      cincollectionlike.series.volume.number.pages output          %  route, too.
-      format.date.modifydate.citedate output
-    }
-    { format.incoll.inproc.crossref output.nonnull
-      new.block
-    }
-  if$
+  format.newspaper.title output
   new.block
-  format.url output
+  journal output
+  date output
   new.block
-  note output
+  fin.entry
+}
+{ output.bibitem
+  format.cauthors output.nonnull
+  new.block
+  format.newspaper.title output
+  new.block
+  journal output
+  date output
+  new.block
   fin.entry
 }
 if$
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {inproceedings}                                    %wk 改自incollection类型
-{language empty$
-{ output.bibitem
-  author empty$
-    { format.editors "editor" output.check                  %wk    format.editors->format.ceditors
-      editor format.key output             }
-    { format.authors "author" output.check                   %wk
-      author format.key output             }
-  if$
-  new.block
-  format.inproceedings.title output
-  crossref missing$                                         %  Chapter and/or
+FUNCTION {format.techreport.title}
+{title empty$
+    { "" }
     {
-    before.all 'output.state :=
-    format.in.ed.booktitle output                         %  page numbers can
-      format.edition output                                 %  come out via this         %wk  edition->cedition
-      new.block
-      format.inproceedings.addr.pub "publisher" output.check
-      output.year.check
-      incollectionlike.series.volume.number.pages output          %  route, too.
-      format.date.modifydate.citedate output
+       format.title "[R]" * title output.check
     }
-    { format.incoll.inproc.crossref output.nonnull
-      new.block
-    }
-  if$
-  format.url output
-  new.block
-  note output
-  fin.entry
+if$
 }
 
+FUNCTION {techreport}
+{language empty$
 { output.bibitem
-  author empty$
-    { format.ceditors "editor" output.check                  %wk    format.editors->format.ceditors
-      editor format.key output             }
-    { format.cauthors "author" output.check                   %wk
-      author format.key output             }
-  if$
+  format.authors output.nonnull
   new.block
-  format.cinproceedings.title output
-  crossref missing$                                         %  Chapter and/or
-    { format.in.ced.booktitle output                         %  page numbers can
-      format.cedition output                                 %  come out via this         %wk  edition->cedition
-      new.block
-      format.cinproceedings.addr.pub "publisher" output.check
-      output.cyear.check
-      cincollectionlike.series.volume.number.pages output          %  route, too.
-      format.date.modifydate.citedate output
-    }
-    { format.incoll.inproc.crossref output.nonnull
-      new.block
-    }
-  if$
+  format.techreport.title output
   new.block
-  format.url output
+  address ": " * institution * output
+  date output
   new.block
-  note output
+  fin.entry
+}
+{ output.bibitem
+  format.cauthors output.nonnull
+  new.block
+  format.techreport.title output
+  new.block
+  address ": " * institution * output
+  date output
+  new.block
   fin.entry
 }
 if$
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {conference} { inproceedings }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {TECHREPORT}                             %wk   改自book类型
-{language empty$
-{ output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      editor format.key output
-    }
-    { format.authors output.nonnull
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.title "[R]" *  "title" output.check
-  new.block
-  crossref missing$
-    { format.edition output
-      booklike.series.volume.number output
-      new.block
-      format.addr.institution "publisher" output.check
-      output.year.check output
-      format.pages output
-    }
-    { format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-
-{ output.bibitem
-  author empty$
-    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
-      editor format.key output
-    }
-    { format.cauthors output.nonnull
-      crossref missing$
-        {"author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.ctitle  "[R]" * "title" output.check                        %wk
-  new.block
-  crossref missing$
+FUNCTION {format.patent.title}
+{title empty$
+    { "" }
     {
-     format.cedition output                                 %wk   edition->cedition
-      new.block
-      format.caddr.institution "publisher" output.check
-      output.cyear.check                                       %wk
-      cbooklike.series.volume.number.pages output
+       format.title "[P]" * title output.check
     }
-    {  format.book.crossref output.nonnull
-    }
-  if$
+if$
+}
+
+FUNCTION {patent}
+{language empty$
+{ output.bibitem
+  format.authors output.nonnull
   new.block
-  format.url output
+  format.patent.title output
   new.block
-  note output
+  country output
+  type output
+  patentid output
+  date output
+  new.block
+  fin.entry
+}
+{ output.bibitem
+  format.cauthors output.nonnull
+  new.block
+  format.patent.title output
+  new.block
+  country output
+  type output
+  patentid output
+  date output
+  new.block
   fin.entry
 }
 if$
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {mastersthesis}                                %wk   改自book类型
-{language empty$
-{ output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      editor format.key output
-    }
-    { format.authors output.nonnull
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.title "[D]" *  "title" output.check
-  new.block
-  crossref missing$
-    { format.edition output
-      booklike.series.volume.number output
-      new.block
-      format.school.pub "publisher" output.check
-      output.year.check output
-      format.pages output
-    }
-    { format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-
-{ output.bibitem
-  author empty$
-    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
-      editor format.key output
-    }
-    { format.cauthors output.nonnull
-      crossref missing$
-        {"author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.ctitle  "[D]" * "title" output.check                      %wk
-  new.block
-  crossref missing$
+FUNCTION {format.standard.title}
+{title empty$
+    { "" }
     {
-     format.cedition output                                 %wk   edition->cedition
-      new.block
-      format.cschool.pub "publisher" output.check
-      output.cyear.check                                       %wk
-      cbooklike.series.volume.number.pages output
+       format.title "[S]" * title output.check
     }
-    {  format.book.crossref output.nonnull
-    }
-  if$
+if$
+}
+
+FUNCTION {standard}
+{language empty$
+{ output.bibitem
+  format.authors output.nonnull
   new.block
-  format.url output
+  number output
   new.block
-  note output
+  format.standard.title output
+  new.block
+  address ": " * publisher * output
+  date output
+  new.block
+  fin.entry
+}
+{ output.bibitem
+  format.cauthors output.nonnull
+  new.block
+  number output
+  new.block
+  format.standard.title output
+  new.block
+  address ": " * publisher * output
+  date output
+  new.block
   fin.entry
 }
 if$
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {phdthesis}                        %wk  改自book类型
-{language empty$
-{ output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      editor format.key output
-    }
-    { format.authors output.nonnull
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.title "[D]" *  "title" output.check
-  new.block
-  crossref missing$
-    { format.edition output
-      booklike.series.volume.number output
-      new.block
-      format.school.pub "publisher" output.check
-      output.year.check output
-      format.pages output
-    }
-    { format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
 
-{ output.bibitem
-  author empty$
-    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
-      editor format.key output
-    }
-    { format.cauthors output.nonnull
-      crossref missing$
-        {"author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.ctitle  "[D]" * "title" output.check                        %wk
-  new.block
-  crossref missing$
+FUNCTION {format.digital.title}
+{title empty$
+    { "" }
     {
-     format.cedition output                                 %wk   edition->cedition
-      new.block
-      format.cschool.pub "publisher" output.check
-      output.cyear.check                                       %wk
-      cbooklike.series.volume.number.pages output
+       format.title "[" * typeoflit * "]" * title output.check
     }
-    {  format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
 if$
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {proceedings}            %改自book类型
+FUNCTION {digital}
 {language empty$
 { output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      editor format.key output
-    }
-    { format.authors output.nonnull
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
+  format.authors output.nonnull
+  new.block
+  number output
+  new.block
+  format.digital.title output
+  new.block
+  publisher empty$
+    {format.url output}
+    {address ": " * publisher * output}
   if$
+  date output
   new.block
-  format.conference.title output
-  new.block
-  crossref missing$
-    { format.edition output
-      booklike.series.volume.number output
-      new.block
-      format.addr.pub "publisher" output.check
-      output.year.check output
-      format.date.modifydate.citedate output
-      format.pages output
-    }
-    { format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
   fin.entry
 }
-
 { output.bibitem
-  author empty$
-    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
-      editor format.key output
-    }
-    { format.cauthors output.nonnull
-      crossref missing$
-        {"author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
+  format.cauthors output.nonnull
+  new.block
+  number output
+  new.block
+  format.digital.title output
+  new.block
+  publisher empty$
+    {format.url output}
+    {address ": " * publisher * output}
   if$
+  date output
   new.block
-  format.cconference.title output                       %wk
-  new.block
-  crossref missing$
-    {
-     format.cedition output                                 %wk   edition->cedition
-      new.block
-      format.caddr.pub "publisher" output.check
-      output.cyear.check                                       %wk
-      cbooklike.series.volume.number.pages output
-      format.date.modifydate.citedate output
-     }
-    {  format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-if$
-}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {manual}             %改自book类型
-{language empty$
-{ output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      editor format.key output
-    }
-    { format.authors output.nonnull
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.btitle "[H]" *  "title" output.check
-  new.block
-  crossref missing$
-    { format.edition output
-      booklike.series.volume.number output
-      new.block
-      format.addr.pub "publisher" output.check
-      output.year.check output
-      format.pages output
-    }
-    { format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-
-{ output.bibitem
-  author empty$
-    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
-      editor format.key output
-    }
-    { format.cauthors output.nonnull
-      crossref missing$
-        {"author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.ctitle  "[H]" * "title" output.check                        %wk
-  new.block
-  crossref missing$
-    { format.cedition output                                 %wk   edition->cedition
-      new.block
-      format.caddr.pub "publisher" output.check
-      output.cyear.check                                       %wk
-      cbooklike.series.volume.number.pages output
-    }
-    {  format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  note output
-  fin.entry
-}
-if$
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {misc}              %作为非常规文献的格式，可靠性低，应该仔细检查，改自book类型
-{language empty$
-{ output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      editor format.key output
-    }
-    { format.authors output.nonnull
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.misc.title output
-  new.block
-  crossref missing$
-    { format.edition output
-      booklike.series.volume.number output
-      new.block
-      format.misc.addr.pub "publisher" output.check
-      format.date.modifydate.citedate output
-    }
-    { format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-
-{ output.bibitem
-  author empty$
-    { format.ceditors  "author and editor" output.check       %wk    format.editors->format.ceditors
-      editor format.key output
-    }
-    { format.cauthors output.nonnull
-      crossref missing$
-        {"author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  new.block
-  format.cmisc.title output                       %wk
-
-  new.block
-  crossref missing$
-    {
-     format.cedition output                                 %wk   edition->cedition
-      new.block
-      format.cmisc.addr.pub "publisher" output.check
-      format.date.modifydate.citedate output
-     }
-    {  format.book.crossref output.nonnull
-    }
-  if$
-  new.block
-  format.url output
-  new.block
-  note output
-  fin.entry
-}
-if$
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-FUNCTION {unpublished}
-{language empty$
-{ output.bibitem
-  format.authors "author" output.check
-  author format.key output
-  output.year.month.check
-  new.block
-  format.btitle "title" output.check
-  new.block
-  note "note" output.check
-  fin.entry
-}
-
-{ output.bibitem
-  format.cauthors "author" output.check                      %wk
-  author format.key output
-  output.cyear.month.check                                  %wk
-  new.block
-  format.ctitle "title" output.check                          %wk
-  new.block
-  note "note" output.check
   fin.entry
 }
 if$
