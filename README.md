@@ -1,5 +1,7 @@
-# 最新版本：v1.1.2 #
-升级请参考Wiki：[如何从v1.0.x升级到v1.1.0](https://github.com/shifujun/UESTCthesis/wiki/%E5%A6%82%E4%BD%95%E4%BB%8Ev1.0.x%E5%8D%87%E7%BA%A7%E5%88%B0v1.1.0)
+# 最新版本：v1.2.0 #
+升级前请阅读下方的更新日志。
+
+从v1.0.x升级请参考Wiki：[如何从v1.0.x升级到v1.1.0](https://github.com/shifujun/UESTCthesis/wiki/%E5%A6%82%E4%BD%95%E4%BB%8Ev1.0.x%E5%8D%87%E7%BA%A7%E5%88%B0v1.1.0)
 # 简介 #
 UESTCthesis是电子科技大学毕业论文官方发布的LaTeX模板。同时支持本科、各种硕士、各种博士的学位论文排版。
 这个模板可以仅使用一条\documentclass命令，就能帮助排版你的毕业论文。
@@ -20,6 +22,9 @@ UESTCthesis是电子科技大学毕业论文官方发布的LaTeX模板。同时�
 加群连接：[http://url.cn/S1QIdM](http://url.cn/S1QIdM)
 
 # 更新日志 #
+##2015年4月8日： v1.2.0  ##
+- 大幅修改bst参考文献格式控制文件。更新后的模板可以生成和规范相同的参考文献格式。但不再支持GB/T7714-2005，也不兼容之前的bib文件。基本上之前定义的参考文献条目都需要进行类型的更改和字段的补全。详情请看Wiki:[录入参考文献和研究成果](https://github.com/shifujun/UESTCthesis/wiki/%E5%BD%95%E5%85%A5%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E5%92%8C%E7%A0%94%E7%A9%B6%E6%88%90%E6%9E%9C)。
+
 ##2015年3月25日： v1.1.2  ##
 - 对照研究生院新的Word范例调整段距，包括章节标题和图表标题以及图表的前后段距。
 
