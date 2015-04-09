@@ -29,8 +29,11 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2015/04/08 v1.2.0 UESTC thesis class]
+    [2015/04/10 v1.2.1 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
+\renewcommand\normalsize{%
+    \@setfontsize\normalsize{\CTEX@fs@sfour}{\CTEX@fs@sfourskip}%
+    \let\@listi\@listI}%
 \RequirePackage{mathptmx}
 \DeclareSymbolFont{symbols} {OMS}{cmsy}{m}{n}
 \DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
@@ -95,6 +98,7 @@
 \renewcommand{\chaptermark}[1]{\markboth{第\chapternumberformat@uestcthesis章~##1 }{}}
 }
 \newcommand{\acknowledgementsname@uestcthesis}{致\enspace 谢}
+\newcommand{\acknowledgementsmarkname@uestcthesis}{致谢}
 \newcommand{\glossaryname@uestcthesis}{主要符号表}
 \newcommand{\acronymname@uestcthesis}{缩略词表}
 \newcommand{\entryname@uestcthesis}{符号}
@@ -117,6 +121,7 @@
 \renewcommand{\chaptermark}[1]{\markboth{Chapter\space\arabic{chapter}~##1 }{}}
 
 \renewcommand{\acknowledgementsname@uestcthesis}{Acknowledgements}
+\renewcommand{\acknowledgementsmarkname@uestcthesis}{Acknowledgements}
 \renewcommand{\CTEX@bibname}{References}
 \renewcommand{\publicationsname@degree}{\publicationsname@english}
 \renewcommand{\thesisname@degree}{\thesisname@english}
@@ -175,11 +180,11 @@
 }}
 \ProcessOptions\relax
 \ifdefstring{\degree@uestcthesis}{bachelor}{
-\RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
-                top=2.75cm,left=3cm]{geometry}
+\RequirePackage[a4paper,headheight=12.65pt,headsep=5.65mm,centering,
+                top=3.64cm,left=3cm]{geometry}
 }{
-\RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
-                top=2.08cm,left=3cm]{geometry}
+\RequirePackage[a4paper,headheight=12.65pt,headsep=6.4mm,centering,
+                top=3.14cm,left=3cm]{geometry}
 }
 \linespread{1.391}
 \parskip=0bp plus 10bp minus 1bp
@@ -192,10 +197,10 @@
 \captionsetup[figure]{aboveskip=0bp,belowskip=0bp}
 \captionsetup[table]{aboveskip=2mm,belowskip=0bp}
 \RequirePackage{booktabs,tabularx,threeparttable,longtable}
-\DeclareCaptionFont{capfont}{\zihao{5}}
+\DeclareCaptionFont{capfont}{\zihao{5}\baselineskip=20bp{}}
 \captionsetup{font=capfont}
-\renewcommand{\thefigure}{\arabic{chapter}\textendash\arabic{figure}}
-\renewcommand{\thetable}{\arabic{chapter}\textendash\arabic{table}}
+\renewcommand{\thefigure}{\arabic{chapter}-\arabic{figure}}
+\renewcommand{\thetable}{\arabic{chapter}-\arabic{table}}
 \graphicspath{{pics/}}
 \RequirePackage[below]{placeins}
 \RequirePackage{flafter}
@@ -286,10 +291,10 @@
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 16pt}}{%THEN
 \noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
 \noindent\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
+\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
 }{%ELSE
 {\centering\caption{\subpiccaption}\label{\subpiclabel}}\par
-\sbox{\tempsubpiccaptionbox}{\zihao{5}\CTEX@figurename~\thefigure~\subpiccaption}%
+\sbox{\tempsubpiccaptionbox}{\zihao{5}\baselineskip=20bp{}\CTEX@figurename~\thefigure~\subpiccaption}%
 \setlength{\tempsubpiccaptionindent}{\textwidth}%
 \addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
 \setlength{\tempsubpiccaptionindent}{.5\tempsubpiccaptionindent}%
@@ -297,7 +302,7 @@
 \addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionindent}%
 \addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionheadindent}%
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
+\parbox[t]{\tempsubpiccaptionwidth}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
 }%
 \vspace{12bp}%
 \end{figure}%
@@ -322,10 +327,10 @@
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 16pt}}{%THEN
 \noindent\caption[\subpiclofcaption]{\subpiccaption}\label{\subpiclabel}\par%
 \noindent\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
+\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
 }{%ELSE
 {\centering\caption[\subpiclofcaption]{\subpiccaption}\label{\subpiclabel}}\par
-\sbox{\tempsubpiccaptionbox}{\zihao{5}\CTEX@figurename~\thefigure~\subpiccaption}%
+\sbox{\tempsubpiccaptionbox}{\zihao{5}\baselineskip=20bp{}\CTEX@figurename~\thefigure~\subpiccaption}%
 \setlength{\tempsubpiccaptionindent}{\textwidth}%
 \addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
 \setlength{\tempsubpiccaptionindent}{.5\tempsubpiccaptionindent}%
@@ -333,7 +338,7 @@
 \addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionindent}%
 \addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionheadindent}%
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
+\parbox[t]{\tempsubpiccaptionwidth}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
 }%
 \vspace{12bp}%
 \end{figure}%
@@ -352,7 +357,7 @@
 }%
 \newcommand{\threelinetable}[8][htbp]{
 \begin{table}[##1]
-\zihao{5}%管理规范中要求表格中文字为五号字。
+\zihao{5}\baselineskip=20bp{}%管理规范中要求表格中文字为五号字。
 \centering
 \vspace{6.5mm}%
 \begin{threeparttable}
@@ -376,7 +381,7 @@
 }
 \newcommand{\threelinetableB}[9][htbp]{
 \begin{table}[##1]
-\zihao{5}%管理规范中要求表格中文字为五号字。
+\zihao{5}\baselineskip=20bp{}%管理规范中要求表格中文字为五号字。
 \centering
 \vspace{6.5mm}%
 \begin{threeparttable}
@@ -400,7 +405,7 @@
 }
 \newcommand{\longthreelinetable}[6]{
 {
-\zihao{5}%管理规范中要求表格中文字为五号字。
+\zihao{5}\baselineskip=20bp{}%管理规范中要求表格中文字为五号字。
 \centering
 \vspace{3mm}%
 \begin{longtable}{##4}
@@ -563,57 +568,65 @@
 }
 \setcounter{secnumdepth}{3}
 \chaptername@uestcthesis
+\def\@makechapterhead #1{\rule{0pt}{\CTEX@chapter@beforeskip}\par{\normalfont \parindent \CTEX@chapter@indent \CTEX@chapter@format \ifnum \c@secnumdepth >\m@ne \if@mainmatter \CTEX@chaptername \fi \fi \interlinepenalty \@M \CTEX@chapter@titleformat #1\par \nobreak \vskip \CTEX@chapter@afterskip }}
+\def\@makeschapterhead #1{\rule{0pt}{\CTEX@chapter@beforeskip}\par{\normalfont \parindent \CTEX@chapter@indent \CTEX@chapter@format \interlinepenalty \@M \CTEX@chapter@titleformat #1\par \nobreak \vskip \CTEX@chapter@afterskip }}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \CTEXsetup[ nameformat={},
             numberformat={},
             titleformat={},
-            aftername={~},
-            beforeskip={2mm},%章标题段前30磅，这里2mm是由于实际效果与MS WORD有差异而微调出的。具体测量的是页眉线到章标题文字上边的距离。
-            afterskip={30bp plus 6bp minus 6bp},%章标题段后30磅。
-            format={\heiti\zihao{-3}\centering},
+            aftername={\enspace},
+            beforeskip={30bp},
+            afterskip={30bp plus 6bp minus 6bp},
+            format={\heiti\zihao{-3}\centering\baselineskip=20bp},
             ]{chapter}
 }{
 \CTEXsetup[ nameformat={},
             numberformat={},
             titleformat={},
-            aftername={~},
-            beforeskip={1.8mm},%章标题段前30磅，这里2mm是由于实际效果与MS WORD有差异而微调出的。具体测量的是页眉线到章标题文字上边的距离。
-            afterskip={18bp plus 3.6bp minus 3.6bp},%章标题段后30磅。
-            format={\heiti\zihao{-3}\centering},
+            aftername={\enspace},
+            beforeskip={16bp},
+            afterskip={18bp plus 3.6bp minus 3.6bp},
+            format={\heiti\zihao{-3}\centering\baselineskip=20bp},
             ]{chapter}
 }
 \ifdefstring{\degree@uestcthesis}{bachelor}{
-\CTEXsetup[ aftername={~},
+\CTEXsetup[ aftername={\enspace},
             beforeskip={18bp},
             afterskip={18bp plus 3.6bp minus 3.6bp},
-            format={\heiti\zihao{4}\flushleft}]{section}
+            numberformat={\bf},
+            format={\heiti\zihao{4}\flushleft\baselineskip=20bp}]{section}
 }{
-\CTEXsetup[ aftername={~},
-            beforeskip={0mm},
+\CTEXsetup[ aftername={\enspace},
+            beforeskip={18bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\vspace{1.9mm}\heiti\zihao{4}\flushleft}]{section}
+            numberformat={\bf},
+            format={\heiti\zihao{4}\flushleft\baselineskip=20bp}]{section}
 }
 \ifdefstring{\degree@uestcthesis}{bachelor}{
-\CTEXsetup[ aftername={~},
+\CTEXsetup[ aftername={\enspace},
             beforeskip={12bp},
             afterskip={12bp plus 2.4bp minus 2.4bp},
-            format={\heiti\zihao{4}\flushleft}]{subsection}
+            numberformat={\bf},
+            format={\heiti\zihao{4}\flushleft\baselineskip=20bp}]{subsection}
 }{
-\CTEXsetup[ aftername={~},
-            beforeskip={0mm},
-            afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\heiti\zihao{4}\flushleft}]{subsection}
-}
-\ifdefstring{\degree@uestcthesis}{bachelor}{
-\CTEXsetup[ aftername={~},
-            beforeskip={6bp},
-            afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\heiti\zihao{-4}\flushleft}]{subsubsection}
-}{
-\CTEXsetup[ aftername={~},
+\CTEXsetup[ aftername={\enspace},
             beforeskip={12bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\vspace*{-0.5mm}\heiti\zihao{-4}\flushleft}]{subsubsection}
+            numberformat={\bf},
+            format={\heiti\zihao{4}\flushleft\baselineskip=20bp}]{subsection}
+}
+\ifdefstring{\degree@uestcthesis}{bachelor}{
+\CTEXsetup[ aftername={\enspace},
+            beforeskip={6bp},
+            afterskip={6bp plus 1.2bp minus 1.2bp},
+            numberformat={\bf},
+            format={\heiti\zihao{-4}\flushleft\baselineskip=20bp}]{subsubsection}
+}{
+\CTEXsetup[ aftername={\enspace},
+            beforeskip={12bp},
+            afterskip={6bp plus 1.2bp minus 1.2bp},
+            numberformat={\bf},
+            format={\heiti\zihao{-4}\flushleft\baselineskip=20bp}]{subsubsection}
 }
 \newenvironment{Cabstract}[5]{
 \newcommand{\@ckeywords}{
@@ -671,7 +684,11 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \renewcommand*\l@subsubsection{\@dottedtocline{3}{6em}{1em}}
 }
 \RequirePackage{amsmath,amsfonts,amssymb,bm}
-\renewcommand{\theequation}{\arabic{chapter}\textendash\arabic{equation}}
+\abovedisplayskip=6bp
+\abovedisplayshortskip=6bp
+\belowdisplayskip=6bp
+\belowdisplayshortskip=6bp
+\renewcommand{\theequation}{\arabic{chapter}-\arabic{equation}}
 \RequirePackage[amsmath,thmmarks]{ntheorem}
 \theorembodyfont{\normalfont}%字体
 \theoremheaderfont{\normalfont \bfseries \hspace*{2em}}%设置缩进
@@ -921,16 +938,12 @@ pdfdisplaydoctitle=true
 \mainmatter%正文区版式
 \makeatletter
 \newcmds@uestcthesis%自定义图表命令，这些命令必须在document环境里声明才能在正文中使用，所以只能放在这里了。
-\abovedisplayskip=6bp
-\abovedisplayshortskip=6bp
-\belowdisplayskip=6bp
-\belowdisplayshortskip=6bp
 \makeatother
 }
 \ifdef{\onlychapters@uestcthesis}{}{%onlychapters选项效果
 \newcommand{\insertacknowledgement}{
 \chapter*{\acknowledgementsname@uestcthesis}%用带星号的章命令插入不带章号的致谢。
-\markboth{\acknowledgementsname@uestcthesis}{}%页眉设置
+\markboth{\acknowledgementsmarkname@uestcthesis}{}%页眉设置
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\acknowledgementsname@uestcthesis}%将致谢编入目录
 \input{contents/acknowledgements.tex}%插入致谢内容
@@ -940,7 +953,7 @@ pdfdisplaydoctitle=true
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\CTEX@bibname}%将参考文献编入目录
 \nocite{*}%若将此命令屏蔽掉，则未引用的文献不会出现在文后的参考文献列表中。
-{\zihao{5}
+{\zihao{5}\baselineskip=20bp{}
 \bibliography{contents/reference}%插入参考文献
 }
 }
@@ -956,9 +969,9 @@ pdfdisplaydoctitle=true
 \insertreference
 }
 \appendix%附录版式
-\renewcommand{\thefigure}{\Alph{chapter}\textendash\arabic{figure}}
-\renewcommand{\thetable}{\Alph{chapter}\textendash\arabic{table}}
-\renewcommand{\theequation}{\Alph{chapter}\textendash\arabic{equation}}
+\renewcommand{\thefigure}{\Alph{chapter}-\arabic{figure}}
+\renewcommand{\thetable}{\Alph{chapter}-\arabic{table}}
+\renewcommand{\theequation}{\Alph{chapter}-\arabic{equation}}
 \renewcommand{\chaptermark}[1]{\markboth{\CTEX@appendixname\Alph{chapter}~  #1 }{}}%附录页眉设置
 \input{contents/appendix.tex}%插入附录内容
 \clearpage
@@ -1019,7 +1032,7 @@ pdfdisplaydoctitle=true
 \CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\publicationsname@degree}%将攻博/硕期间发表的论文编入目录
-{\zihao{5}%
+{\zihao{5}\baselineskip=20bp{}%
 \def\footnotehint{}%
 \bibliographypublications{contents/publications}%插入攻博/硕期间发表的论文
 }}{}

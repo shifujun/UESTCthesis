@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2015/04/08 v1.2.0 UESTC thesis class]
+    [2015/04/10 v1.2.1 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -99,6 +99,13 @@
 %该选项将使得CJKfntef 宏包或者CCTfntef 宏包被自动调用。这两个宏包是下划线宏包。
 %    \begin{macrocode}
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
+%    \end{macrocode}
+% \changes{v1.2.1}{2015/04/10}{修正公式前后段距不生效的问题。}
+% 从CTEX定义的|\normalsize|命令中去掉对公式前后段距的设置。
+%    \begin{macrocode}
+\renewcommand\normalsize{%
+    \@setfontsize\normalsize{\CTEX@fs@sfour}{\CTEX@fs@sfourskip}%
+    \let\@listi\@listI}%
 %    \end{macrocode}
 %\changes{v0.6.1}{2014/01/20}{修正所有正文的英文为Times字体。抄录环境中的英文使用打印机字体，并不能用Times字体。}
 %    \begin{macrocode}
@@ -205,6 +212,7 @@
 % \end{macro}
 %\changes{v0.4}{2013/04/04}{添加english选项以便将预定名修改为英文}
 %\changes{v0.4.4}{2013/05/25}{由于2013年本科管理规范中未将章标题改为和硕博一致的汉字序号，所以在此将本科论文中的章标题单独改为阿拉伯数字序号。}
+% \changes{v1.2.1}{2015/04/10}{修正致谢页眉为不带空格的“致谢”。}
 %一些名称的定义统一在这里，以便在英文选项中替换成英文。同时还有设置章标题序号的显示方式。
 %    \begin{macrocode}
 \newcommand{\tocname@uestcthesis}{目录}
@@ -218,6 +226,7 @@
 \renewcommand{\chaptermark}[1]{\markboth{第\chapternumberformat@uestcthesis章~##1 }{}}
 }
 \newcommand{\acknowledgementsname@uestcthesis}{致\enspace 谢}
+\newcommand{\acknowledgementsmarkname@uestcthesis}{致谢}
 \newcommand{\glossaryname@uestcthesis}{主要符号表}
 \newcommand{\acronymname@uestcthesis}{缩略词表}
 \newcommand{\entryname@uestcthesis}{符号}
@@ -244,6 +253,7 @@
 \renewcommand{\chaptermark}[1]{\markboth{Chapter\space\arabic{chapter}~##1 }{}}
 
 \renewcommand{\acknowledgementsname@uestcthesis}{Acknowledgements}
+\renewcommand{\acknowledgementsmarkname@uestcthesis}{Acknowledgements}
 \renewcommand{\CTEX@bibname}{References}
 \renewcommand{\publicationsname@degree}{\publicationsname@english}
 \renewcommand{\thesisname@degree}{\thesisname@english}
@@ -342,13 +352,14 @@
 %left:双页排版的内侧边距。
 %
 % \changes{v0.5.2}{2013/08/07}{针对本科规范还没有修订，单独设置硕博的新规范要求的版面设置}
+% \changes{v1.2.1}{2015/04/10}{对照研究生院范例修正版面设置。}
 %    \begin{macrocode}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
-\RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
-                top=2.75cm,left=3cm]{geometry}
+\RequirePackage[a4paper,headheight=12.65pt,headsep=5.65mm,centering,
+                top=3.64cm,left=3cm]{geometry}
 }{
-\RequirePackage[a4paper,headheight=12.65pt,headsep=4mm,includeheadfoot,centering,
-                top=2.08cm,left=3cm]{geometry}
+\RequirePackage[a4paper,headheight=12.65pt,headsep=6.4mm,centering,
+                top=3.14cm,left=3cm]{geometry}
 }
 %    \end{macrocode}
 %
@@ -423,7 +434,7 @@
 %
 %先声明一个图表标题字体。
 %    \begin{macrocode}
-\DeclareCaptionFont{capfont}{\zihao{5}}
+\DeclareCaptionFont{capfont}{\zihao{5}\baselineskip=20bp{}}
 %    \end{macrocode}
 %
 %再设置图表标题字体为上一行声明的。
@@ -433,12 +444,12 @@
 %
 %使图编号数字间加一个短横线。即设置成图1-1的样式。
 %    \begin{macrocode}
-\renewcommand{\thefigure}{\arabic{chapter}\textendash\arabic{figure}}
+\renewcommand{\thefigure}{\arabic{chapter}-\arabic{figure}}
 %    \end{macrocode}
 %
 %使表编号数字间加一个短横线。即设置成表1-1的样式。
 %    \begin{macrocode}
-\renewcommand{\thetable}{\arabic{chapter}\textendash\arabic{table}}
+\renewcommand{\thetable}{\arabic{chapter}-\arabic{table}}
 %    \end{macrocode}
 %
 %设置图片的根目录。
@@ -494,6 +505,7 @@
 %\changes{v0.5.0}{2013/08/01}{改变子图的标题位置，使之符合学校标准}
 %由于子图中包含了中文，所以使用|\edef|等嵌套定义方式不能使用。故而定义了20个子图
 %名宏。
+% \changes{v1.2.1}{2015/04/10}{修正子图环境的子图标题与主标题的间距。以及图表标题的行距。}
 % \begin{macro}{\clearallsubfigcaptions}
 % 既做初始化又做清空使用。
 %    \begin{macrocode}
@@ -588,10 +600,10 @@
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 16pt}}{%THEN
 \noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
 \noindent\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
+\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
 }{%ELSE
 {\centering\caption{\subpiccaption}\label{\subpiclabel}}\par
-\sbox{\tempsubpiccaptionbox}{\zihao{5}\CTEX@figurename~\thefigure~\subpiccaption}%
+\sbox{\tempsubpiccaptionbox}{\zihao{5}\baselineskip=20bp{}\CTEX@figurename~\thefigure~\subpiccaption}%
 \setlength{\tempsubpiccaptionindent}{\textwidth}%
 \addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
 \setlength{\tempsubpiccaptionindent}{.5\tempsubpiccaptionindent}%
@@ -599,7 +611,7 @@
 \addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionindent}%
 \addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionheadindent}%
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
+\parbox[t]{\tempsubpiccaptionwidth}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
 }%
 \vspace{12bp}%
 \end{figure}%
@@ -636,10 +648,10 @@
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 16pt}}{%THEN
 \noindent\caption[\subpiclofcaption]{\subpiccaption}\label{\subpiclabel}\par%
 \noindent\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\allsubpiccaptions}%
+\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
 }{%ELSE
 {\centering\caption[\subpiclofcaption]{\subpiccaption}\label{\subpiclabel}}\par
-\sbox{\tempsubpiccaptionbox}{\zihao{5}\CTEX@figurename~\thefigure~\subpiccaption}%
+\sbox{\tempsubpiccaptionbox}{\zihao{5}\baselineskip=20bp{}\CTEX@figurename~\thefigure~\subpiccaption}%
 \setlength{\tempsubpiccaptionindent}{\textwidth}%
 \addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
 \setlength{\tempsubpiccaptionindent}{.5\tempsubpiccaptionindent}%
@@ -647,7 +659,7 @@
 \addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionindent}%
 \addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionheadindent}%
 \hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\tempsubpiccaptionwidth}{\zihao{5}\allsubpiccaptions}%
+\parbox[t]{\tempsubpiccaptionwidth}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
 }%
 \vspace{12bp}%
 \end{figure}%
@@ -683,7 +695,7 @@
 %    \begin{macrocode}
 \newcommand{\threelinetable}[8][htbp]{
 \begin{table}[##1]
-\zihao{5}%管理规范中要求表格中文字为五号字。
+\zihao{5}\baselineskip=20bp{}%管理规范中要求表格中文字为五号字。
 \centering
 \vspace{6.5mm}%
 \begin{threeparttable}
@@ -712,7 +724,7 @@
 %    \begin{macrocode}
 \newcommand{\threelinetableB}[9][htbp]{
 \begin{table}[##1]
-\zihao{5}%管理规范中要求表格中文字为五号字。
+\zihao{5}\baselineskip=20bp{}%管理规范中要求表格中文字为五号字。
 \centering
 \vspace{6.5mm}%
 \begin{threeparttable}
@@ -741,7 +753,7 @@
 %    \begin{macrocode}
 \newcommand{\longthreelinetable}[6]{
 {
-\zihao{5}%管理规范中要求表格中文字为五号字。
+\zihao{5}\baselineskip=20bp{}%管理规范中要求表格中文字为五号字。
 \centering
 \vspace{3mm}%
 \begin{longtable}{##4}
@@ -1000,26 +1012,37 @@
 \setcounter{secnumdepth}{3}
 %    \end{macrocode}
 % \changes{v0.5.2}{2013/08/07}{由于本科论文规范还未修改，单独设置硕博标题前后段距。}
-%设置章标题格式。弹性长度的距离为行距的20\%。排版规则中说明可以适当调整各级标题段后间距。
+% 应用之前定义的章标题序号名。
 %    \begin{macrocode}
 \chaptername@uestcthesis
+%    \end{macrocode}
+% \changes{v1.2.1}{2015/04/10}{修正章节标题的行距、段前段后间距。使|\CTEXsetup|中设置的距离和实际效果一致，避免了之前用|\vspace|修正的麻烦。同时固定了章节标题的行距为20磅。}
+% 修正|\chapter|命令和|\chapter*|命令中生成段前间距的BUG。修正后|\CTEXsetup|命令中的beforeskip才和MS Word效果一致。也许不是bug，只是LaTeX和MS Word设置上的区别。
+%    \begin{macrocode}
+\def\@makechapterhead #1{\rule{0pt}{\CTEX@chapter@beforeskip}\par{\normalfont \parindent \CTEX@chapter@indent \CTEX@chapter@format \ifnum \c@secnumdepth >\m@ne \if@mainmatter \CTEX@chaptername \fi \fi \interlinepenalty \@M \CTEX@chapter@titleformat #1\par \nobreak \vskip \CTEX@chapter@afterskip }}
+\def\@makeschapterhead #1{\rule{0pt}{\CTEX@chapter@beforeskip}\par{\normalfont \parindent \CTEX@chapter@indent \CTEX@chapter@format \interlinepenalty \@M \CTEX@chapter@titleformat #1\par \nobreak \vskip \CTEX@chapter@afterskip }}
+%    \end{macrocode}
+%设置章节标题格式。弹性长度的距离为行距的20\%。排版规则中说明可以适当调整各级标题段后间距。
+%章标题的段前距离应该是24磅。但是由于MS Word把行距算在本行之上，而小四号字高度是12磅，行距20磅。LaTeX的行距是加在行下面的，页面的第一行之前没有多出来的8磅。因此要在24磅上减去8磅。
+% \changes{v1.2.1}{2015/04/10}{给节标题的序号加上粗体。}
+%    \begin{macrocode}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
 \CTEXsetup[ nameformat={},
             numberformat={},
             titleformat={},
-            aftername={~},
-            beforeskip={2mm},%章标题段前30磅，这里2mm是由于实际效果与MS WORD有差异而微调出的。具体测量的是页眉线到章标题文字上边的距离。
-            afterskip={30bp plus 6bp minus 6bp},%章标题段后30磅。
-            format={\heiti\zihao{-3}\centering},
+            aftername={\enspace},
+            beforeskip={30bp},
+            afterskip={30bp plus 6bp minus 6bp},
+            format={\heiti\zihao{-3}\centering\baselineskip=20bp},
             ]{chapter}
 }{
 \CTEXsetup[ nameformat={},
             numberformat={},
             titleformat={},
-            aftername={~},
-            beforeskip={1.8mm},%章标题段前30磅，这里2mm是由于实际效果与MS WORD有差异而微调出的。具体测量的是页眉线到章标题文字上边的距离。
-            afterskip={18bp plus 3.6bp minus 3.6bp},%章标题段后30磅。
-            format={\heiti\zihao{-3}\centering},
+            aftername={\enspace},
+            beforeskip={16bp},
+            afterskip={18bp plus 3.6bp minus 3.6bp},
+            format={\heiti\zihao{-3}\centering\baselineskip=20bp},
             ]{chapter}
 }
 %    \end{macrocode}
@@ -1027,45 +1050,51 @@
 %设置1级节标题格式
 %    \begin{macrocode}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
-\CTEXsetup[ aftername={~},
+\CTEXsetup[ aftername={\enspace},
             beforeskip={18bp},
             afterskip={18bp plus 3.6bp minus 3.6bp},
-            format={\heiti\zihao{4}\flushleft}]{section}
+            numberformat={\bf},
+            format={\heiti\zihao{4}\flushleft\baselineskip=20bp}]{section}
 }{
-\CTEXsetup[ aftername={~},
-            beforeskip={0mm},
+\CTEXsetup[ aftername={\enspace},
+            beforeskip={18bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\vspace{1.9mm}\heiti\zihao{4}\flushleft}]{section}
+            numberformat={\bf},
+            format={\heiti\zihao{4}\flushleft\baselineskip=20bp}]{section}
 }
 %    \end{macrocode}
 %
 %设置2级节标题格式
 %    \begin{macrocode}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
-\CTEXsetup[ aftername={~},
+\CTEXsetup[ aftername={\enspace},
             beforeskip={12bp},
             afterskip={12bp plus 2.4bp minus 2.4bp},
-            format={\heiti\zihao{4}\flushleft}]{subsection}
+            numberformat={\bf},
+            format={\heiti\zihao{4}\flushleft\baselineskip=20bp}]{subsection}
 }{
-\CTEXsetup[ aftername={~},
-            beforeskip={0mm},
+\CTEXsetup[ aftername={\enspace},
+            beforeskip={12bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\heiti\zihao{4}\flushleft}]{subsection}
+            numberformat={\bf},
+            format={\heiti\zihao{4}\flushleft\baselineskip=20bp}]{subsection}
 }
 %    \end{macrocode}
 %
 %设置3级节标题格式
 %    \begin{macrocode}
 \ifdefstring{\degree@uestcthesis}{bachelor}{
-\CTEXsetup[ aftername={~},
+\CTEXsetup[ aftername={\enspace},
             beforeskip={6bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\heiti\zihao{-4}\flushleft}]{subsubsection}
+            numberformat={\bf},
+            format={\heiti\zihao{-4}\flushleft\baselineskip=20bp}]{subsubsection}
 }{
-\CTEXsetup[ aftername={~},
+\CTEXsetup[ aftername={\enspace},
             beforeskip={12bp},
             afterskip={6bp plus 1.2bp minus 1.2bp},
-            format={\vspace*{-0.5mm}\heiti\zihao{-4}\flushleft}]{subsubsection}
+            numberformat={\bf},
+            format={\heiti\zihao{-4}\flushleft\baselineskip=20bp}]{subsubsection}
 }
 %    \end{macrocode}
 % \subsection{摘要设置}
@@ -1181,10 +1210,17 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %    \begin{macrocode}
 \RequirePackage{amsmath,amsfonts,amssymb,bm}
 %    \end{macrocode}
+% 设置公式的前后段距为6磅。
+%    \begin{macrocode}
+\abovedisplayskip=6bp
+\abovedisplayshortskip=6bp
+\belowdisplayskip=6bp
+\belowdisplayshortskip=6bp
+%    \end{macrocode}
 %
 %使公式编号数字间加一个短横线。例如(1-1)。
 %    \begin{macrocode}
-\renewcommand{\theequation}{\arabic{chapter}\textendash\arabic{equation}}
+\renewcommand{\theequation}{\arabic{chapter}-\arabic{equation}}
 %    \end{macrocode}
 %
 %调用定理设置宏包
@@ -1558,18 +1594,13 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \makeatletter
 \newcmds@uestcthesis%自定义图表命令，这些命令必须在document环境里声明才能在正文中使用，所以只能放在这里了。
 %    \end{macrocode}
-%设置公式与上下文之间的间距。
 %    \begin{macrocode}
-\abovedisplayskip=6bp
-\abovedisplayshortskip=6bp
-\belowdisplayskip=6bp
-\belowdisplayshortskip=6bp
 \makeatother
 }
 \ifdef{\onlychapters@uestcthesis}{}{%onlychapters选项效果
 \newcommand{\insertacknowledgement}{
 \chapter*{\acknowledgementsname@uestcthesis}%用带星号的章命令插入不带章号的致谢。
-\markboth{\acknowledgementsname@uestcthesis}{}%页眉设置
+\markboth{\acknowledgementsmarkname@uestcthesis}{}%页眉设置
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\acknowledgementsname@uestcthesis}%将致谢编入目录
 \input{contents/acknowledgements.tex}%插入致谢内容
@@ -1580,7 +1611,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 \addcontentsline{toc}{chapter}{\CTEX@bibname}%将参考文献编入目录
 \nocite{*}%若将此命令屏蔽掉，则未引用的文献不会出现在文后的参考文献列表中。
-{\zihao{5}
+{\zihao{5}\baselineskip=20bp{}
 \bibliography{contents/reference}%插入参考文献
 }
 }
@@ -1599,9 +1630,9 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 % \changes{v0.6.1}{2014/01/20}{修正附录中图表公式的标号格式。}
 %    \begin{macrocode}
 \appendix%附录版式
-\renewcommand{\thefigure}{\Alph{chapter}\textendash\arabic{figure}}
-\renewcommand{\thetable}{\Alph{chapter}\textendash\arabic{table}}
-\renewcommand{\theequation}{\Alph{chapter}\textendash\arabic{equation}}
+\renewcommand{\thefigure}{\Alph{chapter}-\arabic{figure}}
+\renewcommand{\thetable}{\Alph{chapter}-\arabic{table}}
+\renewcommand{\theequation}{\Alph{chapter}-\arabic{equation}}
 \renewcommand{\chaptermark}[1]{\markboth{\CTEX@appendixname\Alph{chapter}~  #1 }{}}%附录页眉设置
 \input{contents/appendix.tex}%插入附录内容
 \clearpage
@@ -1681,7 +1712,7 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 	\CTEXoptions[ bibname={\publicationsname@degree}]%设置攻博/硕期间发表的论文章题目
 	\phantomsection%手动添加目录项之前需要这个命令，用以更新目录超链接的跳转页码。
 	\addcontentsline{toc}{chapter}{\publicationsname@degree}%将攻博/硕期间发表的论文编入目录
-	{\zihao{5}%
+	{\zihao{5}\baselineskip=20bp{}%
 %    \end{macrocode}
 % footmisc宏包的perpage选项会向每个aux文件中写入一个命令。由于publications没有tex文件，只有aux文件。所以出现了错误。这里将要写入aux文件的内容清空。
 %    \begin{macrocode}
