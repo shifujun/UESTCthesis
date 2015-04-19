@@ -22,6 +22,9 @@ UESTCthesis是电子科技大学毕业论文官方发布的LaTeX模板。同时�
 加群连接：[http://url.cn/S1QIdM](http://url.cn/S1QIdM)
 
 # 更新日志 #
+## 2015年4月19日 ##
+- Fix [issue #39](https://github.com/shifujun/UESTCthesis/issues/39).范例和Wiki中的电子文献类型错写为standard了。应为digital。只修改了Wiki和范例的bib文件。模板的cls和bst未更改，故不更新版本号。
+ 
 ##2015年4月10日： v1.2.1  ##
 - 修复公式前后段距未能生效的问题。
 - 改正致谢页眉有空格的问题。
