@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2015/04/10 v1.2.1 UESTC thesis class]
+    [2015/04/23 v1.2.2 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \renewcommand\normalsize{%
     \@setfontsize\normalsize{\CTEX@fs@sfour}{\CTEX@fs@sfourskip}%

@@ -1,4 +1,4 @@
-# 最新版本：v1.2.1 #
+# 最新版本：v1.2.2 #
 升级前请阅读下方的更新日志。
 
 从v1.0.x升级请参考Wiki：[如何从v1.0.x升级到v1.1.0](https://github.com/shifujun/UESTCthesis/wiki/%E5%A6%82%E4%BD%95%E4%BB%8Ev1.0.x%E5%8D%87%E7%BA%A7%E5%88%B0v1.1.0)
@@ -22,6 +22,10 @@ UESTCthesis是电子科技大学毕业论文官方发布的LaTeX模板。同时�
 加群连接：[http://url.cn/S1QIdM](http://url.cn/S1QIdM)
 
 # 更新日志 #
+## 2015年4月23日： v1.2.2 ##
+- 修正参考文献的悬挂缩进不对齐的问题。
+- 自动将参考文献条目的标题改为只有第一个字母大写。
+
 ## 2015年4月19日 ##
 - Fix [issue #39](https://github.com/shifujun/UESTCthesis/issues/39).范例和Wiki中的电子文献类型错写为standard了。应为digital。只修改了Wiki和范例的bib文件。模板的cls和bst未更改，故不更新版本号。
  
