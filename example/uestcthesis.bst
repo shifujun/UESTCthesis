@@ -27,7 +27,6 @@
 %%  Other files in this work's package are belongs to the respective owners.
 %% 
 
-\changes{v1.2.2}{2015/04/23}{修正参考文献的悬挂缩进对齐。强制参考文献标题只有第一个字母大写。}
 %%本文件基于吴凯制作的GBT7714-2005NLang.bst(1 Beta 2 测试版2012年9月20日)修改而成。
 %%修改内容包括将英文作者的名放前姓放后，设置行距。删除原有的参考文献类型，重新定义了10个参考文献类型。使用方法需要参考本模板的WIKI。
 %%根据GBT7714-2005NLang.bst中copyright的要求，将文件名修改成uestcthesis.bst。
