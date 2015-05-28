@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2015/04/23 v1.2.2 UESTC thesis class]
+    [2015/05/28 v1.2.3 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -100,6 +100,15 @@
 %    \begin{macrocode}
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 %    \end{macrocode}
+%ctex宏包在2.0.2更新时删除了很多原有的宏定义，在此补充回来。
+%    \begin{macrocode}
+\def\CTEX@contentsname{目录}
+\def\CTEX@figurename{图}
+\def\CTEX@tablename{表}
+\def\CTEX@bibname{参考文献}
+\def\CTEX@appendixname{附录~}
+\def\CTEX@fs@sfour{12.05}  \def\CTEX@fs@sfourskip{14.45}  %小四号   12bp
+%    \end{macrocode}
 % \changes{v1.2.1}{2015/04/10}{修正公式前后段距不生效的问题。}
 % 从CTEX定义的|\normalsize|命令中去掉对公式前后段距的设置。
 %    \begin{macrocode}
@@ -127,7 +136,8 @@
 %\changes{v0.6}{2014/01/16}{修正ttfamily为宋体，而不是默认的仿宋。}
 %修正ttfamily为宋体，而不是默认的仿宋。
 %    \begin{macrocode}
-\renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
+\let\CTEX@save@ttfamily\ttfamily
+\renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {rm}}
 %    \end{macrocode}
 %调用etoolbox宏包，为了使用其提供的|\ifblank|命令。
 %    \begin{macrocode}
@@ -154,6 +164,8 @@
 
 \newcommand{\chapternumberformat@uestcthesis}{\arabic{chapter}}
 %为了根据学位不同而设置不同的章标题序号方式而定义的命令。此处设置为本科论文章标题用阿拉伯数字序号。
+\newcommand{\publicationsname@degree}{}%为bachelor选项下使用english选项而设。
+\newcommand{\thesisname@english}{}%为bachelor选项下使用english选项而设。
 }
 %    \end{macrocode}
 % \end{macro}
@@ -271,6 +283,7 @@
 \renewcommand{\listfigurename}{List of Figures}
 \renewcommand{\listtablename}{List of Tables}
 \renewcommand{\CTEX@contentsname}{\zihao{-3}Contents}
+\ctexset{bibname=References,appendixname=Appendix~}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2406,7 +2419,7 @@ FUNCTION {format.ceditors}                                 %wk   本函数
 FUNCTION {format.title}                                     %  Nothing needs
 { title empty$                                              %  doing here in
     { "" }                                                  %  authordate1.bst
-    { title "t" change.case$ }                                               %  or
+    { title }                                               %  or
   if$                                                       %  authordate3.bst.
 }
 

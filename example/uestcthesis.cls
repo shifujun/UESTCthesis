@@ -29,8 +29,14 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2015/04/23 v1.2.2 UESTC thesis class]
+    [2015/05/28 v1.2.3 UESTC thesis class]
 \LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
+\def\CTEX@contentsname{目录}
+\def\CTEX@figurename{图}
+\def\CTEX@tablename{表}
+\def\CTEX@bibname{参考文献}
+\def\CTEX@appendixname{附录~}
+\def\CTEX@fs@sfour{12.05}  \def\CTEX@fs@sfourskip{14.45}  %小四号   12bp
 \renewcommand\normalsize{%
     \@setfontsize\normalsize{\CTEX@fs@sfour}{\CTEX@fs@sfourskip}%
     \let\@listi\@listI}%
@@ -42,7 +48,8 @@
 \SetSymbolFont{operators}{bold}{OT1}{cmr} {bx}{n}
 \SetSymbolFont{letters} {bold}{OML}{cmm} {b}{it}
 \SetSymbolFont{symbols} {bold}{OMS}{cmsy}{b}{n}
-\renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {\CTEX@rm@family }}
+\let\CTEX@save@ttfamily\ttfamily
+\renewcommand{\ttfamily}{\CTEX@save@ttfamily \CJKfamily {rm}}
 \RequirePackage{etoolbox}[2011/01/03]
 \RequirePackage{ifthen}
 \newcommand{\bachelor@uestcthesis}{
@@ -52,6 +59,8 @@
 \newcommand{\thesisname@degree}{电子科技大学学士学位论文}
 
 \newcommand{\chapternumberformat@uestcthesis}{\arabic{chapter}}
+\newcommand{\publicationsname@degree}{}%为bachelor选项下使用english选项而设。
+\newcommand{\thesisname@english}{}%为bachelor选项下使用english选项而设。
 }
 \newcommand{\master@uestcthesis}{
 \newcommand{\degree@uestcthesis}{master}
@@ -139,6 +148,7 @@
 \renewcommand{\listfigurename}{List of Figures}
 \renewcommand{\listtablename}{List of Tables}
 \renewcommand{\CTEX@contentsname}{\zihao{-3}Contents}
+\ctexset{bibname=References,appendixname=Appendix~}
 }
 \DeclareOption{bachelor}{\bachelor@uestcthesis}
 \DeclareOption{master}{\master@uestcthesis}

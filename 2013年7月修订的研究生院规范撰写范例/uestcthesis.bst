@@ -693,7 +693,7 @@ FUNCTION {format.ceditors}                                 %wk   本函数
 FUNCTION {format.title}                                     %  Nothing needs
 { title empty$                                              %  doing here in
     { "" }                                                  %  authordate1.bst
-    { title "t" change.case$ }                                               %  or
+    { title }                                               %  or
   if$                                                       %  authordate3.bst.
 }
 
