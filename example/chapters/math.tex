@@ -1,16 +1,16 @@
 % !Mode:: "TeX:UTF-8"
 
 \chapter{示例：数学论文}
-M. P. Drazin\citeup{drazin1958pseudo}在1958给出Drazin逆的定义, 其定义如下：\par
+M. P. Drazin\citeup{zhu1973wulixue}在1958给出Drazin逆的定义, 其定义如下：\par
 若$A$是复$n$阶方阵, 满足下列等式的$X$称为Drazin逆:
 \begin{equation}
 \label{equ:xax}
 XAX=X,AX=XA,A^{k+1}X=A^k
 \end{equation}
 其中$k$是$A$的指标，即使得$rank(A^{k+1})=rank(A^k)$的最小整数。记为$A^D$。当$k=1$时，称为$A$的群逆。记为$A^\sharp$。\par
-此后，Drazin逆被广泛运用于很多方面。如：奇异微分差分方程；Markov链；迭代法；数值分析等等。特别地，这种广义矩阵在奇异线性常微分方程组以及奇异差分方程组求解问题中有重要的应用\citeup{angwen1988,baishunong1998,Dingwenxiang2000,gxzzzzqlyt1993,jiangyouxu1998,tangxujun1999,zhaokaihua1995,wangang1912,zhaoyaodong1998}。 所以有必要对其进一步研究。
+此后，Drazin逆被广泛运用于很多方面。如：奇异微分差分方程；Markov链；迭代法；数值分析等等。特别地，这种广义矩阵在奇异线性常微分方程组以及奇异差分方程组求解问题中有重要的应用\citeup{chen2001hao,gu2012lao,feng997he,xiao2012yi,zhong1994zhong,clerc2010discrete,wang1999sanwei,liuxf2006,zhu1973wulixue}。 所以有必要对其进一步研究。
 \section{Drazin逆计算方法的简介}
-很明显，一般通过（\ref{equ:xax}）求$A$的Drazin逆比较困难。于是，在此之后有很多人执立于这方面的研究。比如：C.\nbs D.\nbs Meyer\citeup{Dingwenxiang2000}, U.\nbs G.\nbs Rothblum\citeup{zhaoyaodong1998}, Y. Wei\citeup{baishunong1998} 等等。其中C.\nbs D.\nbs Meyer早在1974年就给出一个用极限的形式求 ，其表达如下：\par
+很明显，一般通过（\ref{equ:xax}）求$A$的Drazin逆比较困难。于是，在此之后有很多人执立于这方面的研究。比如：C.\nbs D.\nbs Meyer\citeup{chen2001hao}, U.\nbs G.\nbs Rothblum\citeup{gu2012lao}, Y. Wei\citeup{feng997he} 等等。其中C.\nbs D.\nbs Meyer早在1974年就给出一个用极限的形式求 ，其表达如下：\par
 若$A\in F^{n\times n}$，且对任意非负整数$p$，有
 \begin{equation}
   A^D=\lim_{\varepsilon\rightarrow 0}(A^{p+1}+\varepsilon I)^{-1}C^{(p)}_A
@@ -30,7 +30,7 @@ U.\nbs G.\nbs Rothblum在1976年也给出了Drazin逆的另外一种表达形式
   A^D=(A-H)^{-1}(I-H)=(I-H)(A-H)^{-1}
 \end{equation}
 其中$H=I-AA^D=I-A^DA$\par
-目前，比较常用的是建立在将矩阵$A$的约当标准型的基础之上的表达形式，该形式也是诸形式当中比较简单的一种。该形式是Campbell和Meyer\citeup{campbell1979generalized}在1979年给出的, 其形式如下：\par
+目前，比较常用的是建立在将矩阵$A$的约当标准型的基础之上的表达形式，该形式也是诸形式当中比较简单的一种。该形式是Campbell和Meyer\citeup{xiao2012yi}在1979年给出的, 其形式如下：\par
 若$A$的约当标准型为
 \begin{equation*}
   A=P\left(
@@ -51,7 +51,7 @@ U.\nbs G.\nbs Rothblum在1976年也给出了Drazin逆的另外一种表达形式
      \right)
   P^{-1}
 \end{equation}\par
-此外, Campbell\citeup{campbell1979generalized}也给出了另外一种表达形式:
+此外, Campbell\citeup{zhong1994zhong}也给出了另外一种表达形式:
 \begin{equation}
 A^D=A^k(A^{2k+1})^+A^k
 \end{equation}\par
@@ -62,7 +62,7 @@ A^D=A^k(A^{2k+1})^+A^k
 A^D=(\tilde{A})^{-1}A^k
 \end{equation}
 其中$\tilde{A}=A^{k+1}|_{R(A^k)}$是$A^{k+1}$在$R(A^k)$上的限制。\par
-基于第一类广义逆的基础上, 程云鹏\citeup{cyp2006juzhenlun}给出了以下的表达形式:
+基于第一类广义逆的基础上, 程云鹏\citeup{clerc2010discrete}给出了以下的表达形式:
 \begin{equation}\label{equ:adaka2k}
 A^D=A^k(A^{2k+1})^{(1)}A^k
 \end{equation}
