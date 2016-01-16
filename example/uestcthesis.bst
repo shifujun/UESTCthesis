@@ -8,7 +8,7 @@
 %% 
 %% This is a generated file.
 %% 
-%%  Copyright 2012-2013 Shi Fujun <shifujun@foxmail.com>
+%%  Copyright 2012-2016 Shi Fujun <shifujun@foxmail.com>
 %% 
 %%  This work may be distributed and/or modified under the
 %%  conditions of the LaTeX Project Public License, either version 1.3
