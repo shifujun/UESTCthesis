@@ -1,4 +1,4 @@
-# 最新版本：v1.2.3 #
+# 最新版本：v1.2.4 #
 升级前请阅读下方的更新日志。
 
 从v1.0.x升级请参考Wiki：[如何从v1.0.x升级到v1.1.0](https://github.com/shifujun/UESTCthesis/wiki/%E5%A6%82%E4%BD%95%E4%BB%8Ev1.0.x%E5%8D%87%E7%BA%A7%E5%88%B0v1.1.0)
@@ -22,6 +22,10 @@ UESTCthesis是电子科技大学毕业论文官方发布的LaTeX模板。同时�
 加群连接：[http://url.cn/S1QIdM](http://url.cn/S1QIdM)
 
 # 更新日志 #
+## 2016年1月16日： v1.2.4 ##
+- 修复ctex更新后在Mac上不能编译的问题。
+- 修复范例中没有正确引用参考文献，导致编译结果中都是问号的问题。
+
 ## 2015年5月28日： v1.2.3 ##
 - 修复由于ctex宏包更新到2.0.2所带来的兼容性问题。
 - 参考文献bst文件中设置的参考文献标题首字母大写已取消。想设置的同学自行参考wiki修改。
@@ -33,7 +37,7 @@ UESTCthesis是电子科技大学毕业论文官方发布的LaTeX模板。同时�
 
 ## 2015年4月19日 ##
 - Fix [issue #39](https://github.com/shifujun/UESTCthesis/issues/39).范例和Wiki中的电子文献类型错写为standard了。应为digital。只修改了Wiki和范例的bib文件。模板的cls和bst未更改，故不更新版本号。
- 
+
 ##2015年4月10日： v1.2.1  ##
 - 修复公式前后段距未能生效的问题。
 - 改正致谢页眉有空格的问题。
