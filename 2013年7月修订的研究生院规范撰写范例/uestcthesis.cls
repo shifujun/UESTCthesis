@@ -29,8 +29,8 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2015/05/28 v1.2.3 UESTC thesis class]
-\LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
+    [2016/01/16 v1.2.4 UESTC thesis class]
+\LoadClass[fontset = windowsold,cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \def\CTEX@contentsname{目录}
 \def\CTEX@figurename{图}
 \def\CTEX@tablename{表}

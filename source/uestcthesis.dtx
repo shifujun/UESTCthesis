@@ -30,11 +30,11 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2015/05/28 v1.2.3 UESTC thesis class]
+    [2016/01/16 v1.2.4 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
-\usepackage[hyperref,UTF8]{ctex}
+\usepackage[fontset = windowsold,hyperref,UTF8]{ctex}
 \usepackage{cmap}
 \EnableCrossrefs
 \CodelineIndex
@@ -97,8 +97,9 @@
 %hyperref，并使用适当的选项或设置。hyperref是超链接宏包，为pdf文件中的交叉引用提供超链接。\par
 %fntef:为CJKfntef 宏包和CCTfntef 宏包提供统一接口。
 %该选项将使得CJKfntef 宏包或者CCTfntef 宏包被自动调用。这两个宏包是下划线宏包。
+% \changes{v1.2.4}{2016/01/16}{修复因ctex更新到v2.2后新的字体选择方式，导致Mac系统上找不到字体的问题。}
 %    \begin{macrocode}
-\LoadClass[cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
+\LoadClass[fontset = windowsold,cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 %    \end{macrocode}
 %ctex宏包在2.0.2更新时删除了很多原有的宏定义，在此补充回来。
 %    \begin{macrocode}
