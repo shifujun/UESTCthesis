@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2016/01/16 v1.2.4 UESTC thesis class]
+    [2016/03/06 v1.2.5 UESTC thesis class]
 \LoadClass[fontset = windowsold,cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \def\CTEX@contentsname{目录}
 \def\CTEX@figurename{图}
@@ -578,6 +578,7 @@
 }
 \setcounter{secnumdepth}{3}
 \chaptername@uestcthesis
+\def\CTEX@chaptername{\CTEX@chapter@nameformat {\CTEX@prechapter {\csname group_begin: \endcsname \CTEX@chapter@numberformat \CTEX@thechapter \csname group_end: \endcsname }\CTEX@postchapter }\CTEX@chapter@aftername }
 \def\@makechapterhead #1{\rule{0pt}{\CTEX@chapter@beforeskip}\par{\normalfont \parindent \CTEX@chapter@indent \CTEX@chapter@format \ifnum \c@secnumdepth >\m@ne \if@mainmatter \CTEX@chaptername \fi \fi \interlinepenalty \@M \CTEX@chapter@titleformat #1\par \nobreak \vskip \CTEX@chapter@afterskip }}
 \def\@makeschapterhead #1{\rule{0pt}{\CTEX@chapter@beforeskip}\par{\normalfont \parindent \CTEX@chapter@indent \CTEX@chapter@format \interlinepenalty \@M \CTEX@chapter@titleformat #1\par \nobreak \vskip \CTEX@chapter@afterskip }}
 \ifdefstring{\degree@uestcthesis}{bachelor}{

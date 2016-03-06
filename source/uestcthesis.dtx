@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2016/01/16 v1.2.4 UESTC thesis class]
+    [2016/03/06 v1.2.5 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -1029,6 +1029,11 @@
 % 应用之前定义的章标题序号名。
 %    \begin{macrocode}
 \chaptername@uestcthesis
+%    \end{macrocode}
+% \changes{v1.2.5}{2016/03/06}{兼容ctex v2.3带来的chapter的aftername失效的问题。}
+% 兼容ctex v2.3带来的chapter的aftername失效的问题。ctex v2.3更改了|\CTEX@chapter@aftername|的位置，不再包含在|\CTEX@chaptername|中了。而本模板在修复chapter的beforeskip不正常的问题时修改了|\@makechapterhead|。所以在此只能将ctex的|\CTEX@chaptername|命令的定义固定下来。
+%    \begin{macrocode}
+\def\CTEX@chaptername{\CTEX@chapter@nameformat {\CTEX@prechapter {\csname group_begin: \endcsname \CTEX@chapter@numberformat \CTEX@thechapter \csname group_end: \endcsname }\CTEX@postchapter }\CTEX@chapter@aftername }
 %    \end{macrocode}
 % \changes{v1.2.1}{2015/04/10}{修正章节标题的行距、段前段后间距。使|\CTEXsetup|中设置的距离和实际效果一致，避免了之前用|\vspace|修正的麻烦。同时固定了章节标题的行距为20磅。}
 % 修正|\chapter|命令和|\chapter*|命令中生成段前间距的BUG。修正后|\CTEXsetup|命令中的beforeskip才和MS Word效果一致。也许不是bug，只是LaTeX和MS Word设置上的区别。
