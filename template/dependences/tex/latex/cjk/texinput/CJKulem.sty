@@ -1,0 +1,193 @@
+% This is the file CJKulem.sty of the CJK package
+%   for using the `ulem' package CJK characters.
+%
+% created by Werner Lemberg <wl@gnu.org>
+%
+% Version 4.8.4 (18-Apr-2015)
+
+% Copyright (C) 1994-2015  Werner Lemberg <wl@gnu.org>
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program in doc/COPYING; if not, write to the Free
+% Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+% MA 02110-1301 USA
+
+\NeedsTeXFormat{LaTeX2e}[1996/12/01]
+\def\fileversion{4.8.4}
+\def\filedate{2015/04/18}
+\ProvidesPackage{CJKulem}[\filedate\space\fileversion]
+
+\RequirePackage{ulem}[2000/05/26]
+
+\endlinechar \m@ne
+
+\newdimen\UL@lastkern
+\newskip\CJK@skip
+
+
+\def\UL@CJKnobreakglue{
+  \nobreak
+  \LA@CJKglue
+  \nobreak}
+
+
+\def\UL@CJKglue{
+  \ifx\ \LA@space
+    \LA@CJKglue
+  \else
+    \egroup
+    \UL@stop
+    \ifnum\lastkern = \thr@@
+      \LA@hskip \CJK@skip
+    \else
+      \global\UL@skip \CJK@skip
+      \UL@leaders
+    \fi
+    \UL@start
+    \bgroup
+  \fi}
+
+
+\def\UL@Thaiglue{
+  \ifx\ \LA@space
+    \LA@Thaiglue
+  \else
+    \egroup
+    \egroup
+    \egroup
+    \UL@stop
+    \ifnum\lastkern = \thr@@
+      \LA@hskip \CJK@skip
+    \else
+      \global\UL@skip \CJK@skip
+      \UL@leaders
+    \fi
+    \UL@start
+    \bgroup
+    \fontencoding{C90}\selectfont
+    \bgroup
+    \bgroup
+  \fi}
+
+
+\def\UL@Thaibreak{
+  \ifx\ \LA@space
+    \LA@Thaibreak
+  \else
+    \egroup
+    \egroup
+    \egroup
+    \UL@stop
+    \LA@hskip \z@
+    \UL@start
+    \bgroup
+    \fontencoding{C90}\selectfont
+    \bgroup
+    \bgroup
+  \fi}
+
+
+\def\UL@testLastKern{
+  \global\CJK@false
+  \ifnum\lastkern = \thr@@
+    \ifnum\UL@lastkern = \tw@
+      \global\CJK@true
+    \fi
+    \ifnum\UL@lastkern = 5
+      \global\CJK@true
+    \fi
+  \fi
+
+  \ifnum\lastkern = \tw@
+    \global\CJK@true
+  \fi
+  \ifnum\lastkern = 5
+    \global\CJK@true
+  \fi}
+
+
+\def\UL@testLastCJK{
+  \global\CJK@false
+
+  \ifnum\lastkern = \thr@@
+    \ifnum\UL@lastkern = \@ne
+      \global\CJK@true
+    \fi
+  \fi
+
+  \ifnum\lastkern = \@ne
+    \global\CJK@true
+  \fi}
+
+
+\addto@hook\UL@hook{
+  \let\CJK@savehskip \hskip
+  \let\hskip \LA@hskip
+  \CJKglue
+  \CJK@skip\lastskip
+  \unskip
+  \let\hskip \CJK@savehskip
+  \let\LA@CJKglue \CJKglue
+  \let\LA@Thaiglue \Thaiglue
+  \let\LA@Thaibreak \Thaibreak
+  \let\CJK@nobreakglue \UL@CJKnobreakglue
+  \let\CJKglue \UL@CJKglue
+  \let\Thaiglue \UL@Thaiglue
+  \let\Thaibreak \UL@Thaibreak
+  \let\CJK@testLastKern \UL@testLastKern
+  \let\CJK@testLastCJK \UL@testLastCJK}
+
+
+\def\UL@start{
+  \global\UL@lastkern\lastkern
+  \setbox\UL@box\hbox\bgroup
+    \everyhbox{\UL@hrest}
+    \let\UL@start\@empty
+    \def\UL@unegroup{\bgroup\bgroup}
+    \let\UL@leadtype\@empty
+    \bgroup
+      \kern -3sp
+      \kern 3sp
+      \if@ignore
+        \global\@ignorefalse
+        \ignorespaces
+      \fi}
+
+
+\def\UL@stop{
+  \global\UL@pe\lastpenalty
+  \global\UL@lastkern\lastkern
+  \unpenalty
+  \ifnum\lastkern = \thr@@
+    \egroup
+    \egroup
+    \ifdim\wd\UL@box = \z@
+    \else
+      \UL@putbox
+    \fi
+  \else
+    \egroup
+    \egroup
+    \UL@putbox
+  \fi
+  \ifnum\UL@pe = \z@
+  \else
+    \LA@penalty\UL@pe
+  \fi
+  \kern -\UL@lastkern
+  \kern \UL@lastkern
+  \UL@unegroup}
+
+\endlinechar `\^^M
+
+\endinput

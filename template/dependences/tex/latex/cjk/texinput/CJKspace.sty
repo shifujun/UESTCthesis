@@ -1,0 +1,98 @@
+% This is the file CJKspace.sty of the CJK package
+%   for suppressing spaces between CJK characters only.
+%
+% created by Wenchang Sun <sunwch@hotmail.com>
+%            Werner Lemberg <wl@gnu.org>
+%
+% Version 4.8.4 (18-Apr-2015)
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program in doc/COPYING; if not, write to the Free
+% Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+% MA 02110-1301 USA
+
+\NeedsTeXFormat{LaTeX2e}[2001/06/01]
+
+\def\fileversion{3.8.0}
+\def\filedate{2015/04/18}
+\ProvidesPackage{CJKspace}[\filedate\space\fileversion]
+
+
+\endlinechar \m@ne
+
+
+% redefine `\CJK@ignorespaces'.
+
+\def\CJK@@ignorespaces{
+  \expandafter\CJK@@@ignorespaces}
+
+\renewenvironment{CJK*}[3][]{
+  \let\CJK@ignorespaces\CJK@@ignorespaces
+  \CJK@envStart{#1}{#2}{#3}}
+  {\CJK@envEnd}
+
+
+\def\CJK@@@ignorespaces{
+  \futurelet\CJK@next@token
+  \CJK@check@next}
+
+\def\CJK@check@next{
+  \ifx\CJK@next@token\@sptoken
+    \expandafter\CJK@@check@next
+  \fi}
+
+{
+  \catcode`\-=11
+
+  \global\let\-empty\@empty
+
+  % define \CJK@@check@next to gobble subsequent space tokens.
+
+  \def\:{\CJK@@check@next}
+  \global\expandafter\def\: {
+    \futurelet\cjk-let-token
+    \cjk---check-next}
+
+  % since characters in the output of \meaning\something have
+  %     catcode 12, we have to change the catcodes of `\', `C',
+  %     `J', `K', and `@'.
+
+  \catcode`\/=0
+  \catcode`\C=12
+  \catcode`\J=12
+  \catcode`\K=12
+  \catcode`\@=12
+  \catcode`\\=12
+
+  /gdef/cjk---check-next{
+    /expandafter/cjk-get-keystring
+     /meaning/cjk-let-token\CJK@@@/cjk-space-stop
+    /cjk-temp}
+
+  % we check whether we can find the signature `\CJK@@@' at the
+  %     beginning of following macro -- only the CJK package
+  %     inserts this.
+
+  /long/gdef/cjk-get-keystring#1\CJK@@@#2/cjk-space-stop{
+    /edef/cjk-temp{#2}
+    /ifx/cjk-temp/-empty
+      /def/cjk-temp{ }
+    /else
+      /def/cjk-temp{}
+    /fi}
+}
+
+
+\endlinechar `\^^M
+
+\endinput

@@ -1,0 +1,268 @@
+%%
+%% This is file `ctexpatch.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% ctex.dtx  (with options: `ctexpatch')
+%% 
+%%     Copyright (C) 2003--2015
+%%     CTEX.ORG and any individual authors listed in the documentation.
+%% ------------------------------------------------------------------------------
+%% 
+%%     This work may be distributed and/or modified under the
+%%     conditions of the LaTeX Project Public License, either
+%%     version 1.3c of this license or (at your option) any later
+%%     version. This version of this license is in
+%%        http://www.latex-project.org/lppl/lppl-1-3c.txt
+%%     and the latest version of this license is in
+%%        http://www.latex-project.org/lppl.txt
+%%     and version 1.3 or later is part of all distributions of
+%%     LaTeX version 2005/12/01 or later.
+%% 
+%%     This work has the LPPL maintenance status `maintained'.
+%% 
+%%     The Current Maintainers of this work are Leo Liu, Qing Lee and Liam Huang.
+%% 
+%% ------------------------------------------------------------------------------
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{expl3}
+\GetIdInfo$Id: ctex.dtx 4e02493 2016-02-02 17:10:17 +0800 Qing Lee <sobenlee@gmail.com> $
+  {Patching commands (CTEX)}
+\ProvidesExplPackage{ctexpatch}
+  {\ExplFileDate}{2.3}{\ExplFileDescription}
+\cs_if_exist:NF \str_new:N { \RequirePackage { l3str } }
+\cs_new_protected:Npn \ctex_patch_cmd_once:NnnnTF #1#2
+  {
+    \ctex_patch_boot:NNnnTF \__ctex_patch_cmd:Nnnnnw #1
+      { once } {#2} { \use_i:nn } { \use_ii:nn }
+  }
+\cs_new_protected:Npn \ctex_patch_cmd_all:NnnnTF #1#2
+  {
+    \ctex_patch_boot:NNnnTF \__ctex_patch_cmd:Nnnnnw #1
+      { all } {#2} { \use_i:nn } { \use_ii:nn }
+  }
+\cs_new_protected:Npn \ctex_patch_cmd:Nnn #1
+  {
+    \ctex_patch_boot:NNnnTF \__ctex_patch_cmd:Nnnnnw #1
+      { once }
+      {
+        \ExplSyntaxOff
+        \char_set_catcode_letter:n { 64 }
+      }
+      { }
+      { \ctex_patch_failure:N #1 }
+  }
+\cs_new_protected:Npn \ctex_patch_failure:N #1
+  { \msg_warning:nnx { ctex } { patch-failure } { \token_to_str:N #1 } }
+\msg_new:nnn { ctex } { patch-failure }
+  { Oops!~Command~`#1'~is~NOT~patchable.\\ }
+\cs_new_protected:Npn \ctex_preto_cmd:NnnTF #1#2
+  {
+    \ctex_patch_boot:NNnnTF \__ctex_hookto_cmd:Nnnnw #1
+      { left } {#2} { \use_i:nn } { \use_ii:nn }
+  }
+\cs_new_protected:Npn \ctex_appto_cmd:NnnTF #1#2
+  {
+    \ctex_patch_boot:NNnnTF \__ctex_hookto_cmd:Nnnnw #1
+      { right } {#2} { \use_i:nn } { \use_ii:nn }
+  }
+\cs_new_protected:Npn \ctex_patch_boot:NNnnTF #1#2#3#4#5#6
+  {
+    \tl_set:Nn \__ctex_patch_true:w {#5}
+    \tl_set:Nn \__ctex_patch_false:w {#6}
+    \group_begin:
+      \char_set_catcode_other:n { 35 }
+      \ctex_parse_name:NN #1 #2 {#3} {#4}
+  }
+\tl_new:N \__ctex_patch_true:w
+\tl_new:N \__ctex_patch_false:w
+\cs_new_protected:Npn \ctex_parse_name:NN #1#2
+  { \ctex_parse_name:NNx #1#2 { \cs_to_str:N #2 } }
+\group_begin:
+\cs_set_protected:Npn \__ctex_tmp:w #1#2#3
+  {
+    \cs_new_protected:Npn \ctex_parse_name:NNn ##1##2##3
+      {
+        \bool_if:nTF
+          {
+            \cs_if_exist_p:c { ##3 ~ } ||
+            \cs_if_exist_p:c { #1##3 }
+          }
+          {
+            \group_begin:
+            \use:x
+              {
+                \group_end:
+                \__ctex_parse_name:nNNNnN
+                  { \token_get_replacement_spec:N ##2 }
+                  \exp_not:N ##2
+                  \exp_not:c { ##3 ~ }
+                  \exp_not:c { #1##3 }
+              } {##3} ##1
+          }
+          { ##1##2 }
+      }
+    \cs_new_protected:Npn \__ctex_parse_name:nNNNnN ##1##2##3##4##5##6
+      {
+        \exp_args:Nc ##6
+          {
+            \str_case:nnTF {##1}
+              {
+                { \protect ##3 } { }
+                { \x@protect ##2 \protect ##3 } { }
+              }
+              {
+                \str_if_eq_x:nnTF
+                  { \exp_not:n { #1@protected@ ##3 #1##3 } }
+                  {
+                    \exp_last_unbraced:Nf \__ctex_parse_name:w
+                      \token_get_replacement_spec:N ##3 #2 ~ #1 \q_stop
+                  }
+                  { #1##5 ~ } { ##5 ~ }
+              }
+              {
+                \str_case:onTF { \__ctex_parse_name:w ##1 #2 ~ #1 \q_stop }
+                  {
+                    { #1@protected@ ##2 ##4 } { }
+                    { #1@ ##4 } { }
+                  }
+                  { #1##5 } {##5}
+              }
+          }
+      }
+    \cs_new:Npn \__ctex_parse_name:w ##1 #2 ~ ##2 #1 ##3 \q_stop { ##1##2 }
+  }
+\use:x
+  {
+    \__ctex_tmp:w
+      { \c_backslash_str }
+      { \c_left_brace_str }
+      { \tl_to_str:n { testopt } }
+  }
+\group_end:
+\cs_generate_variant:Nn \ctex_parse_name:NNn { NNx }
+\str_new:N \l__ctex_prefix_str
+\str_new:N \l__ctex_parameter_str
+\str_new:N \l__ctex_replacement_str
+\group_begin:
+  \cs_set_protected:Npn \__ctex_tmp:w #1
+    {
+      \prg_new_protected_conditional:Npnn
+        \ctex_get_macro_meaning:N ##1 { TF }
+        {
+          \exp_after:wN \__ctex_get_macro_meaning:w
+            \token_to_meaning:N ##1 \q_mark #1 -> \q_no_value \q_mark \q_stop
+        }
+      \cs_new_protected:Npn \__ctex_get_macro_meaning:w
+          ##1 #1 ##2 -> ##3 \q_mark ##4 \q_stop
+        {
+          \tl_set:Nn \l__ctex_replacement_tl {##3}
+          \quark_if_no_value:NTF \l__ctex_replacement_tl
+            { \prg_return_false: }
+            {
+              \str_set:Nn \l__ctex_prefix_str {##1}
+              \str_set:Nn \l__ctex_parameter_str {##2}
+              \str_set:Nn \l__ctex_replacement_str {##3}
+              \prg_return_true:
+            }
+        }
+    }
+  \exp_args:No \__ctex_tmp:w { \tl_to_str:n { macro: } }
+\group_end:
+\cs_new_protected:Npn \ctex_if_rescanable:NnTF #1#2#3#4
+  {
+    \ctex_get_macro_meaning:NTF #1
+      {
+        \__ctex_patch_rebuild:Nn \__ctex_rebuild_cmd:w {#2}
+        \cs_if_eq:NNTF #1 \__ctex_rebuild_cmd:w {#3} {#4}
+      }
+      {#4}
+  }
+\cs_new_eq:NN \__ctex_rebuild_cmd:w \prg_do_nothing:
+\cs_new_protected:Npn \__ctex_patch_rebuild:Nn #1#2
+  {
+    \__ctex_patch_rescan:NNn \l__ctex_prefix_tl      \l__ctex_prefix_str      {#2}
+    \__ctex_patch_rescan:NNn \l__ctex_parameter_tl   \l__ctex_parameter_str   {#2}
+    \__ctex_patch_rescan:NNn \l__ctex_replacement_tl \l__ctex_replacement_str {#2}
+    \use:x
+      {
+        \exp_not:o { \l__ctex_prefix_tl } \tex_def:D \exp_not:N #1
+          \exp_not:o { \l__ctex_parameter_tl }
+            { \exp_not:o { \l__ctex_replacement_tl } }
+      }
+  }
+\cs_new_protected:Npn \__ctex_patch_rescan:NNn #1#2#3
+  {
+    \str_if_empty:NTF #2
+      { \tl_clear:N #1 }
+      { \tl_set_rescan:Nnx #1 {#3} {#2} }
+  }
+\tl_new:N \l__ctex_prefix_tl
+\tl_new:N \l__ctex_parameter_tl
+\tl_new:N \l__ctex_replacement_tl
+\cs_new_protected:Npn \__ctex_patch_cmd:Nnnnnw #1#2#3#4#5
+  {
+    \group_end:
+    \ctex_if_rescanable:NnTF #1 {#3}
+      {
+        \use:x
+          {
+            \__ctex_patch_replace:nnnTF {#2}
+              { \tl_to_str:n {#4} }
+              { \tl_to_str:n {#5} }
+          }
+          {
+            \__ctex_patch_rebuild:Nn #1 {#3}
+            \__ctex_patch_true:w
+          }
+          { \__ctex_patch_false:w }
+      }
+      { \__ctex_patch_false:w }
+  }
+\cs_new_protected:Npn \__ctex_patch_replace:nnnTF #1#2#3#4
+  {
+    \tl_if_in:NnTF \l__ctex_replacement_str {#2}
+      { \use:c { tl_replace_ #1 :Nnn } \l__ctex_replacement_str {#2} {#3} #4 }
+  }
+\cs_new_protected:Npn \__ctex_hookto_cmd:Nnnnw #1#2#3#4
+  {
+    \group_end:
+    \ctex_get_macro_meaning:NTF #1
+      {
+        \str_if_empty:NTF \l__ctex_parameter_str
+          { \__ctex_hookto_cmd_parameterless:Nnnw #1 {#2} {#4} }
+          { \__ctex_hookto_cmd_parameter:Nnnnw #1 {#2} {#3} {#4} }
+      }
+      { \__ctex_patch_false:w }
+  }
+\cs_new_protected:Npn \__ctex_hookto_cmd_parameterless:Nnnw #1#2#3
+  {
+    \str_if_empty:NF \l__ctex_prefix_str
+      { \tl_rescan:nx { } { \l__ctex_prefix_str } }
+    \tex_edef:D #1
+      {
+        \use:c { __ctex_ #2 _hook_aux:nn }
+          { \exp_not:o {#1} }
+          { \exp_not:n {#3} }
+      }
+    \__ctex_patch_true:w
+  }
+\cs_generate_variant:Nn \tl_rescan:nn { nx }
+\cs_new:Npn \__ctex_left_hook_aux:nn #1#2 { #2#1 }
+\cs_new_eq:NN \__ctex_right_hook_aux:nn \use:nn
+\cs_new_protected:Npn \__ctex_hookto_cmd_parameter:Nnnnw #1#2#3#4
+  {
+    \__ctex_patch_rebuild:Nn \__ctex_rebuild_cmd:w {#3}
+    \cs_if_eq:NNTF #1 \__ctex_rebuild_cmd:w
+      {
+        \use:c { str_put_ #2 :Nn } \l__ctex_replacement_str {#4}
+        \__ctex_patch_rebuild:Nn #1 {#3}
+        \__ctex_patch_true:w
+      }
+      { \__ctex_patch_false:w }
+  }
+%% 
+%%
+%% End of file `ctexpatch.sty'.

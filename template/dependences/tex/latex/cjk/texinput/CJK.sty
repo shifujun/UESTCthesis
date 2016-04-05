@@ -1,0 +1,1121 @@
+% This is the file CJK.sty of the CJK package
+%   for using Asian logographs (Chinese/Japanese/Korean) with LaTeX2e
+%
+% created by Werner Lemberg <wl@gnu.org>
+%
+% Version 4.8.4 (18-Apr-2015)
+
+% Copyright (C) 1994-2015  Werner Lemberg <wl@gnu.org>
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program in doc/COPYING; if not, write to the Free
+% Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+% MA 02110-1301 USA
+
+\NeedsTeXFormat{LaTeX2e}[2001/06/01]
+\def\fileversion{4.8.4}
+\def\filedate{2015/04/18}
+\ProvidesPackage{CJK}[\filedate\space\fileversion]
+
+\RequirePackage{MULEenc}
+
+\newif\ifCJK@lowercase@
+\CJK@lowercase@false
+\DeclareOption{lowercase}{\CJK@lowercase@true}
+
+\DeclareOption{global}{\let\CJK@global \global
+                       \let\CJK@active \global
+                       \let\CJK@local  \global}
+\DeclareOption{local}{\let\CJK@global \relax
+                      \let\CJK@active \global
+                      \let\CJK@local  \global}
+\DeclareOption{active}{\let\CJK@global \relax
+                       \let\CJK@active \relax
+                       \let\CJK@local  \global}
+\DeclareOption{encapsulated}{\let\CJK@global \relax
+                             \let\CJK@active \relax
+                             \let\CJK@local  \relax}
+
+\ExecuteOptions{local}
+
+\ProcessOptions
+
+
+% we suppress any unwanted spaces produced by linefeeds.
+
+\endlinechar \m@ne
+
+
+% the use of the internal LaTeX macro `\@ifundefined' can be slightly
+%     irritating. After it has been called, the tested macro is no
+%     longer undefined but expands to \relax. Where possible, we use
+%     the following macro which doesn't have this side effect.
+
+\def\CJK@ifundefined#1{
+  \ifx #1\@undefined
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+
+
+% our input macro. For compatibility with ArabTeX, the catcode of `<'
+%     is preserved.
+
+\def\CJK@input#1{
+  \makeatletter
+  \edef\CJK@lesscatcode{\noexpand\catcode`< \the\catcode`<}
+  \catcode`\< 12\relax
+  \endlinechar \m@ne
+  \input #1\relax
+  \endlinechar `\^^M
+  \CJK@lesscatcode
+  \makeatother}
+
+
+% our symbol macro. It honours the \ifCJK@bold@ flag (to be set in the .fd
+%     files) for producing poor-man's bold fonts; if it is raised we print
+%     the character three times with a small horizontal shift.
+%
+% The user commands to set and unset \ifCJK@bold@ are \CJKbold and
+%     \CJKnormal respectively.
+%
+% \CJKboldshift defines the shift used to imitate bold fonts.
+
+\newif\ifCJK@bold@
+\newcommand{\CJKbold}{\global\CJK@bold@true}
+\newcommand{\CJKnormal}{\global\CJK@bold@false}
+\newcommand{\CJKboldshift}{0.015em}
+
+\DeclareRobustCommand{\CJKsymbol}[1]{
+  \symbol{#1}
+  \ifCJK@bold@
+    \hbox to \CJKboldshift{\hss\symbol{#1}}
+    \hbox to \CJKboldshift{\hss\symbol{#1}}
+  \fi}
+\let\CJKpunctsymbol\CJKsymbol
+
+% the same for HLaTeX which uses the ligature mechanism
+
+\DeclareRobustCommand{\CJKsymbols}[2]{
+  \char #1\char #2\relax
+  \ifCJK@bold@
+    \hbox to \CJKboldshift{\hss\char #1\char #2}
+    \hbox to \CJKboldshift{\hss\char #1\char #2}
+  \fi}
+
+
+% the auxiliary macro \CJK@numbToHex converts number #2 into a two-digit
+%     hex string and assigns it globally to #1.
+
+\def\CJK@numbToHex#1#2{
+  {\count\z@ #2\relax
+   \count\tw@ \count\z@
+   \divide\count\z@ \sixt@@n
+
+   \count@ \count\z@
+   \multiply\count@ \sixt@@n
+   \advance\count\tw@ -\count@
+
+   \xdef#1{
+     \hexnumber@{\count\z@}\hexnumber@{\count\tw@}}}}
+
+
+% the auxiliary macro \CJK@numbxToHex converts number #2 into a four-digit
+%     hex string and assigns it globally to #1.
+
+\def\CJK@numbxToHex#1#2{
+  {\count\thr@@ #2\relax
+   \count\tw@ \count\thr@@
+   \divide\count\tw@ \sixt@@n
+   \count\@ne \count\tw@
+   \divide\count\@ne \sixt@@n
+   \count\z@ \count\@ne
+   \divide\count\z@ \sixt@@n
+
+   \count@ \count\tw@
+   \multiply\count@ \sixt@@n
+   \advance\count\thr@@ -\count@
+   \count@ \count\@ne
+   \multiply\count@ \sixt@@n
+   \advance\count\tw@ -\count@
+   \count@ \count\z@
+   \multiply\count@ \sixt@@n
+   \advance\count\@ne -\count@
+
+   \xdef#1{
+     \hexnumber@{\count\z@}
+     \hexnumber@{\count\@ne}
+     \hexnumber@{\count\tw@}
+     \hexnumber@{\count\thr@@}}}}
+
+
+% the encoding of the `UTF8' environment.
+
+\edef\CJK@UnicodeEnc{UTF8}
+
+
+% with \CJKchar you can access a character directly at a low level:
+%     the parameters are the first and the second byte of the CJK character
+%     code. The second parameter will be ignored if you address one-byte
+%     encoded characters in SJIS.
+%
+% the optional parameter selects the encoding (using \CJKenc).
+%
+% for Unicode characters you must select UTF-8 encoding (but enter real
+%     Unicode values).
+%
+% you can enter character codes with or without the 8th bit set (GL or
+%     GR form) except for SJIS, Bg5 and UTF-8 encodings.
+
+\DeclareRobustCommand{\CJKchar}[3][]{
+  {\CJK@nobind@true
+
+   \edef\CJK@tempenc{#1}
+   \ifx\CJK@tempenc \@empty
+   \else
+     \let\CJK@oldenc \CJK@@@enc
+     \CJKenc{#1}
+   \fi
+
+   \edef\CJK@temp{UTF8}
+   \ifx\CJK@temp \CJK@@@enc
+     \Unicode{#2}{#3}
+   \else
+     \@tempcnta #2
+     \edef\CJK@tempa{#3}
+     \ifx\CJK@tempa \@empty%            % test for one-byte SJIS characters
+     \else
+       \@tempcntb #3
+       \ifnum \CJK@min > 160\relax
+         \ifnum\@tempcnta < 128\relax
+           \advance\@tempcnta 128\relax
+           \advance\@tempcntb 128\relax
+         \fi
+       \fi
+       \edef\CJK@tempa{\the\@tempcntb}
+     \fi
+
+     \edef\CJK@temp{\the\@tempcnta}
+     \expandafter\csname CJK@\CJK@temp\expandafter\endcsname
+      \expandafter{\CJK@tempa}
+   \fi
+
+   \ifx\CJK@tempenc \@empty
+   \else
+     \ifx\CJK@global \global
+       \CJKenc{\CJK@oldenc}
+     \fi
+   \fi}
+
+  \CJK@ignorespaces}
+
+
+% with \Unicode you can access a Unicode character directly at a low level:
+%     the parameters are the first and the second byte of the Unicode (real
+%     Unicode values, not UTF-8).
+%
+%     If the Unicode value is greater than U+FFFF, put the first two bytes
+%     into #1, and the third byte into #2.
+
+\DeclareRobustCommand{\Unicode}[2]{
+  {\edef\CJK@temp{UTF8}
+   \ifx\CJK@temp \CJK@@@enc
+   \else
+     \PackageError{CJK}{
+       You can't use \protect\Unicode\space here}{
+       You must activate UTF-8 encoding to use \protect\Unicode.}
+   \fi
+   \ifnum #1 > 255\relax
+     \CJK@numbxToHex{\CJK@gtemp}{#1}
+   \else
+     \CJK@numbToHex{\CJK@gtemp}{#1}
+   \fi
+   \def\CJK@tempa##1{
+     \lowercase{\edef\CJK@plane{##1}}}
+   \expandafter\CJK@tempa\expandafter{\CJK@gtemp}
+   \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+
+   \edef\CJK@tempa{
+     \curr@fontshape/\CJK@plane/\number #2/\CJK@direction}
+   \expandafter\ifx\csname\CJK@tempa\endcsname \relax
+     \def\CJKtemp{\CJKsymbol{#2}}
+   \else
+     \def\CJKtemp{\csname\CJK@tempa\endcsname}
+   \fi
+
+   \ifCJK@latin@
+     \CJKtemp
+   \else
+     \expandafter\CJK@testInList\expandafter\CJK@uniPunct
+      \expandafter{\CJK@plane}
+     \ifCJK@%                                   % punctuation character
+       \CJK@numbToHex{\CJK@gtemp}{#2}
+       \CJK@testLastCJK
+       \ifCJK@
+         \CJK@testPostPunct{\CJK@@@enc}{\CJK@plane}{\CJK@gtemp}
+         \ifCJK@
+           \ifCJK@CJK@
+             \CJK@nobreakglue
+           \fi
+         \else
+           \ifCJK@hangul@
+             \discretionary{}{}{}
+           \else
+             \CJKglue
+           \fi
+         \fi
+       \fi
+       \ifCJK@CJK@
+         \CJK@testLastKern
+         \ifCJK@
+           \CJK@nobreakglue
+         \fi
+       \fi
+
+       \CJKtemp
+
+       \CJK@testPrePunct{\CJK@@@enc}{\CJK@plane}{\CJK@gtemp}
+       \ifCJK@
+         \CJK@kern
+       \else
+         \CJK@CJK
+       \fi
+     \else%                                     % not a punctuation character
+       \CJK@testLastCJK
+       \ifCJK@
+         \ifCJK@hangul@
+           \discretionary{}{}{}
+         \else
+           \CJKglue
+         \fi
+       \fi
+       \ifCJK@CJK@
+         \CJK@testLastKern
+         \ifCJK@
+           \CJK@nobreakglue
+         \fi
+       \fi
+       \CJKtemp
+       \CJK@CJK
+     \fi
+   \fi}
+
+  \CJK@ignorespaces}
+
+
+% the following commands are needed for UTF-8 encoding to select the proper
+%     intercharacter glue.
+
+\newif\ifCJK@CJK@
+\newif\ifCJK@hangul@
+\newif\ifCJK@latin@
+
+\newcommand{\CJKCJKchar}{
+  \CJK@global\CJK@CJK@true
+  \CJK@global\CJK@hangul@false
+  \CJK@global\CJK@latin@false}
+
+\newcommand{\CJKhangulchar}{
+  \CJK@global\CJK@CJK@false
+  \CJK@global\CJK@hangul@true
+  \CJK@global\CJK@latin@false}
+
+\newcommand{\CJKlatinchar}{
+  \CJK@global\CJK@CJK@false
+  \CJK@global\CJK@hangul@false
+  \CJK@global\CJK@latin@true}
+
+\CJKCJKchar
+
+
+% the next commands control mapping of half-width katakana to full-width
+%     glyphs within SJIS encoding.
+
+\newif\ifCJK@hwkatakana@
+
+\newcommand{\CJKhwkatakana}{\CJK@global\CJK@hwkatakana@true}
+
+\newcommand{\CJKnohwkatakana}{\CJK@global\CJK@hwkatakana@false}
+
+\CJKhwkatakana
+
+
+% you will find the innermost routines of the macros defined above in the
+%     xxx.chr files. These routines are
+%
+%         \CJK@char, \CJK@charx,
+%         \CJK@altchar, \CJK@altcharx,
+%         \CJK@punctchar, \CJK@punctcharx,
+%         \CJK@sjischar, \CJK@sjispunctchar    .
+
+
+% we need to scan comma separated lists of character codes (represented as
+%     hexadecimal strings), testing whether a particular character is in the
+%     list. The macro \CJK@testInList sets the flag \ifCJK@ globally if true.
+%     Parameter #1 is the list, #2 the actual character code to test.
+%
+% see the documentation of the \ifnot@excluded macro in the doc package of
+%     the standard LaTeX2e distribution for a detailed explanation of the
+%     following tricky definitions.
+
+\newif\ifCJK@
+
+\def\CJK@stop{\CJK@stop}
+
+\def\CJK@testInList#1#2{
+  \def\CJK@tempa##1,#2,##2\CJK@stop{
+    \def\CJK@tempb{##2}
+    \global\CJK@true
+    \ifx\CJK@tempb \@empty
+      \global\CJK@false
+    \fi}
+  \expandafter\CJK@tempa\expandafter,#1,#2,\CJK@stop}
+
+
+% lists defined in CJK.enc for plane yy with encoding xx are assigned to
+%     global macros \CJK@xx@yy@prePunct and \CJK@xx@yy@postPunct.
+
+\def\CJK@prePunct#1#2#3{
+  \expandafter\gdef\csname CJK@#1@#2@prePunct\endcsname{#3}}
+
+\def\CJK@postPunct#1#2#3{
+  \expandafter\gdef\csname CJK@#1@#2@postPunct\endcsname{#3}}
+
+
+% the next two functions scan the lists of punctuation characters of a
+%     particular plane which should not occur at the beginning or at the end
+%     of a line. They will be used in the xxx.chr files. Parameters are the
+%     encoding, the plane and the character to be tested. Again these macros
+%     raise or lower \ifCJK@.
+
+\def\CJK@testPrePunct#1#2#3{
+  \expandafter\expandafter\expandafter
+   \CJK@testInList
+   \expandafter\csname CJK@#1@#2@prePunct\expandafter\endcsname
+   \expandafter{#3}}
+
+\def\CJK@testPostPunct#1#2#3{
+  \expandafter\expandafter\expandafter
+   \CJK@testInList
+   \expandafter\csname CJK@#1@#2@postPunct\expandafter\endcsname
+   \expandafter{#3}}
+
+
+% the macro \CJKenc changes the encoding inside of a CJK environment. It
+%     always uses the fontencoding defined with \CJKfontenc (this
+%     behaviour is intentionally different from the similar command pair
+%     \CJKfamily and \CJKencfamily).
+
+\DeclareRobustCommand{\CJKenc}[1]{
+  \expandafter\ifx\csname CJK@#1@fontenc\endcsname \relax
+    \PackageError{CJK}{
+      Encoding `#1' is not defined}{}
+  \fi
+
+  \edef\CJK@temp{\csname CJK@#1@fontenc\endcsname}
+
+  \expandafter\ifx\csname CJK@#1\CJK@temp @enc\endcsname \relax
+    \PackageError{CJK}{
+      Encoding `#1\CJK@temp' is not defined}{}
+  \else
+    \CJK@global\edef\CJK@@@enc{#1}
+    \CJK@selectEnc
+  \fi}
+
+\edef\CJK@@@enc{}
+
+% to change a fontencoding yyy for a specific encoding xxx say
+%     \CJKfontenc{xxx}{yyy}. If you then change the encoding forth and back,
+%     this fontencoding is still valid. You will need this command only in
+%     cases where the fonts are not CJK-fontencoded, such as pmC or dnp
+%     fontencodings.
+%
+% if you define a new encoding `foo', you *must* supply the command
+%     `\CJKfontenc{foo}{}' (note the empty second parameter) since the
+%     encoding existence test relies on this.
+
+\DeclareRobustCommand{\CJKfontenc}[2]{
+  \expandafter\CJK@global\expandafter\edef
+   \csname CJK@#1@fontenc\endcsname{#2}
+  \CJK@selectEnc}
+
+% \CJKfamily{xxx} selects the shape xxx for all encodings. It will override
+%     \CJKencfamily, i.e., if you change the encoding, the family will be
+%     the same. To reactivate \CJKencfamily, say `\CJKfamily{}'.
+%
+% For backward compatibility the macros \CJKshape and \CJKencshape are set
+%     to \CJKfamily and \CJKencfamily, respectively.
+
+\DeclareRobustCommand{\CJKfamily}[1]{
+  \CJK@global\edef\CJK@globalfamily{#1}
+  \CJK@selectFamily}
+
+\edef\CJK@globalfamily{}
+
+% to change a family for a specific encoding xxx (and a font encoding yyy),
+%     use \CJKencfamily. If you then change the encoding forth and back,
+%     this family is still valid. This macro is especially useful with
+%     cjk-enc.el since it allows to change the encoding without the need to
+%     select a (possibly different) family each time. See the various
+%     encoding definitions in CJK.enc for the default values.
+%
+% note that it is equivalent to say \CJKencfamily[yyy]{xxx}{...} and
+%     \CJKencfamily{xxxyyy}{...}.
+
+\DeclareRobustCommand{\CJKencfamily}[3][]{
+  \expandafter\CJK@global\expandafter\edef
+   \csname CJK@#2#1@family\endcsname{#3}
+  \CJK@selectFamily}
+
+
+\let\CJKshape \CJKfamily
+\let\CJKencshape \CJKencfamily
+
+
+% the next commands select the actual family and encoding.
+
+\def\CJK@selFam{
+  \edef\CJK@temp{\csname CJK@\CJK@@@enc @fontenc\endcsname}
+
+  \ifx\CJK@globalfamily \@empty
+    \CJK@global\edef\CJK@family{
+     \csname CJK@\CJK@@@enc\CJK@temp @family\endcsname}
+  \else
+    \CJK@global\edef\CJK@family{\CJK@globalfamily}
+  \fi}
+
+
+% \CJK@@@enc is the encoding selected by the user, \CJK@enc will be really
+%     used. With the internal hook \CJK@@@xxx@hook we can modify \CJK@enc
+%     for the encoding xxx if necessary. With the hook \CJK@xxx@hook other
+%     packages can add stuff which should be executed immediately after the
+%     encoding has changed.
+
+\def\CJK@selEnc{
+  \edef\CJK@temp{\csname CJK@\CJK@@@enc @fontenc\endcsname}
+
+  \CJK@global\edef\CJK@enc{
+    \csname CJK@\CJK@@@enc\CJK@temp @nfssenc\endcsname}
+  \csname CJK@@@\CJK@@@enc\CJK@temp @hook\endcsname
+
+  \csname CJK@\CJK@@@enc\CJK@temp @enc\endcsname
+  \CJK@selectFamily
+  \csname CJK@\CJK@@@enc @hook\endcsname}
+
+% and here the user-visible macro to add something to the encoding hook.
+%     First parameter is the encoding, second parameter the data to be
+%     appended.
+
+\def\CJKaddEncHook#1#2{
+  \expandafter\let\expandafter\CJK@temp \csname CJK@#1@hook\endcsname
+  \expandafter\def\expandafter\CJK@temp\expandafter{
+   \CJK@temp #2}
+  \expandafter\let\csname CJK@#1@hook\endcsname \CJK@temp}
+
+
+% we disable \CJK@selectFamily and \CJK@selectEnc until a CJK environment
+%     starts to avoid side effects while defining default values for
+%     encodings (outside of a CJK environment).
+
+\let\CJK@selectFamily \relax
+\let\CJK@selectEnc \relax
+
+
+% CJK.enc contains the \CJK@...@enc macros and the punctuation lists.
+
+\input CJK.enc
+
+
+% the macros \CJK@testLastKern and \CJK@testLastCJK check the last kern and
+%     raise or lower \ifCJK@.
+
+\edef\CJK@kern{\kern -2sp\kern 2sp}
+\edef\CJK@CJK{\kern -1sp\kern 1sp}
+
+\let\CJKkern \CJK@kern
+
+% does previous CJK character request nonbreakable glue?
+
+\def\CJK@testLastKern{
+  \global\CJK@false
+  \ifnum\lastkern = \tw@
+    \global\CJK@true
+  \fi
+  \ifnum\lastkern = 5%                          % request from ruby.sty
+    \global\CJK@true
+  \fi}
+
+% is previous character a CJK character?
+
+\def\CJK@testLastCJK{
+  \global\CJK@false
+  \ifnum\lastkern = \@ne
+    \global\CJK@true
+  \fi}
+
+
+% we only check for lower and upper bounds, not for possible gaps in the
+%     range of the second byte, as it happens for Big5 and SJIS encoding.
+
+\def\CJK@err{
+  \PackageError{CJK}{
+    Invalid character code}{
+    The second byte of the CJK code is out of range.\MessageBreak
+    Do you use the right encoding scheme?}}
+
+\def\CJK@errx{
+  \PackageError{CJK}{
+    Invalid character code}{
+    The third byte of the CJK code is out of range.\MessageBreak
+    Do you use the right encoding scheme?}}
+
+\def\CJK@errxx{
+  \PackageError{CJK}{
+    Invalid character code}{
+    The CJK code is out of range for this font encoding.\MessageBreak
+    Do you use the right encoding scheme?}}
+
+
+% we now define a set of new size functions:
+%     `CJK', `sCJK', `CJKfixed', and `sCJKfixed' are similar to `' (empty),
+%     `s', `fixed', and `sfixed' except that the value of \CJK@plane is
+%     appended to \font@name.
+%
+% `CJKsub', `CJKssub' are similar to `sub' and `ssub' except that the font
+%     substitution warning appears only once per CJK fontset.
+%
+% `CJKb', `sCJKb', `CJKfixedb', and `sCJKfixedb' are absolutely identical
+%     to the functions without the final `b'; they just exist to overcome
+%     a special feature of LaTeX:
+%
+%     consider this example:
+%
+%       \DeclareFontShape{C00}{kai}{m}{n}{<-> CJK * ntukai}{}
+%       \DeclareFontShape{C00}{kai}{bx}{n}{<-> CJK * ntukai}{\CJKbold}
+%
+%     the internal name of the macro which executes the last parameter
+%     (\CJKbold) is identical to the fifth parameter (without spaces), in
+%     this case `<->CJK*ntukai' -- the same name for both font shapes! This
+%     means that the latter font shape definition overwrites the former.
+%     Thus we have to write
+%
+%       \DeclareFontShape{C00}{kai}{bx}{n}{<-> CJKb * ntukai}{\CJKbold}
+%
+%     to get a different internal macro name.
+
+\def\CJK@curr@fontshape{CJK@\f@encoding/\f@family/\f@series/\f@shape}
+
+\DeclareSizeFunction{CJK}{\CJK@empty\@font@warning}
+\DeclareSizeFunction{CJKb}{\CJK@empty\@font@warning}
+\DeclareSizeFunction{sCJK}{\CJK@empty\@font@info}
+\DeclareSizeFunction{sCJKb}{\CJK@empty\@font@info}
+
+\def\CJK@empty#1{
+  \@tempdimb \f@size\p@
+  \ifx\optional@arg \@empty
+  \else
+    \expandafter\ifx
+     \csname CJK@\mandatory@arg/\f@size/\the\@tempdimb\endcsname \relax
+      \@tempdimb \optional@arg\@tempdimb
+      #1{Font\space shape\space `\curr@fontshape'\space
+         will\space be\MessageBreak
+         scaled\space to\space size\space \the\@tempdimb}
+      \expandafter
+       \gdef\csname CJK@\mandatory@arg/\f@size/\the\@tempdimb\endcsname{}
+    \fi
+  \fi
+  \edef\external@font{
+    \mandatory@arg\CJK@plane\space at \the\@tempdimb}
+  \xdef\font@name{
+    \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}
+  \expandafter\global\expandafter\let
+   \csname \CJK@curr@fontshape\expandafter\endcsname
+    \csname \curr@fontshape\endcsname}
+
+\DeclareSizeFunction{CJKfixed}{\CJK@fixed\@font@warning}
+\DeclareSizeFunction{CJKfixedb}{\CJK@fixed\@font@warning}
+\DeclareSizeFunction{sCJKfixed}{\CJK@fixed\@font@info}
+\DeclareSizeFunction{sCJKfixedb}{\CJK@fixed\@font@info}
+
+\def\CJK@fixed#1{
+  \ifx\optional@arg \@empty
+    \edef\external@font{
+      \mandatory@arg\CJK@plane}
+  \else
+    \edef\external@font{
+      \mandatory@arg\CJK@plane\space at \optional@arg pt}
+  \fi
+  \xdef\font@name{
+    \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}
+  #1{External\space font\space `\external@font'\space loaded\space
+     for\space size\MessageBreak
+     <\f@size>}
+  \expandafter\global\expandafter\let
+   \csname \CJK@curr@fontshape\expandafter\endcsname
+    \csname \curr@fontshape\endcsname}
+
+\DeclareSizeFunction{CJKsub}{\CJK@sub\@font@warning}
+\DeclareSizeFunction{CJKssub}{\CJK@sub\@font@info}
+
+\def\CJK@sub#1{
+  \edef\mandatory@arg{\f@encoding/\mandatory@arg}
+  \begingroup
+    \expandafter\split@name\mandatory@arg/\@nil
+    \try@load@fontshape
+  \endgroup
+  \let\f@user@size\f@size
+  \expandafter\ifx\csname\mandatory@arg\endcsname \relax
+    \errmessage{No\space declaration\space for\space shape\space
+                \mandatory@arg}
+    \error@fontshape
+  \else
+    \expandafter\ifx\csname CJK@\mandatory@arg/\f@size\endcsname \relax
+      #1{Font\space shape\space `\curr@fontshape'\MessageBreak
+         in\space size\space <\f@size>\space not\space available.\MessageBreak
+         Font\space shape\space `\mandatory@arg'\MessageBreak
+         tried\space instead}
+      \expandafter\gdef\csname CJK@\mandatory@arg/\f@size\endcsname{}
+    \fi
+    \expandafter\split@name\mandatory@arg/\@nil
+  \fi
+  \edef\f@size{\f@user@size}
+  \get@external@font
+  \do@subst@correction
+  \expandafter\global\expandafter\let
+   \csname \CJK@curr@fontshape\expandafter\endcsname
+    \csname \curr@fontshape\endcsname}
+
+% the following size functions are needed for the DNP fonts in JIS encoding.
+%     `DNPgen' is similar to `gen' but ignores the optional argument.
+%     `DNP' is similar to `gen' but the optional argument is used to 
+%     indicate the designsize.
+%
+% see the comment above for an explanation of DNPb and DNPgenb.
+
+\DeclareSizeFunction{DNPgen}{\CJK@DNPgen}
+\DeclareSizeFunction{DNPgenb}{\CJK@DNPgen}
+
+\def\CJK@DNPgen{
+  \edef\external@font{
+    \mandatory@arg\CJK@plane\f@size}
+  \xdef\font@name{
+    \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}
+  \expandafter\global\expandafter\let
+   \csname \CJK@curr@fontshape\expandafter\endcsname
+    \csname \curr@fontshape\endcsname}
+
+\DeclareSizeFunction{DNP}{\CJK@DNP}
+\DeclareSizeFunction{DNPb}{\CJK@DNP}
+
+\def\CJK@DNP{
+  \@tempdimb \f@size\p@
+  \edef\external@font{
+    \mandatory@arg\CJK@plane\optional@arg\space at \the\@tempdimb}
+  \xdef\font@name{
+    \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}
+  \expandafter\global\expandafter\let
+   \csname \CJK@curr@fontshape\expandafter\endcsname
+    \csname \curr@fontshape\endcsname}
+
+
+% we also must redefine \pickup@font to append \CJK@plane to the font name
+%     if the particular subfont is already known.
+
+\def\pickup@font{
+  \CJK@ifundefined\CJK@plane
+    {\expandafter\ifx\font@name \relax%         % old definition
+       \define@newfont
+     \fi}
+    {\expandafter%                              % CJK extension
+      \ifx\csname \curr@fontshape/\f@size/\CJK@plane\endcsname \relax
+       \define@newfont
+     \else
+       \xdef\font@name{
+         \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}
+     \fi}}
+
+% the other LaTeX2e command we must redefine is \selectfont. It will
+%     now reset \ifCJK@bold@ and calls \CJK@curr@fontshape additionally
+%     (if it exists) to execute the loading-setting parameter of
+%     \DeclareFontShape each time we switch to this font. 
+%     \CJK@curr@fontshape has been defined by the above size functions.
+
+\DeclareRobustCommand{\selectfont}{
+  \ifx\f@linespread \baselinestretch
+  \else
+    \set@fontsize\baselinestretch\f@size\f@baselineskip
+  \fi
+  \xdef\font@name{\csname\curr@fontshape/\f@size\endcsname}
+  \pickup@font
+  \font@name
+  \expandafter%                                 % CJK extension
+   \ifx\csname CJK@\curr@fontshape\endcsname \relax
+  \else
+    \CJK@bold@false
+    \csname CJK@\curr@fontshape\endcsname
+  \fi
+  \size@update
+  \enc@update}
+
+
+% additional vertical and horizontal information for a font is stored in
+%     files with the extension `.fdx'. We extend LaTeX's
+%     \try@load@fontshape@ macro to load them.
+%
+% the macros \CJKhdef, \CJKvdef, \CJKhlet and \CJKvlet should be used to
+%     handle commands in `.fdx' files.
+
+\def\CJK@load@fdx{
+  \expandafter\ifx\csname \f@encoding+\f@family+x\endcsname \relax
+    \global\expandafter\let\csname \f@encoding+\f@family+x\endcsname \@empty
+    \def\CJKhdef##1##2{
+      \expandafter\gdef\csname \CJK@enc/\CJK@family/##1/h\endcsname{##2}}
+    \def\CJKhlet##1##2{
+      \edef\reserved@a{\CJK@enc/\CJK@family/##1/h}
+      \edef\reserved@b{\CJK@enc/\CJK@family/##2/h}
+      \global\expandafter\let
+       \csname\reserved@a\expandafter\endcsname \csname\reserved@b\endcsname}
+    \def\CJKvdef##1##2{
+      \expandafter\gdef\csname \CJK@enc/\CJK@family/##1/v\endcsname{##2}}
+    \def\CJKvlet##1##2{
+      \edef\reserved@a{\CJK@enc/\CJK@family/##1/v}
+      \edef\reserved@b{\CJK@enc/\CJK@family/##2/v}
+      \global\expandafter\let
+       \csname\reserved@a\expandafter\endcsname \csname\reserved@b\endcsname}
+    \edef\reserved@a{
+      \lowercase{\noexpand\InputIfFileExists{\f@encoding\f@family.fdx}}}
+    \reserved@a{}{}
+  \fi}
+
+\expandafter\def\expandafter\try@load@fontshape\expandafter{
+  \try@load@fontshape
+  \CJK@load@fdx}
+
+
+% \CJKglue defines the stretchability of CJK characters.
+
+\newcommand{\CJKglue}{\hskip \z@ \@plus .08\baselineskip}
+
+\def\CJK@nobreakglue{
+  \nobreak
+  \CJKglue
+  \nobreak}
+
+% if the `verbatim' package is loaded it is possible to improve the output
+%     automatically, namely, to avoid breaking of overfull lines in a
+%     verbatim environment. The following command will install a hook to
+%     suppress insertion of glue between CJK glyphs. MULEenc.sty will extend
+%     it for Thai glyphs.
+
+\def\CJK@verbatim{
+  \addto@hook{\every@verbatim}{
+    \renewcommand{\CJKglue}{}}}
+\CJK@ifundefined\mule@verbatim
+  {\mule@verbatim{}}
+  {}
+
+\def\CJKverbatim{
+  \mule@verbatim
+  \CJK@verbatim}
+
+
+% increasing \CJKtolerance will allow more space between Hangul words.
+
+\newcommand{\CJKtolerance}{400}
+
+
+% \CJKtilde changes the definition of the active `~' character to embed
+%     non-CJK words into CJK text. The horizontal space defined here has
+%     a smaller width than an ordinary space character and is breakable.
+%     It will suppress spaces afterwards.
+%     The original definition will be preserved within \nbs, which is
+%     a shorthand for the LaTeX command \nobreakspace.
+%
+% \standardtilde is the opposite command.
+
+\let\nbs \nobreakspace
+
+\DeclareRobustCommand{\CJKtilde}{
+  \CJK@global\def~{\hspace{0.25em plus 0.125em minus 0.08em}\ignorespaces}}
+\DeclareRobustCommand{\standardtilde}{
+  \CJK@global\def~{\nobreakspace{}}}
+
+
+% \CJKspace and \CJKnospace enables the user to switch between a CJK and a
+%     CJK* environment without leaving the actual environment:
+%
+%     \CJKnospace switches from CJK to CJK*
+%     \CJKspace switches from CJK* to CJK
+%
+% the definitions are in MULEenc.sty also.
+
+\DeclareRobustCommand{\CJKspace}{
+  \CJK@global\let\CJK@ignorespaces \@empty}
+\DeclareRobustCommand{\CJKnospace}{
+  \CJK@global\let\CJK@ignorespaces \ignorespaces}
+
+
+% \CJKindent sets \parindent to two ideographic spaces. \CJK@spaceChar
+%     is defined in CJK.enc for all encodings.
+
+\newbox\CJK@indent
+
+\providecommand{\CJKindent}{
+  \setbox\CJK@indent\hbox{\CJK@spaceChar\CJK@spaceChar}
+  \parindent\wd\CJK@indent
+}
+
+
+% make all characters possibly used active so they can become macros.
+
+\def\CJK@makeActive{
+  \@tempcnta "080\relax
+  \loop
+    \CJK@active\catcode\@tempcnta \active
+    \ifnum\@tempcnta < "0FE\relax
+      \advance\@tempcnta \@ne
+  \repeat}
+
+\def\CJK@makeInactive{
+  \@tempcnta "080\relax
+  \loop
+    \CJK@active\catcode\@tempcnta 12\relax
+    \ifnum\@tempcnta < "0FE\relax
+      \advance\@tempcnta \@ne
+  \repeat}
+
+
+% the following macro is a signature for `CJKspace.sty'.
+
+\def\CJK@@@{}
+
+
+% we assign to each active character ^^xx the macro \CJK@XX (if expansion
+%     occurs); this will be done in the .bdg files. Then the various .enc
+%     files define \CJK@.. (using \CJK@namegdef) with encoding-specific
+%     macros.
+
+\def\CJK@namedef#1{
+  \CJK@active\def#1{
+    \CJK@@@
+    \ifx\protect \@typeset@protect
+      \string #1
+    \else
+      \noexpand #1
+    \fi}}
+
+\def\CJK@namepdef#1{
+  \CJK@active\def#1{
+    \CJK@@@
+    \ifx\protect \@typeset@protect
+      \expandafter\expandafter\expandafter\CJK@X
+       \expandafter\string\expandafter#1
+    \else
+      \noexpand #1
+    \fi}}
+
+\def\CJK@nameppdef#1{
+  \CJK@active\def#1{
+    \CJK@@@
+    \ifx\protect \@typeset@protect
+      \expandafter\expandafter\expandafter\CJK@XX
+       \expandafter\string\expandafter#1
+    \else
+      \noexpand #1
+    \fi}}
+
+\def\CJK@namepppdef#1{
+  \CJK@active\def#1{
+    \CJK@@@
+    \ifx\protect \@typeset@protect
+      \expandafter\expandafter\expandafter\CJK@XXX
+       \expandafter\string\expandafter#1
+    \else
+      \noexpand #1
+    \fi}}
+
+\def\CJK@nameppppdef#1{
+  \CJK@active\def#1{
+    \CJK@@@
+    \ifx\protect \@typeset@protect
+      \expandafter\expandafter\expandafter\CJK@XXXX
+       \expandafter\string\expandafter#1
+    \else
+      \noexpand #1
+    \fi}}
+
+
+\def\CJK@X#1{
+  \csname CJK@\number `#1\endcsname\CJK@ignorespaces}
+
+% two possibilities:
+%     either \CJK@XX <arg1> <arg2>
+%     or     \CJK@XX <arg1> \protect <arg2>
+\def\CJK@XX#1#2{
+  \ifx #2\protect
+    \expandafter\CJK@XXp\expandafter#1
+  \else
+    \csname CJK@\number `#1\endcsname{`#2}\CJK@ignorespaces
+  \fi}
+\def\CJK@XXp#1#2{
+  \csname CJK@\number `#1\endcsname{`#2}\CJK@ignorespaces}
+
+% two possibilities:
+%     either \CJK@XXX <arg1> <arg2> <arg3>
+%     or     \CJK@XXX <arg1> \protect <arg2> \protect <arg3>
+\def\CJK@XXX#1#2#3{
+  \ifx #2\protect
+    \expandafter\CJK@XXXp\expandafter#1#3
+  \else
+    \csname CJK@\number `#1\endcsname{`#2}{`#3}\CJK@ignorespaces
+  \fi}
+\def\CJK@XXXp#1#2#3#4{
+  \csname CJK@\number `#1\endcsname{`#2}{`#4}\CJK@ignorespaces}
+
+% two possibilities:
+%     either \CJK@XXXX <arg1> <arg2> <arg3> <arg4>
+%     or     \CJK@XXXX <arg1> \protect <arg2> \protect <arg3> \protect <arg4>
+\def\CJK@XXXX#1#2#3#4{
+  \ifx #2\protect
+    \expandafter\CJK@XXXXp\expandafter#1#3
+  \else
+    \csname CJK@\number `#1\endcsname{`#2}{`#3}{`#4}\CJK@ignorespaces
+  \fi}
+\def\CJK@XXXXp#1#2#3#4#5{
+  \csname CJK@\number `#1\endcsname{`#2}{`#3}{`#5}\CJK@ignorespaces}
+
+
+% these auxiliary macros reset \lccode's and \uccode's of characters
+%     0x80-0xFF. This overrides the values set by LaTeX2e.
+
+\def\CJK@upperReset{
+  \@tempcnta "080\relax
+  \loop
+    \CJK@local\uccode\@tempcnta \z@
+    \ifnum\@tempcnta < "0FF\relax
+      \advance\@tempcnta \@ne
+  \repeat}
+
+\def\CJK@lowerReset{
+  \@tempcnta "080\relax
+  \loop
+    \CJK@local\lccode\@tempcnta \z@
+    \ifnum\@tempcnta < "0FF\relax
+      \advance\@tempcnta \@ne
+  \repeat}
+
+
+% finally come the CJK environments:
+%
+% CJK* will swallow spaces after a CJK character, whereas CJK will not.
+%
+% the first parameter selects the CJK encoding, the second the CJK font
+%     family; the optional argument selects the fontencoding.
+%
+% each time a CJK or CJK* environment will be opened the hook \CJKhook will
+%     be called (this feature is used by cjk-enc.el).
+%
+% always end the line after saying \begin{CJK} or \begin{CJK*};
+%     any characters on the same line will have already been read with
+%     their non-CJK meanings.
+
+\def\CJK@envStart#1#2#3{
+  \CJK@upperReset
+  \ifCJK@lowercase@
+    \CJK@lowerReset
+  \fi
+
+  \CJK@makeActive
+
+  % we enable \CJK@selectFamily and \CJK@selectEnc.
+
+  \CJK@global\let\CJK@selectFamily \CJK@selFam
+  \CJK@global\let\CJK@selectEnc \CJK@selEnc
+
+  \def\CJK@@@enc{#2}
+  \ifx\CJK@@@enc \@empty
+    \PackageInfo{CJK}{
+      no encoding parameter given,\MessageBreak
+      waiting for \protect\CJKenc\space commands}
+  \else
+    \CJKenc{#2}
+  \fi
+  \CJKfontenc{#2}{#1}
+  \CJKfamily{#3}
+  \def\CJK@series{\f@series}
+  \def\CJK@shape{\f@shape}
+
+  \csname CJKhook\endcsname}
+
+\def\CJK@envEnd{
+  \ifx\CJK@global \global
+    \CJK@makeInactive
+    \CJK@global\let\CJK@selectFamily \relax
+    \CJK@global\let\CJK@selectEnc \relax
+  \fi}
+
+\newenvironment{CJK}[3][]{
+  \CJKspace
+  \CJK@envStart{#1}{#2}{#3}
+ }{
+  \CJK@envEnd}
+
+\newenvironment{CJK*}[3][]{
+  \CJKnospace
+  \CJK@envStart{#1}{#2}{#3}
+ }{
+  \CJK@envEnd}
+
+
+% \CJKcaption{caption} will test whether we are in a CJK environment; if yes,
+%     it tries to load `<caption>.cpx' (this is <caption>.cap in preprocessed
+%     mode).
+
+\newcommand{\CJKcaption}[1]{
+  \ifx\CJK@actualBinding \@empty
+    \PackageError{CJK}{
+      You must be inside of a CJK environment to use \protect\CJKcaption}{}
+  \else
+    \makeatletter
+    \InputIfFileExists{#1.cpx}{}{
+      \PackageError{CJK}{
+        Can't find #1.cpx}{
+        The default captions are used if you continue.}}
+    \makeatother
+  \fi}
+
+
+% the writing direction.
+
+\def\CJK@direction{h}
+
+
+% reset endline character.
+
+\endlinechar `\^^M
+
+
+% in case some customization is necessary it should be done in the
+%     configuration file `CJK.cfg' and *not* here.
+
+\InputIfFileExists{CJK.cfg}
+  {\typeout{^^J
+            *****************************************^^J
+            * Local configuration file CJK.cfg used *^^J
+            *****************************************^^J}}
+  {}
+
+
+\endinput

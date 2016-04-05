@@ -1,0 +1,720 @@
+% This is the file CJKutf8.sty of the CJK package
+%   for using Asian logographs (Chinese/Japanese/Korean) with LaTeX2e
+%   in UTF-8 encoding.
+%
+% created by Werner Lemberg <wl@gnu.org>
+%
+% Version 4.8.4 (18-Apr-2015)
+
+% Copyright (C) 1994-2015  Werner Lemberg <wl@gnu.org>
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program in doc/COPYING; if not, write to the Free
+% Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+% MA 02110-1301 USA
+
+\NeedsTeXFormat{LaTeX2e}[2003/12/01]
+
+\def\fileversion{4.8.4}
+\def\filedate{2015/04/18}
+\ProvidesPackage{CJKutf8}[\filedate\space\fileversion]
+
+\RequirePackage{ifpdf}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[encapsulated]{CJK}
+\RequirePackageWithOptions{fontenc}
+
+\DeclareOption*{\OptionNotUsed}
+
+\ProcessOptions
+
+
+% we suppress any unwanted spaces produced by linefeeds
+
+\endlinechar\m@ne
+
+% We redefine the basic macros for handling multibyte sequences to call
+% a `\u8:...' macro if it has been defined.
+
+\def\CJK@XX#1#2{
+  \ifx #2\protect
+    \expandafter\CJK@XXp\expandafter#1
+  \else
+    \expandafter\ifx\csname u8:\string #1\string #2\endcsname \relax
+      \csname CJK@\number `#1\endcsname{`#2}
+      \expandafter\CJK@ignorespaces
+    \else
+      \csname u8:\string #1\string #2\endcsname
+    \fi
+  \fi}
+\def\CJK@XXp#1#2{
+  \expandafter\ifx\csname u8:\string #1\string #2\endcsname \relax
+    \csname CJK@\number `#1\endcsname{`#2}
+    \expandafter\CJK@ignorespaces
+  \else
+    \csname u8:\string #1\string #2\endcsname
+  \fi}
+
+\def\CJK@XXX#1#2#3{
+  \ifx #2\protect
+    \expandafter\CJK@XXXp\expandafter#1#3
+  \else
+    \expandafter\ifx\csname u8:\string #1\string #2\string #3\endcsname \relax
+      \csname CJK@\number `#1\endcsname{`#2}{`#3}
+      \expandafter\CJK@ignorespaces
+    \else
+      \csname u8:\string #1\string #2\string #3\endcsname
+    \fi
+  \fi}
+\def\CJK@XXXp#1#2#3#4{
+  \expandafter\ifx\csname u8:\string #1\string #2\string #4\endcsname \relax
+    \csname CJK@\number `#1\endcsname{`#2}{`#4}
+    \expandafter\CJK@ignorespaces
+  \else
+    \csname u8:\string #1\string #2\string #4\endcsname
+  \fi}
+
+% If pdftex is used, emit proper \ToUnicode cmaps. This code is based on
+% cjk-unicmap.sty, part of the hangul-ucs package written by KIM Kang-Soo
+% and KIM Do-Hyun.
+
+\ifpdf
+  % Redefine \pickup@font (again).
+  \def\pickup@font{
+    \CJK@ifundefined\CJK@plane
+      {\expandafter\ifx\font@name \relax%       % old definition
+         \define@newfont
+       \fi}
+      {\expandafter%                            % CJK extension
+        \ifx\csname \curr@fontshape/\f@size/\CJK@plane\endcsname \relax
+         \define@newfont
+         \def\CJK@temp{v}
+         \ifx\CJK@temp\CJK@plane
+           \expandafter
+            \ifx\csname CJK@cmap@\f@family\CJK@plane\endcsname \relax
+           \else
+             \csname CJK@cmap@\f@family\CJK@plane\endcsname
+           \fi
+         \else
+           \CJK@addcmap\CJK@plane
+         \fi
+       \else
+         \xdef\font@name{
+           \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}
+       \fi}}
+
+  % Convert a CJK plane #2 to the corresponding surrogate value, if any.
+  % The result is returned in global macro #1.
+  \def\CJK@surr#1#2{
+    {\expandafter\uppercase\expandafter{
+       \expandafter\@tempcnta \expandafter "\expandafter 0#2\relax}
+     \ifnum \@tempcnta > "0FF\relax
+       % prepare for surrogate
+       \advance\@tempcnta -"0100\relax
+
+       % high surrogate value
+       \@tempcntb \@tempcnta
+       \divide\@tempcntb 4\relax
+       \advance\@tempcntb "0D800\relax
+       \CJK@numbxToHex{\CJK@gtemp}{\@tempcntb}
+       \expandafter\toks@\expandafter{\CJK@gtemp}
+
+       % upper byte of low surrogate value
+       \@tempcntb \@tempcnta
+       \divide\@tempcntb 4\relax
+       \multiply\@tempcntb 4\relax
+       \advance\@tempcnta -\@tempcntb
+       \advance\@tempcnta "0DC\relax
+       \CJK@numbToHex{\CJK@gtemp}{\@tempcnta}
+       \xdef#1{\the\toks@\CJK@gtemp}
+     \else
+       \xdef#1{#2}
+     \fi}}
+
+  \def\CJK@addcmap#1{
+    {\expandafter\ifx\csname CJK@CMap@#1\endcsname \relax
+       \CJK@surr{\CJK@gtemp}{#1}
+       \immediate\pdfobj stream {
+         /CIDInit /ProcSet findresource begin                      %
+           12 dict begin                                           %
+             begincmap                                             %
+               /CIDSystemInfo <<                                   %
+                 /Registry (TeX)                                   %
+                 /Ordering (Uni#1)                                 %
+                 /Supplement 0 >> def                              %
+               /CMapName /TeX-Uni#1-0 def                          %
+               1 begincodespacerange <00> <FF> endcodespacerange   %
+               1 beginbfrange <00> <FF> <\CJK@gtemp 00> endbfrange %
+             endcmap                                               %
+             CMapName currentdict /CMap defineresource             %
+             pop                                                   %
+           end                                                     %
+         end }
+       \expandafter\xdef\csname CJK@CMap@#1\endcsname{
+         \the\pdflastobj}
+     \fi
+     \pdffontattr\font@name{
+       /ToUnicode \csname CJK@CMap@#1\endcsname\space 0 R}}}
+\fi
+
+
+% provide hooks for hyperref.sty to automatically emit UTF-16BE for
+%     bookmarks -- note that we must do everything with expansion;
+%     only eTeX provides numerical expression handling which works
+%     within \xdef.
+
+% 110aaaaa 10bbbbbb
+%
+% aaaaa (two octal digits) is handled by \CJK@UnicodeTwoBytesFirst
+% bbbbbb (two octal digits) is handled by \CJK@UnicodeLast
+%
+%
+% 1110aaaa 10abbbbb 10cccccc
+%
+% aaaaa (two octal digits) is handled by \CJK@UnicodeThreeBytesFirst
+% bbbbbb (two octal digits) is handled by \CJK@UnicodeThreeBytesSecond
+% cccccc (two octal digits) is handled by \CJK@UnicodeLast
+%
+%
+% 11110uuu 10uubbbb 10bbcccc 10dddddd
+%
+% is emitted as a surrogate pair
+%
+% 110110aa aabbbbbb 110111cc ccdddddd
+%
+% (aaaa = uuuuu - 1; 0 < uuuuu <= 10000)
+%
+% 110110aaaa (four octal digits) is handled by \CJK@UnicodeFourBytesFirst
+% bbbbbb (two octal digits) is handled by \CJK@UnicodeFourBytesSecond
+% 110111cccc (four octal digits) is handled by \CJK@UnicodeFourBytesThird
+% dddddd (two octal digits) is handled by \CJK@UnicodeLast
+%
+
+\def\CJK@UnicodeFourBytesFirst#1#2{
+  \33
+
+  \ifnum #2 > '257\relax
+    \ifcase #1
+          \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or 0\2\or 1\2\or 2\2\or 3\2
+    \fi
+  \else
+    \ifnum #2 > '237\relax
+      \ifcase #1
+            \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or 0\1\or 1\1\or 2\1\or 3\1
+      \fi
+    \else
+      \ifnum #2 > '217\relax
+        \ifcase #1
+              \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or 0\0\or 1\0\or 2\0\or 3\0
+        \fi
+      \else
+        \ifcase #1
+              \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or 0\3\or 1\3\or 2\3\or 3\3
+        \fi
+      \fi
+    \fi
+  \fi}
+
+\def\CJK@UnicodeFourBytesSecond#1#2{
+  \ifnum #2 > '257\relax
+    \ifcase #1
+          \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or 03\or 07\or 13\or 17\or 23\or 27\or 33\or 37
+      \or 43\or 47\or 53\or 57\or 63\or 67\or 73\or 77
+      \or 03\or 07\or 13\or 17\or 23\or 27\or 33\or 37
+      \or 43\or 47\or 53\or 57\or 63\or 67\or 73\or 77
+      \or 03\or 07\or 13\or 17\or 23\or 27\or 33\or 37
+      \or 43\or 47\or 53\or 57\or 63\or 67\or 73\or 77
+      \or 03\or 07\or 13\or 17\or 23\or 27\or 33\or 37
+      \or 43\or 47\or 53\or 57\or 63\or 67\or 73\or 77
+    \fi
+  \else
+    \ifnum #2 > '237\relax
+      \ifcase #1
+            \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+        \or \or \or \or \or \or \or \or
+
+        \or 02\or 06\or 12\or 16\or 22\or 26\or 32\or 36
+        \or 42\or 46\or 52\or 56\or 62\or 66\or 72\or 76
+        \or 02\or 06\or 12\or 16\or 22\or 26\or 32\or 36
+        \or 42\or 46\or 52\or 56\or 62\or 66\or 72\or 76
+        \or 02\or 06\or 12\or 16\or 22\or 26\or 32\or 36
+        \or 42\or 46\or 52\or 56\or 62\or 66\or 72\or 76
+        \or 02\or 06\or 12\or 16\or 22\or 26\or 32\or 36
+        \or 42\or 46\or 52\or 56\or 62\or 66\or 72\or 76
+      \fi
+    \else
+      \ifnum #2 > '217\relax
+        \ifcase #1
+              \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or 01\or 05\or 11\or 15\or 21\or 25\or 31\or 35
+          \or 41\or 45\or 51\or 55\or 61\or 65\or 71\or 75
+          \or 01\or 05\or 11\or 15\or 21\or 25\or 31\or 35
+          \or 41\or 45\or 51\or 55\or 61\or 65\or 71\or 75
+          \or 01\or 05\or 11\or 15\or 21\or 25\or 31\or 35
+          \or 41\or 45\or 51\or 55\or 61\or 65\or 71\or 75
+          \or 01\or 05\or 11\or 15\or 21\or 25\or 31\or 35
+          \or 41\or 45\or 51\or 55\or 61\or 65\or 71\or 75
+        \fi
+      \else
+        \ifcase #1
+              \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+          \or \or \or \or \or \or \or \or
+
+          \or 00\or 04\or 10\or 14\or 20\or 24\or 30\or 34
+          \or 40\or 44\or 50\or 54\or 60\or 64\or 70\or 74
+          \or 00\or 04\or 10\or 14\or 20\or 24\or 30\or 34
+          \or 40\or 44\or 50\or 54\or 60\or 64\or 70\or 74
+          \or 00\or 04\or 10\or 14\or 20\or 24\or 30\or 34
+          \or 40\or 44\or 50\or 54\or 60\or 64\or 70\or 74
+          \or 00\or 04\or 10\or 14\or 20\or 24\or 30\or 34
+          \or 40\or 44\or 50\or 54\or 60\or 64\or 70\or 74
+        \fi
+      \fi
+    \fi
+  \fi}
+
+\def\CJK@UnicodeFourBytesThird#1{
+  \33
+
+  \ifcase #1
+        \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or 4\0\or 4\1\or 4\2\or 4\3\or 5\0\or 5\1\or 5\2\or 5\3
+    \or 6\0\or 6\1\or 6\2\or 6\3\or 7\0\or 7\1\or 7\2\or 7\3
+    \or 4\0\or 4\1\or 4\2\or 4\3\or 5\0\or 5\1\or 5\2\or 5\3
+    \or 6\0\or 6\1\or 6\2\or 6\3\or 7\0\or 7\1\or 7\2\or 7\3
+    \or 4\0\or 4\1\or 4\2\or 4\3\or 5\0\or 5\1\or 5\2\or 5\3
+    \or 6\0\or 6\1\or 6\2\or 6\3\or 7\0\or 7\1\or 7\2\or 7\3
+    \or 4\0\or 4\1\or 4\2\or 4\3\or 5\0\or 5\1\or 5\2\or 5\3
+    \or 6\0\or 6\1\or 6\2\or 6\3\or 7\0\or 7\1\or 7\2\or 7\3
+  \fi
+}
+
+\def\CJK@UnicodeThreeBytesFirst#1#2{
+  \ifnum #2 > '237\relax
+    \ifcase #1
+          \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \01\or \03\or \05\or \07\or \11\or \13\or \15\or \17
+      \or \21\or \23\or \25\or \27\or \31\or \33\or \35\or \37
+    \fi
+  \else
+    \ifcase #1
+          \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \or \or \or \or \or \or \or
+      \or \00\or \02\or \04\or \06\or \10\or \12\or \14\or \16
+      \or \20\or \22\or \24\or \26\or \30\or \32\or \34\or \35
+    \fi
+  \fi}
+
+\def\CJK@UnicodeThreeBytesSecond#1{
+  \ifcase #1
+        \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or 0\0\or 0\1\or 0\2\or 0\3\or 1\0\or 1\1\or 1\2\or 1\3
+    \or 2\0\or 2\1\or 2\2\or 2\3\or 3\0\or 3\1\or 3\2\or 3\3
+    \or 4\0\or 4\1\or 4\2\or 4\3\or 5\0\or 5\1\or 5\2\or 5\3
+    \or 6\0\or 6\1\or 6\2\or 6\3\or 7\0\or 7\1\or 7\2\or 7\3
+    \or 0\0\or 0\1\or 0\2\or 0\3\or 1\0\or 1\1\or 1\2\or 1\3
+    \or 2\0\or 2\1\or 2\2\or 2\3\or 3\0\or 3\1\or 3\2\or 3\3
+    \or 4\0\or 4\1\or 4\2\or 4\3\or 5\0\or 5\1\or 5\2\or 5\3
+    \or 6\0\or 6\1\or 6\2\or 6\3\or 7\0\or 7\1\or 7\2\or 7\3
+  \fi}
+
+\def\CJK@UnicodeTwoBytesFirst#1{
+  \ifcase #1
+        \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or \000\0\or \000\1\or \000\2\or \000\3
+      \or \001\0\or \001\1\or \001\2\or \001\3
+    \or \002\0\or \002\1\or \002\2\or \002\3
+      \or \003\0\or \003\1\or \003\2\or \003\3
+    \or \004\0\or \004\1\or \004\2\or \004\3
+      \or \005\0\or \005\1\or \005\2\or \005\3
+    \or \006\0\or \006\1\or \006\2\or \006\3
+      \or \007\0\or \007\1\or \007\2\or \007\3
+  \fi}
+
+\def\CJK@UnicodeLast#1{
+  \ifcase #1
+        \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+    \or \or \or \or \or \or \or \or
+
+    \or 00\or 01\or 02\or 03\or 04\or 05\or 06\or 07
+    \or 10\or 11\or 12\or 13\or 14\or 15\or 16\or 17
+    \or 20\or 21\or 22\or 23\or 24\or 25\or 26\or 27
+    \or 30\or 31\or 32\or 33\or 34\or 35\or 36\or 37
+    \or 40\or 41\or 42\or 43\or 44\or 45\or 46\or 47
+    \or 50\or 51\or 52\or 53\or 54\or 55\or 56\or 57
+    \or 60\or 61\or 62\or 63\or 64\or 65\or 66\or 67
+    \or 70\or 71\or 72\or 73\or 74\or 75\or 76\or 77
+  \fi}
+
+
+\def\CJK@XXpdf#1#2{
+  \CJK@UnicodeTwoBytesFirst{`#1}
+  \CJK@UnicodeLast{`#2}}
+
+\def\CJK@XXXpdf#1#2#3{
+  \CJK@UnicodeThreeBytesFirst{`#1}{`#2}
+  \CJK@UnicodeThreeBytesSecond{`#2}
+  \CJK@UnicodeLast{`#3}}
+
+\def\CJK@XXXXpdf#1#2#3#4{
+  \CJK@UnicodeFourBytesFirst{`#1}{`#2}
+  \CJK@UnicodeFourBytesSecond{`#2}{`#3}
+  \CJK@UnicodeFourBytesThird{`#3}
+  \CJK@UnicodeLast{`#4}}
+
+
+\ifx\pdfstringdefPreHook \undefined
+  \def\pdfstringdefPreHook{}
+\fi
+\g@addto@macro\pdfstringdefPreHook{
+  \let\CJK@XX \CJK@XXpdf
+  \let\CJK@XXX \CJK@XXXpdf
+  \let\CJK@XXXX \CJK@XXXXpdf}
+
+
+% reset endline character
+
+\endlinechar `\^^M
+
+\endinput

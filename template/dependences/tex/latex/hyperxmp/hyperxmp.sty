@@ -1,0 +1,1080 @@
+%%
+%% This is file `hyperxmp.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hyperxmp.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2016 by Scott Pakin <scott+hyxmp@pakin.org>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%% 
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{hyperxmp}
+    [2016/02/17 v2.7 Store hyperref metadata in XMP format]
+\edef\hyxmp@dq@code{\the\catcode`\"}
+\catcode`\"=12
+\def\hyxmp@driver{hpdftex}
+\ifx\hyxmp@driver\Hy@driver
+  \let\hyxmp@at@end=\AtEndDocument
+\else
+  \RequirePackage{atenddvi}
+  \let\hyxmp@at@end=\AtEndDvi
+\fi
+\RequirePackage{kvoptions}
+\RequirePackage{pdfescape}
+\RequirePackage{stringenc}
+\RequirePackage{intcalc}
+\RequirePackage{ifxetex}
+\newcommand{\hyxmp@pdfstringdef}[2]{%
+  \let\hyxmp@textunderscore=\textunderscore
+  \let\textunderscore=\hyxmp@uscore
+  \pdfstringdef{#1}{#2}%
+  \let\textunderscore=\hyxmp@textunderscore
+}
+\def\@pdfdatetime{}
+\define@key{Hyp}{pdfdate}{\hyxmp@pdfstringdef\@pdfdatetime{#1}}
+\def\@pdfcopyright{}
+\define@key{Hyp}{pdfcopyright}{\hyxmp@pdfstringdef\@pdfcopyright{#1}}
+\def\@pdflicenseurl{}
+\define@key{Hyp}{pdflicenseurl}{\hyxmp@pdfstringdef\@pdflicenseurl{#1}}
+\def\@pdfauthortitle{}
+\define@key{Hyp}{pdfauthortitle}{\hyxmp@pdfstringdef\@pdfauthortitle{#1}}
+\def\@pdfcaptionwriter{}
+\define@key{Hyp}{pdfcaptionwriter}{\hyxmp@pdfstringdef\@pdfcaptionwriter{#1}}
+\def\@pdfmetalang{}
+\define@key{Hyp}{pdfmetalang}{\hyxmp@pdfstringdef\@pdfmetalang{#1}}
+\def\@pdfcontactaddress{}
+\define@key{Hyp}{pdfcontactaddress}{%
+  \let\xmpcomma=\hyxmp@comma
+  \def\xmpquote##1{##1}%
+  \hyxmp@pdfstringdef\@pdfcontactaddress{#1}%
+  \def\xmpcomma{,}%
+  \let\xmpquote=\relax
+}
+\def\@pdfcontactcity{}
+\define@key{Hyp}{pdfcontactcity}{\hyxmp@pdfstringdef\@pdfcontactcity{#1}}
+\def\@pdfcontactregion{}
+\define@key{Hyp}{pdfcontactregion}{\hyxmp@pdfstringdef\@pdfcontactregion{#1}}
+\def\@pdfcontactpostcode{}
+\define@key{Hyp}{pdfcontactpostcode}{\hyxmp@pdfstringdef\@pdfcontactpostcode{#1}}
+\def\@pdfcontactcountry{}
+\define@key{Hyp}{pdfcontactcountry}{\hyxmp@pdfstringdef\@pdfcontactcountry{#1}}
+\def\@pdfcontactphone{}
+\define@key{Hyp}{pdfcontactphone}{\hyxmp@pdfstringdef\@pdfcontactphone{#1}}
+\def\@pdfcontactemail{}
+\define@key{Hyp}{pdfcontactemail}{\hyxmp@pdfstringdef\@pdfcontactemail{#1}}
+\def\@pdfcontacturl{}
+\define@key{Hyp}{pdfcontacturl}{\hyxmp@pdfstringdef\@pdfcontacturl{#1}}
+\def\hyxmp@pdfauthor{}
+\def\hyxmp@pdfkeywords{}
+\newcommand*{\hyxmp@redefine@Hyp}{%
+  \@ifundefined{KV@Hyp@pdfauthor}{}{%
+    \@ifundefined{hyxmp@Hyp@pdfauthor}{%
+      \expandafter\let\expandafter\hyxmp@Hyp@pdfauthor
+        \csname KV@Hyp@pdfauthor\endcsname
+    }{}%
+  }%
+  \define@key{Hyp}{pdfauthor}{%
+    \let\xmpcomma=\hyxmp@comma
+    \def\xmpquote####1{####1}%
+    \let\hyxmp@and=\and
+    \def\and{,}%
+    \hyxmp@Hyp@pdfauthor{##1}%
+    \global\let\hyxmp@pdfauthor=\@pdfauthor
+    \def\and{and\space}%
+    \def\xmpcomma{,}%
+    \def\xmpquote####1{"####1"}%
+    \hyxmp@Hyp@pdfauthor{##1}%
+    \def\xmpcomma{,}%
+    \let\xmpquote=\relax
+    \let\and=\hyxmp@and
+  }%
+  \@ifundefined{KV@Hyp@pdfkeywords}{}{%
+    \@ifundefined{hyxmp@Hyp@pdfkeywords}{%
+      \expandafter\let\expandafter\hyxmp@Hyp@pdfkeywords
+        \csname KV@Hyp@pdfkeywords\endcsname
+    }{}%
+  }%
+  \define@key{Hyp}{pdfkeywords}{%
+    \let\xmpcomma=\hyxmp@comma
+    \def\xmpquote####1{####1}%
+    \hyxmp@Hyp@pdfkeywords{##1}%
+    \global\let\hyxmp@pdfkeywords=\@pdfkeywords
+    \def\xmpcomma{,}%
+    \def\xmpquote####1{"####1"}%
+    \hyxmp@Hyp@pdfkeywords{##1}%
+    \def\xmpcomma{,}%
+    \let\xmpquote=\relax
+  }%
+}
+\let\hyxmp@ProcessKeyvalOptions=\ProcessKeyvalOptions
+\renewcommand*{\ProcessKeyvalOptions}{%
+  \hyxmp@redefine@Hyp
+  \hyxmp@ProcessKeyvalOptions
+}
+\let\hyxmp@hypersetup=\hypersetup
+\def\hypersetup{%
+  \hyxmp@redefine@Hyp
+  \hyxmp@hypersetup
+}
+\newcommand*{\hyxmp@find@metadata}{%
+  \edef\hyxmp@concated@metadata{%
+    \@baseurl
+    \@pdfauthor
+    \@pdfauthortitle
+    \@pdfcaptionwriter
+    \@pdfcontactaddress
+    \@pdfcontactcity
+    \@pdfcontactcountry
+    \@pdfcontactemail
+    \@pdfcontactphone
+    \@pdfcontactpostcode
+    \@pdfcontactregion
+    \@pdfcontacturl
+    \@pdfcopyright
+    \@pdfdatetime
+    \@pdfkeywords
+    \@pdflang
+    \@pdflicenseurl
+    \@pdfsubject
+    \@pdftitle
+  }%
+  \ifx\hyxmp@concated@metadata\@empty
+    \PackageWarningNoLine{hyperxmp}{%
+\jobname.tex did not specify any metadata to\MessageBreak
+include in the XMP packet.\space\space Please see the\MessageBreak
+hyperxmp documentation for instructions on how to\MessageBreak
+provide metadata values to hyperxmp}%
+  \fi
+}
+\AtBeginDocument{%
+  \@ifpackageloaded{hyperref}{%
+    \ifx\@pdflang\relax
+      \let\@pdflang=\@empty
+    \fi
+    \ifx\@pdflang\@empty
+      \let\@pdfmetalang=\hyxmp@x@default
+    \else
+      \edef\@pdfmetalang{\@pdflang}%
+    \fi
+    \hyxmp@xmlify\@pdfmetalang
+    \ifx\@pdfdatetime\@empty
+    \else
+      \edef\hyxmp@today{\@pdfdatetime}%
+    \fi
+    \ifx\@pdftitle\@empty
+      \ifx\@title\@empty
+      \else
+        \hypersetup{pdftitle={\@title}}%
+      \fi
+    \fi
+    \ifx\@pdfauthor\@empty
+      \ifx\@author\@empty
+      \else
+        \hypersetup{pdfauthor={\@author}}%
+      \fi
+    \fi
+    \hyxmp@at@end{%
+      \hyxmp@find@metadata
+      \hyxmp@embed@packet
+    }%
+  }{%
+    \PackageWarningNoLine{hyperxmp}{%
+\jobname.tex failed to include a\MessageBreak
+\string\usepackage\string{hyperref\string}
+in the preamble.\MessageBreak
+Consequently, all hyperxmp functionality will be\MessageBreak
+disabled}%
+  }%
+}
+\newcommand*{\hyxmp@commas@to@list}[2]{%
+  \gdef#1{}%
+  \expandafter\hyxmp@commas@to@list@i\expandafter#1#2,,%
+}
+\def\hyxmp@commas@to@list@i#1#2,{%
+  \gdef\hyxmp@sublist{#2}%
+  \ifx\hyxmp@sublist\@empty
+    \let\next=\relax
+  \else
+    \hyxmp@trimspaces\hyxmp@sublist
+    \@cons{#1}{{\hyxmp@sublist}}%
+    \def\next{\hyxmp@commas@to@list@i{#1}}%
+  \fi
+  \next
+}
+\def\xmpcomma{,}%
+\bgroup
+  \catcode`\^^C=11
+  \gdef\hyxmp@comma{^^C}
+\egroup
+\bgroup
+  \catcode`\^^U=11
+  \gdef\hyxmp@uscore{^^U}
+\egroup
+\let\xmpquote=\relax
+\bgroup
+  \catcode`\~=12%
+  \gdef\xmptilde{~}%
+\egroup
+\newcommand{\XMPTruncateList}[1]{{%
+  \edef\hyxmp@temp@str{\csname hyxmp@#1\endcsname}%
+  \hyxmp@commas@to@list{\hyxmp@temp@list}{\hyxmp@temp@str}%
+  \def\@elt##1{%
+    \expandafter\gdef\csname @#1\endcsname{##1}%
+    \let\@elt=\@gobble
+  }
+  \hyxmp@temp@list
+}}
+\catcode`\Q=3
+\newcommand{\hyxmp@trimspaces}[1]{%
+  \begingroup
+  \aftergroup\toks\aftergroup0\aftergroup{%
+  \expandafter\hyxmp@trimb\expandafter\noexpand#1Q Q}%
+  \edef#1{\the\toks0}%
+}
+\def\hyxmp@trimb#1 Q{\hyxmp@trimc#1Q}
+\def\hyxmp@trimc#1Q#2{\afterassignment\endgroup \vfuzz\the\vfuzz#1}
+\catcode`\Q=11
+\newif\ifhyxmp@unicodetex
+\ifnum64=`\^^^^0040\relax
+  \hyxmp@unicodetextrue
+\else
+  \hyxmp@unicodetexfalse
+\fi
+\newcommand*{\hyxmp@reencode}[1]{}
+\expandafter\def\csname SE->pdfdoc@03\endcsname{0003}
+\expandafter\def\csname SE->pdfdoc@15\endcsname{0015}
+\newcommand*{\hyxmp@xmlify}[1]{%
+  \gdef\hyxmp@xmlified{}%
+  \EdefUnescapeString\hyxmp@text{#1}%
+  \ifhyxmp@unicodetex
+    \hyxmp@is@unicode\hyxmp@text{%
+      \StringEncodingConvert
+      \hyxmp@text\hyxmp@text{utf16be}{utf32be}%
+    }{%
+      \ifxetex
+        \hyxmp@xetex@crap
+      \else
+        \StringEncodingConvert
+        \hyxmp@text\hyxmp@text{pdfdoc}{utf32be}%
+      \fi
+    }%
+    \EdefEscapeHex\hyxmp@text{\hyxmp@text}%
+    \edef\hyxmp@text{%
+      \expandafter
+    }\expandafter\hyxmp@toxml@unicodetex\hyxmp@text
+    \relax\relax\relax\relax\relax\relax\relax\relax
+  \else
+    \hyxmp@is@unicode\hyxmp@text{%
+      \StringEncodingConvert
+      \hyxmp@text\hyxmp@text{utf16be}{utf8}%
+    }{%
+      \StringEncodingConvert
+      \hyxmp@text\hyxmp@text{pdfdoc}{utf8}%
+    }%
+    \EdefEscapeHex\hyxmp@text{\hyxmp@text}%
+    \edef\hyxmp@text{%
+      \expandafter\hyxmp@toxml\hyxmp@text\@empty\@empty
+    }%
+    \EdefUnescapeHex\hyxmp@text{\hyxmp@text}%
+  \fi
+  \global\let\hyxmp@xmlified\hyxmp@text
+}
+\begingroup
+  \lccode`\<=254 %
+  \lccode`\>=255 %
+  \catcode254=12 %
+  \catcode255=12 %
+\lowercase{\endgroup
+  \def\hyxmp@is@unicode#1{%
+    \expandafter\hyxmp@@is@unicode#1<>\@nil
+  }%
+  \def\hyxmp@@is@unicode#1<>#2\@nil{%
+    \ifx\\#1\\%
+      \expandafter\@firstoftwo
+    \else
+      \expandafter\@secondoftwo
+    \fi
+  }%
+}
+\def\hyxmp@toxml#1#2{%
+  \ifx#1\@empty
+  \else
+    \ifnum"#1#2=`\& %
+      26616D703B% &amp;
+    \else\ifnum"#1#2=`\< %
+      266C743B% &lt;
+    \else\ifnum"#1#2=`\> %
+      2667743B% &gt;
+    \else
+      \@ifundefined{pdfmark}{%
+        #1#2%
+      }{%
+      \ifnum"#1#2=`\( %
+        5C28% \(
+      \else\ifnum"#1#2=`\) %
+        5C29% \)
+      \else
+        #1#2%
+      \fi\fi
+      }%
+    \fi\fi\fi
+    \expandafter\hyxmp@toxml
+  \fi
+}
+\def\hyxmp@toxml@unicodetex#1#2#3#4#5#6#7#8{%
+  \ifx#1\relax
+  \else
+    \ifnum"#1#2#3#4#5#6#7#8>127 %
+      \uccode`\*="#1#2#3#4#5#6#7#8\relax
+      \uppercase{%
+        \edef\hyxmp@text{\hyxmp@text *}%
+      }%
+    \else\ifnum"#7#8=`\< %
+      \edef\hyxmp@text{\hyxmp@text &lt;}%
+    \else\ifnum"#7#8=`\& %
+      \edef\hyxmp@text{\hyxmp@text &amp;}%
+    \else\ifnum"#7#8=`\> %
+      \edef\hyxmp@text{\hyxmp@text &gt;}%
+    \else\ifnum"#7#8=`\ %
+      \edef\hyxmp@text{\hyxmp@text\space}%
+    \else
+      \uccode`\*="#7#8\relax
+      \uppercase{%
+        \edef\hyxmp@text{\hyxmp@text *}%
+      }%
+    \fi\fi\fi\fi\fi
+    \expandafter\hyxmp@toxml@unicodetex
+  \fi
+}
+\def\hyxmp@skipzeros#1{%
+  \ifx#10%
+    \expandafter\hyxmp@skipzeros
+  \fi
+}
+\begingroup
+\def\x#1{\endgroup
+  \def\hyxmp@xetex@crap{%
+    \edef\hyxmp@try{%
+      \expandafter\hyxmp@SpaceOther\hyxmp@text#1\@nil
+    }%
+    \let\hyxmp@crap@result=N%
+    \expandafter\hyxmp@crap@test\hyxmp@try\relax
+    \ifx\hyxmp@crap@result Y%
+      \let\hyxmp@text\@empty
+      \expandafter\hyxmp@crap@convert\hyxmp@try\relax
+    \else
+      \StringEncodingConvert\hyxmp@text\hyxmp@text{pdfdoc}{utf32be}%
+    \fi
+  }%
+}
+\x{ }
+\begingroup
+  \catcode`\~=12 %
+  \lccode`\~=`\ %
+\lowercase{\endgroup
+  \def\hyxmp@SpaceOther#1 #2\@nil{%
+    #1%
+    \ifx\relax#2\relax
+      \expandafter\@gobble
+    \else
+      ~%
+      \expandafter\@firstofone
+    \fi
+    {\hyxmp@SpaceOther#2\@nil}%
+  }%
+}
+\def\hyxmp@crap@test#1{%
+  \ifx#1\relax
+  \else
+    \ifnum`#1>127 %
+      \let\hyxmp@crap@result=Y%
+      \expandafter\expandafter\expandafter\hyxmp@skiptorelax
+    \else
+      \expandafter\expandafter\expandafter\hyxmp@crap@test
+    \fi
+  \fi
+}
+\def\hyxmp@skiptorelax#1\relax{}
+\def\hyxmp@crap@convert#1{%
+  \ifx#1\relax
+  \else
+    \edef\hyxmp@num{\number`#1}%
+    \ifnum\hyxmp@num>"FFFFFF %
+      \lccode`\!=\intcalcDiv{\hyxmp@num}{\number"1000000}\relax
+      \lowercase{\edef\hyxmp@text{\hyxmp@text!}}%
+      \edef\hyxmp@num{\intcalcMod{\hyxmp@num}{\number"1000000}}%
+    \else
+      \edef\hyxmp@text{\hyxmp@text\hyxmp@zero}%
+    \fi
+    \ifnum\hyxmp@num>"FFFF %
+      \lccode`\!=\intcalcDiv{\hyxmp@num}{\number"10000}\relax
+      \lowercase{\edef\hyxmp@text{\hyxmp@text!}}%
+      \edef\hyxmp@num{\intcalcMod{\hyxmp@num}{\number"10000}}%
+    \else
+      \edef\hyxmp@text{\hyxmp@text\hyxmp@zero}%
+    \fi
+    \ifnum\hyxmp@num>"FF %
+      \lccode`\!=\intcalcDiv{\hyxmp@num}{\number"100}\relax
+      \lowercase{\edef\hyxmp@text{\hyxmp@text!}}%
+      \edef\hyxmp@num{\intcalcMod{\hyxmp@num}{\number"100}}%
+    \else
+      \edef\hyxmp@text{\hyxmp@text\hyxmp@zero}%
+    \fi
+    \ifnum\hyxmp@num>0 %
+      \lccode`\!=\hyxmp@num\relax
+      \lowercase{\edef\hyxmp@text{\hyxmp@text!}}%
+    \else
+      \edef\hyxmp@text{\hyxmp@text\hyxmp@zero}%
+    \fi
+    \expandafter\hyxmp@crap@convert
+  \fi
+}
+\begingroup
+  \catcode0=12 %
+  \gdef\hyxmp@zero{^^00}%
+\endgroup
+\def\hyxmp@modulo@a#1{%
+  \@tempcntb=\@tempcnta
+  \divide\@tempcntb by #1
+  \multiply\@tempcntb by #1
+  \advance\@tempcnta by -\@tempcntb
+}
+\def\hyxmp@big@prime{536870923}
+\def\hyxmp@big@prime@ii{536870027}
+\def\hyxmp@seed@rng#1{%
+  \@tempcnta=\hyxmp@big@prime
+  \futurelet\hyxmp@one@token\hyxmp@seed@rng@i#1\@empty
+}
+\def\hyxmp@seed@rng@i{%
+  \ifx\hyxmp@one@token\@empty
+    \let\next=\relax
+  \else
+    \def\next##1{%
+      \multiply\@tempcnta by 3
+      \advance\@tempcnta by `##1
+      \hyxmp@modulo@a{\hyxmp@big@prime}%
+      \futurelet\hyxmp@one@token\hyxmp@seed@rng@i
+    }%
+  \fi
+  \next
+}
+\def\hyxmp@set@rand@num{%
+  \@tempcnta=\hyxmp@rand@num
+  \multiply\@tempcnta by 3
+  \advance\@tempcnta by \hyxmp@big@prime@ii
+  \hyxmp@modulo@a{\hyxmp@big@prime}%
+  \xdef\hyxmp@rand@num{\the\@tempcnta}%
+}
+\def\hyxmp@append@hex#1{%
+  \hyxmp@set@rand@num
+  \@tempcnta=\hyxmp@rand@num
+  \hyxmp@modulo@a{16}%
+  \ifnum\@tempcnta<10
+    \xdef#1{#1\the\@tempcnta}%
+  \else
+    \advance\@tempcnta by -10
+    \ifcase\@tempcnta
+      \xdef#1{#1a}%
+      \or\xdef#1{#1b}%
+      \or\xdef#1{#1c}%
+      \or\xdef#1{#1d}%
+      \or\xdef#1{#1e}%
+      \or\xdef#1{#1f}%
+    \fi
+  \fi
+}
+\def\hyxmp@append@hex@iii#1{%
+  \hyxmp@append@hex#1%
+  \hyxmp@append@hex#1%
+  \hyxmp@append@hex#1%
+}
+\def\hyxmp@append@hex@iv#1{%
+  \hyxmp@append@hex@iii#1%
+  \hyxmp@append@hex#1%
+}
+\def\hyxmp@create@uuid#1{%
+  \def#1{uuid:}%
+  \hyxmp@append@hex@iv#1%
+  \hyxmp@append@hex@iv#1%
+  \g@addto@macro#1{-}%
+  \hyxmp@append@hex@iv#1%
+  \g@addto@macro#1{-4}%
+  \hyxmp@append@hex@iii#1%
+  \g@addto@macro#1{-}%
+  \hyxmp@set@rand@num
+  \@tempcnta=\hyxmp@rand@num
+  \hyxmp@modulo@a{4}%
+  \ifcase\@tempcnta
+    \g@addto@macro#1{8}%
+    \or\g@addto@macro#1{9}%
+    \or\g@addto@macro#1{a}%
+    \or\g@addto@macro#1{b}%
+  \fi
+  \hyxmp@append@hex@iii#1%
+  \g@addto@macro#1{-}%
+  \hyxmp@append@hex@iv#1%
+  \hyxmp@append@hex@iv#1%
+  \hyxmp@append@hex@iv#1%
+}
+\newcommand*{\hyxmp@def@DocumentID}{%
+  \edef\hyxmp@seed@string{\jobname:\@pdftitle:\@pdfauthor}%
+  \expandafter\hyxmp@seed@rng\expandafter{\hyxmp@seed@string}%
+  \edef\hyxmp@rand@num{\the\@tempcnta}%
+  \hyxmp@create@uuid\hyxmp@DocumentID
+}
+\newcommand*{\hyxmp@def@InstanceID}{%
+  \edef\hyxmp@seed@string{\jobname:\@pdftitle:\@pdfauthor:\hyxmp@today}%
+  \expandafter\hyxmp@seed@rng\expandafter{\hyxmp@seed@string}%
+  \edef\hyxmp@rand@num{\the\@tempcnta}%
+  \hyxmp@create@uuid\hyxmp@InstanceID
+}
+\newcommand*{\hyxmp@add@to@xml}[1]{%
+  \bgroup
+    \@tempcnta=0
+    \loop
+      \lccode\@tempcnta=\@tempcnta
+      \advance\@tempcnta by 1
+      \ifnum\@tempcnta<256
+    \repeat
+    \lccode`\_=`\ \relax
+    \lccode`\^^C=`\,\relax
+    \lccode`\^^U=`\_\relax
+    \lowercase{\xdef\hyxmp@new@xml{#1}}%
+    \xdef\hyxmp@xml{\hyxmp@xml\hyxmp@new@xml}%
+  \egroup
+}
+\bgroup
+\catcode`\#=11
+\gdef\hyxmp@hash{#}
+\egroup
+\bgroup
+  \xdef\hyxmp@xml{}%
+  \hyxmp@add@to@xml{%
+__________________________________________________^^J%
+  }
+  \xdef\hyxmp@padding{\hyxmp@xml}%
+\egroup
+\xdef\hyxmp@padding{\hyxmp@padding\hyxmp@padding}
+\xdef\hyxmp@padding{\hyxmp@padding\hyxmp@padding}
+\xdef\hyxmp@padding{\hyxmp@padding\hyxmp@padding}
+\xdef\hyxmp@padding{\hyxmp@padding\hyxmp@padding}
+\xdef\hyxmp@padding{\hyxmp@padding\hyxmp@padding}
+\def\hyxmp@pdf@to@xmp@date#1:#2#3#4#5#6#7#8#9{%
+  #2#3#4#5-#6#7-#8#9%
+  \hyxmp@parse@time
+}
+\def\hyxmp@parse@time#1#2#3#4#5#6{%
+  T#1#2:#3#4:#5#6%
+  \hyxmp@parse@tz@char
+}
+\def\hyxmp@parse@tz@char#1{%
+  #1%
+  \ifx#1-%
+    \expandafter\hyxmp@parse@tz
+  \else
+    \ifx#1+%
+      \expandafter\hyxmp@parse@tz
+    \fi
+  \fi
+}
+\def\hyxmp@parse@tz#1'#2'{%
+  #1:#2%
+}
+\def\hyxmp@today@define{%
+  \xdef\hyxmp@today{\the\year}%
+  \ifnum\month<10
+    \xdef\hyxmp@today{\hyxmp@today-0\the\month}%
+  \else
+    \xdef\hyxmp@today{\hyxmp@today-\the\month}%
+  \fi
+  \ifnum\day<10
+    \xdef\hyxmp@today{\hyxmp@today-0\the\day}%
+  \else
+    \xdef\hyxmp@today{\hyxmp@today-\the\day}%
+  \fi
+}
+\expandafter\ifx\csname pdfcreationdate\endcsname\relax
+  \hyxmp@today@define
+\else
+  \edef\hyxmp@today{\expandafter\hyxmp@pdf@to@xmp@date\pdfcreationdate}%
+\fi
+\newcommand*{\hyxmp@x@default}{x-default}
+\newcommand*{\hyxmp@pdf@schema}{%
+  \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+___________xmlns:pdf="http://ns.adobe.com/pdf/1.3/">^^J%
+  }%
+  \hyxmp@add@simple@var{pdf:Keywords}{@pdfkeywords}%
+  \hyxmp@add@simple@var{pdf:Producer}{@pdfproducer}%
+  \@ifundefined{pdfminorversion}{}{%
+    \hyxmp@add@simple{pdf:PDFVersion}{1.\the\pdfminorversion}%
+  }%
+  \hyxmp@add@to@xml{%
+______</rdf:Description>^^J%
+  }%
+}
+\newcommand*{\hyxmp@add@simple}[2]{%
+  \edef\hyxmp@string{#2}%
+  \ifx\hyxmp@string\@empty
+  \else
+    \hyxmp@xmlify{\hyxmp@string}%
+    \hyxmp@add@to@xml{%
+_________<#1>\hyxmp@xmlified</#1>^^J%
+    }%
+  \fi
+}
+\newcommand*{\hyxmp@add@simple@var}[2]{%
+  \expandafter\ifx\csname#2\endcsname\relax
+  \else
+    \hyxmp@xmlify{\csname#2\endcsname}%
+    \hyxmp@add@to@xml{%
+_________<#1>\hyxmp@xmlified</#1>^^J%
+    }%
+  \fi
+}
+\newcommand*{\hyxmp@rdf@dc}[2]{%
+  \ifx#2\@empty
+  \else
+    \hyxmp@xmlify{#2}%
+    \hyxmp@add@to@xml{%
+_________<dc:#1>^^J%
+____________<rdf:Alt>^^J%
+    }%
+    \ifx\@pdfmetalang\hyxmp@x@default
+    \else
+      \hyxmp@add@to@xml{%
+_______________<rdf:li xml:lang="\@pdfmetalang">\hyxmp@xmlified</rdf:li>^^J%
+      }%
+    \fi
+    \hyxmp@add@to@xml{%
+_______________<rdf:li xml:lang="\hyxmp@x@default">\hyxmp@xmlified</rdf:li>^^J%
+____________</rdf:Alt>^^J%
+_________</dc:#1>^^J%
+    }%
+  \fi%
+}%
+\newcommand*{\hyxmp@list@to@xml}[3]{%
+  \ifx#3\@empty
+  \else
+    \hyxmp@add@to@xml{%
+_________<dc:#1>^^J%
+____________<rdf:#2>^^J%
+    }%
+    \bgroup
+      \hyxmp@xmlify{#3}%
+      \hyxmp@commas@to@list\hyxmp@list{\hyxmp@xmlified}%
+      \def\@elt##1{%
+        \hyxmp@add@to@xml{%
+_______________<rdf:li>##1</rdf:li>^^J%
+        }%
+      }%
+      \hyxmp@list
+    \egroup
+    \hyxmp@add@to@xml{%
+____________</rdf:#2>^^J%
+_________</dc:#1>^^J%
+    }%
+  \fi
+}
+\newcommand*{\hyxmp@dc@schema}{%
+  \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+____________xmlns:dc="http://purl.org/dc/elements/1.1/">^^J%
+_________<dc:format>application/pdf</dc:format>^^J%
+  }%
+  \hyxmp@rdf@dc{title}{\@pdftitle}%
+  \hyxmp@rdf@dc{description}{\@pdfsubject}%
+  \hyxmp@rdf@dc{rights}{\@pdfcopyright}%
+  \hyxmp@list@to@xml{creator}{Seq}{\hyxmp@pdfauthor}%
+  \hyxmp@list@to@xml{subject}{Bag}{\hyxmp@pdfkeywords}%
+  \hyxmp@list@to@xml{date}{Seq}{\hyxmp@today}%
+  \hyxmp@list@to@xml{language}{Bag}{\@pdflang}%
+  \hyxmp@add@simple{dc:source}{\jobname.tex}%
+  \hyxmp@add@to@xml{%
+______</rdf:Description>^^J%
+  }%
+}
+\newcommand*{\hyxmp@xmpRights@schema}{%
+  \let\hyxmp@rights=\@empty
+  \ifx\@pdflicenseurl\@empty
+  \else
+    \def\hyxmp@rights{YES}%
+  \fi
+  \ifx\@pdfcopyright\@empty
+  \else
+    \def\hyxmp@rights{YES}%
+  \fi
+  \ifx\hyxmp@rights\@empty
+  \else
+    \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+___________xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/">^^J%
+    }%
+    \ifx\@pdfcopyright\@empty
+    \else
+      \hyxmp@add@to@xml{%
+_________<xmpRights:Marked>True</xmpRights:Marked>^^J%
+      }%
+    \fi
+    \hyxmp@add@simple{xmpRights:WebStatement}{\@pdflicenseurl}%
+    \hyxmp@add@to@xml{%
+______</rdf:Description>^^J%
+    }%
+  \fi
+}
+\gdef\hyxmp@mm@schema{%
+  \hyxmp@def@DocumentID
+  \hyxmp@def@InstanceID
+  \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+____________xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/">^^J%
+_________<xmpMM:DocumentID>\hyxmp@DocumentID</xmpMM:DocumentID>^^J%
+_________<xmpMM:InstanceID>\hyxmp@InstanceID</xmpMM:InstanceID>^^J%
+______</rdf:Description>^^J%
+  }%
+}
+\newcommand*{\hyxmp@xmp@basic@schema}{%
+  \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+____________xmlns:xmp="http://ns.adobe.com/xap/1.0/">^^J%
+  }%
+  \hyxmp@add@simple{xmp:CreateDate}{\hyxmp@today}%
+  \hyxmp@add@simple{xmp:ModifyDate}{\hyxmp@today}%
+  \hyxmp@add@simple{xmp:MetadataDate}{\hyxmp@today}%
+  \hyxmp@add@simple{xmp:CreatorTool}{\@pdfcreator}%
+  \hyxmp@add@simple{xmp:BaseURL}{\@baseurl}%
+  \hyxmp@add@to@xml{%
+______</rdf:Description>^^J%
+  }%
+}
+\gdef\hyxmp@photoshop@schema{%
+  \edef\hyxmp@photoshop@data{\@pdfauthortitle\@pdfcaptionwriter}%
+  \ifx\hyxmp@photoshop@data\@empty
+  \else
+    \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+____________xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/">^^J%
+    }%
+  \fi
+  \hyxmp@add@simple{photoshop:AuthorsPosition}{\@pdfauthortitle}%
+  \hyxmp@add@simple{photoshop:CaptionWriter}{\@pdfcaptionwriter}%
+  \ifx\hyxmp@photoshop@data\@empty
+  \else
+    \hyxmp@add@to@xml{%
+______</rdf:Description>^^J%
+    }%
+  \fi
+}
+\begingroup
+  \catcode`\&=12
+  \catcode`\#=12
+  \gdef\xmplinesep{&#xA;}
+\endgroup
+\newcommand*{\hyxmp@list@to@lines}[2]{%
+  \ifx#2\@empty
+  \else
+    \bgroup
+      \hyxmp@add@to@xml{%
+_________<#1>%
+      }%
+      \def\@elt@first##1{%
+        \hyxmp@add@to@xml{##1}%
+        \let\@elt=\@elt@rest
+      }%
+      \def\@elt@rest##1{%
+        \hyxmp@add@to@xml{\xmplinesep##1}%
+      }%
+      \let\@elt=\@elt@first
+      \hyxmp@xmlify{#2}%
+      \hyxmp@commas@to@list\hyxmp@list{\hyxmp@xmlified}%
+      \hyxmp@list
+      \hyxmp@add@to@xml{</#1>^^J}%
+    \egroup
+  \fi
+}
+\gdef\hyxmp@photometa@schema{%
+  \edef\hyxmp@photometa@data{%
+    \@pdfcontactaddress
+    \@pdfcontactcity
+    \@pdfcontactregion
+    \@pdfcontactpostcode
+    \@pdfcontactcountry
+    \@pdfcontactphone
+    \@pdfcontactemail
+    \@pdfcontacturl
+  }%
+  \ifx\hyxmp@photometa@data\@empty
+  \else
+    \hyxmp@iptc@extensions
+    \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+___________xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/"^^J%
+___________xmlns:IptcContInfo="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/contactinfo/">^^J%
+_______<Iptc4xmpCore:CreatorContactInfo rdf:parseType="Resource">^^J%
+    }%
+  \fi
+  \hyxmp@list@to@lines{IptcContInfo:CiAdrExtadr}{\@pdfcontactaddress}%
+  \hyxmp@add@simple{IptcContInfo:CiAdrCity}{\@pdfcontactcity}%
+  \hyxmp@add@simple{IptcContInfo:CiAdrRegion}{\@pdfcontactregion}%
+  \hyxmp@add@simple{IptcContInfo:CiAdrPcode}{\@pdfcontactpostcode}%
+  \hyxmp@add@simple{IptcContInfo:CiAdrCtry}{\@pdfcontactcountry}%
+  \bgroup
+    \def\xmplinesep{,}%
+    \hyxmp@list@to@lines{IptcContInfo:CiTelWork}{\@pdfcontactphone}%
+    \hyxmp@list@to@lines{IptcContInfo:CiEmailWork}{\@pdfcontactemail}%
+    \hyxmp@list@to@lines{IptcContInfo:CiUrlWork}{\@pdfcontacturl}%
+  \egroup
+  \ifx\hyxmp@photometa@data\@empty
+  \else
+    \hyxmp@add@to@xml{%
+_______</Iptc4xmpCore:CreatorContactInfo>^^J%
+______</rdf:Description>^^J%
+    }%
+  \fi
+}
+\newcommand*{\hyxmp@iptc@extensions}{%
+  \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+__________xmlns:pdfaExtension="http://www.aiim.org/pdfa/ns/extension/"^^J%
+__________xmlns:pdfaSchema="http://www.aiim.org/pdfa/ns/schema\hyxmp@hash"^^J%
+__________xmlns:pdfaProperty="http://www.aiim.org/pdfa/ns/property\hyxmp@hash"^^J%
+__________xmlns:pdfaType="http://www.aiim.org/pdfa/ns/type\hyxmp@hash"^^J%
+__________xmlns:pdfaField="http://www.aiim.org/pdfa/ns/field\hyxmp@hash">^^J%
+________<pdfaExtension:schemas>^^J%
+__________<rdf:Bag>^^J%
+____________<rdf:li rdf:parseType="Resource">^^J%
+______________<pdfaSchema:schema>IPTC Core Schema</pdfaSchema:schema>^^J%
+______________<pdfaSchema:namespaceURI>http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/</pdfaSchema:namespaceURI>^^J%
+______________<pdfaSchema:prefix>Iptc4xmpCore</pdfaSchema:prefix>^^J%
+______________<pdfaSchema:property>^^J%
+________________<rdf:Seq>^^J%
+__________________<rdf:li rdf:parseType="Resource">^^J%
+____________________<pdfaProperty:name>CreatorContactInfo</pdfaProperty:name>^^J%
+____________________<pdfaProperty:valueType>contactinfo</pdfaProperty:valueType>^^J%
+____________________<pdfaProperty:category>external</pdfaProperty:category>^^J%
+____________________<pdfaProperty:description>contact information for the document's creator</pdfaProperty:description>^^J%
+__________________</rdf:li>^^J%
+________________</rdf:Seq>^^J%
+______________</pdfaSchema:property>^^J%
+______________<pdfaSchema:valueType>^^J%
+________________<rdf:Seq>^^J%
+__________________<rdf:li rdf:parseType="Resource">^^J%
+____________________<pdfaType:type>contactinfo</pdfaType:type>^^J%
+____________________<pdfaType:namespaceURI>http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/contactinfo/</pdfaType:namespaceURI>^^J%
+____________________<pdfaType:prefix>IptcContInfo</pdfaType:prefix>^^J%
+____________________<pdfaType:description>contact information</pdfaType:description>^^J%
+____________________<pdfaType:field>^^J%
+______________________<rdf:Seq>^^J%
+  }%
+  \hyxmp@text@resource{CiAdrExtadr}{contact address}%
+  \hyxmp@text@resource{CiAdrCity}{contact city}%
+  \hyxmp@text@resource{CiAdrRegion}{contact region}%
+  \hyxmp@text@resource{CiAdrPcode}{contact postal code}%
+  \hyxmp@text@resource{CiAdrCtry}{contact country}%
+  \hyxmp@text@resource{CiTelWork}{contact telephone number}%
+  \hyxmp@text@resource{CiEmailWork}{contact email address}%
+  \hyxmp@text@resource{CiUrlWork}{contact url}%
+  \hyxmp@add@to@xml{%
+______________________</rdf:Seq>^^J%
+____________________</pdfaType:field>^^J%
+__________________</rdf:li>^^J%
+________________</rdf:Seq>^^J%
+______________</pdfaSchema:valueType>^^J%
+____________</rdf:li>^^J%
+__________</rdf:Bag>^^J%
+________</pdfaExtension:schemas>^^J%
+______</rdf:Description>^^J%
+  }%
+}
+\newcommand*{\hyxmp@text@resource}[2]{%
+  \hyxmp@add@to@xml{%
+________________________<rdf:li rdf:parseType="Resource">^^J%
+__________________________<pdfaField:name>#1</pdfaField:name>^^J%
+__________________________<pdfaField:valueType>Text</pdfaField:valueType>^^J%
+__________________________<pdfaField:description>#2</pdfaField:description>^^J%
+________________________</rdf:li>^^J%
+  }
+}
+\newcommand*{\hyxmp@pdfa@id@schema}{%
+  \ifHy@pdfa
+    \hyxmp@add@to@xml{%
+______<rdf:Description rdf:about=""^^J%
+____________xmlns:pdfaid="http://www.aiim.org/pdfa/ns/id/">^^J%
+    }%
+    \hyxmp@add@simple{pdfaid:part}{1}%
+    \hyxmp@add@simple{pdfaid:conformance}{B}%
+    \hyxmp@add@to@xml{%
+______</rdf:Description>^^J%
+    }%
+  \fi
+}
+\begingroup
+  \ifhyxmp@unicodetex
+    \lccode`\!="FEFF %
+    \lowercase{%
+      \gdef\hyxmp@bom{!}
+    }%
+  \else
+    \catcode`\^^ef=12
+    \catcode`\^^bb=12
+    \catcode`\^^bf=12
+    \gdef\hyxmp@bom{^^ef^^bb^^bf}%
+  \fi
+\endgroup
+\def\hyxmp@construct@packet{%
+  \gdef\hyxmp@xml{}%
+  \hyxmp@add@to@xml{<?xpacket begin="\hyxmp@bom" %
+id="W5M0MpCehiHzreSzNTczkc9d"?>^^J%
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="3.1-702">^^J%
+___<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns\hyxmp@hash">^^J%
+  }%
+  \hyxmp@pdf@schema
+  \hyxmp@xmpRights@schema
+  \hyxmp@dc@schema
+  \hyxmp@photoshop@schema
+  \hyxmp@photometa@schema
+  \hyxmp@xmp@basic@schema
+  \hyxmp@pdfa@id@schema
+  \hyxmp@mm@schema
+  \hyxmp@add@to@xml{%
+___</rdf:RDF>^^J%
+</x:xmpmeta>^^J%
+\hyxmp@padding
+<?xpacket end="w"?>^^J%
+  }%
+}
+\newcommand*{\hyxmp@embed@packet}{%
+  \hyxmp@construct@packet
+  \def\hyxmp@driver{hpdftex}%
+  \ifx\hyxmp@driver\Hy@driver
+    \hyxmp@embed@packet@pdftex
+  \else
+    \def\hyxmp@driver{hdvipdfm}%
+    \ifx\hyxmp@driver\Hy@driver
+      \hyxmp@embed@packet@dvipdfm
+    \else
+      \def\hyxmp@driver{hxetex}%
+      \ifx\hyxmp@driver\Hy@driver
+        \hyxmp@embed@packet@xetex
+      \else
+        \@ifundefined{pdfmark}{%
+          \PackageWarningNoLine{hyperxmp}{%
+            Unrecognized hyperref driver `\Hy@driver'.\MessageBreak
+            \jobname.tex's XMP metadata will *not* be\MessageBreak
+            embedded in the resulting file}%
+        }{%
+          \hyxmp@embed@packet@pdfmark
+        }%
+      \fi
+    \fi
+  \fi
+}
+\newcommand*{\hyxmp@embed@packet@pdftex}{%
+  \bgroup
+    \pdfcompresslevel=0
+    \immediate\pdfobj stream attr {%
+      /Type /Metadata
+      /Subtype /XML
+    }{\hyxmp@xml}%
+    \pdfcatalog {/Metadata \the\pdflastobj\space 0 R}%
+  \egroup
+}
+\newcommand*{\hyxmp@embed@packet@pdfmark}{%
+  \pdfmark{%
+    pdfmark=/NamespacePush
+  }%
+  \pdfmark{%
+    pdfmark=/OBJ,
+    Raw={/_objdef \string{hyxmp@Metadata\string} /type /stream}%
+  }%
+  \pdfmark{%
+    pdfmark=/PUT,
+    Raw={\string{hyxmp@Metadata\string}
+      2 dict begin
+        /Type /Metadata def
+        /Subtype /XML def
+        currentdict
+      end
+    }%
+  }%
+  \pdfmark{%
+    pdfmark=/PUT,
+    Raw={\string{hyxmp@Metadata\string} (\hyxmp@xml)}%
+  }%
+  \pdfmark{%
+    pdfmark=/Metadata,
+    Raw={\string{Catalog\string} \string{hyxmp@Metadata\string}}%
+  }%
+  \pdfmark{%
+    pdfmark=/NamespacePop
+  }%
+}
+\newcommand*{\hyxmp@embed@packet@dvipdfm}{%
+  \hyxmp@string@len{\hyxmp@xml}%
+  \special{pdf: object @hyxmp@Metadata
+    <<
+      /Type /Metadata
+      /Subtype /XML
+      /Length \the\@tempcnta
+    >>
+    stream^^J\hyxmp@xml endstream%
+  }%
+  \special{pdf: docview
+    <<
+      /Metadata @hyxmp@Metadata
+    >>
+  }%
+}
+\newcommand*{\hyxmp@string@len}[1]{%
+  \@tempcnta=0
+  \expandafter\hyxmp@count@spaces#1 {} %
+  \expandafter\hyxmp@count@non@spaces#1{}%
+}
+\def\hyxmp@count@spaces#1 {%
+  \def\hyxmp@one@token{#1}%
+  \ifx\hyxmp@one@token\@empty
+    \advance\@tempcnta by -1
+  \else
+    \advance\@tempcnta by 1
+    \expandafter\hyxmp@count@spaces
+  \fi
+}
+\newcommand*{\hyxmp@count@non@spaces}[1]{%
+  \def\hyxmp@one@token{#1}%
+  \ifx\hyxmp@one@token\@empty
+  \else
+    \advance\@tempcnta by 1
+    \expandafter\hyxmp@count@non@spaces
+  \fi
+}
+\newcommand*{\hyxmp@embed@packet@xetex}{%
+  \special{pdf:stream @hyxmp@Metadata (\hyxmp@xml)
+    <<
+      /Type /Metadata
+      /Subtype /XML
+    >>
+  }%
+  \special{pdf:put @catalog
+    <<
+      /Metadata @hyxmp@Metadata
+    >>
+  }%
+}
+\catcode`\"=\hyxmp@dq@code
+\endinput
+%%
+%% End of file `hyperxmp.sty'.

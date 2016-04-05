@@ -1,0 +1,276 @@
+% This is the file UTF8.chr of the CJK package
+%   for using Asian logographs (Chinese/Japanese/Korean) with LaTeX2e
+%
+% created by Werner Lemberg <wl@gnu.org>
+%
+% Version 4.8.4 (18-Apr-2015)
+
+% Copyright (C) 1994-2015  Werner Lemberg <wl@gnu.org>
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program in doc/COPYING; if not, write to the Free
+% Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+% MA 02110-1301 USA
+
+\def\fileversion{4.8.4}
+\def\filedate{2015/04/18}
+\ProvidesFile{UTF8.chr}[\filedate\space\fileversion]
+
+
+% define macros for handling CJK fonts and characters in UTF 8 encoding.
+
+% two bytes per character; covers range 0x80 - 0x7FF.
+
+\CJK@global\@namedef{CJK@UTF8Chr}{
+  \CJK@global\def\CJK@char##1##2##3{
+    {\ifnum ##3 < \CJK@min
+       \CJK@err
+     \else
+       \ifnum ##3 > \CJK@max
+         \CJK@err
+       \else
+         \@tempcnta ##3\relax
+         \advance\@tempcnta ##2\relax
+         \edef\CJK@plane{##1}
+         \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+         \CJKsymbol{\@tempcnta}
+       \fi
+     \fi}}
+
+% three bytes per character; covers range 0x800 - 0xFFFF.
+
+  \CJK@global\def\CJK@altchar##1##2##3{
+    {\ifnum ##2 < \CJK@min
+       \CJK@err
+     \else
+       \ifnum ##2 > \CJK@max
+         \CJK@err
+       \else
+         \ifnum ##3 < \CJK@min
+           \CJK@errx
+         \else
+           \ifnum ##3 > \CJK@max
+             \CJK@errx
+           \else
+             \ifCJK@CJK@
+               \CJK@testLastCJK
+               \ifCJK@
+                 \CJKglue
+               \fi
+               \CJK@testLastKern
+               \ifCJK@
+                 \CJK@nobreakglue
+               \fi
+             \fi
+
+             \@tempcnta ##1\relax
+             \@tempcntb ##2\relax
+             \divide\@tempcntb 4\relax
+             \advance\@tempcnta \@tempcntb
+             \CJK@numbToHex{\CJK@gtemp}{\@tempcnta}
+             \def\CJK@tempa####1{
+               \lowercase{\edef\CJK@plane{####1}}}
+             \expandafter\CJK@tempa\expandafter{\CJK@gtemp}
+
+             \@tempcnta ##2\relax
+             \multiply\@tempcntb -4\relax
+             \advance\@tempcnta \@tempcntb
+             \multiply\@tempcnta 64\relax
+             \advance\@tempcnta ##3\relax
+             \advance\@tempcnta -128\relax
+             \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+             \edef\reserved@a{
+               \curr@fontshape/\CJK@plane/\the\@tempcnta/\CJK@direction}
+             \expandafter\ifx\csname\reserved@a\endcsname \relax
+               \CJKsymbol{\@tempcnta}
+             \else
+               \csname\reserved@a\endcsname
+             \fi
+
+             \ifCJK@hangul@
+               \discretionary{}{}{}
+             \fi
+             \ifCJK@CJK@
+               \CJK@CJK
+             \fi
+           \fi
+         \fi
+       \fi
+     \fi}}
+
+% four bytes per character; covers range 0x10000 - 0x10FFFF.
+
+  \CJK@global\def\CJK@altxchar##1##2##3##4{
+    {\ifnum ##2 < \CJK@min
+       \CJK@err
+     \else
+       \ifnum ##2 > \CJK@max
+         \CJK@err
+       \else
+         \ifnum ##3 < \CJK@min
+           \CJK@errx
+         \else
+           \ifnum ##3 > \CJK@max
+             \CJK@errx
+           \else
+             \ifnum ##3 < \CJK@min
+               \CJK@errxx
+             \else
+               \ifnum ##3 > \CJK@max
+                 \CJK@errxx
+               \else
+                 \ifCJK@CJK@
+                   \CJK@testLastCJK
+                   \ifCJK@
+                     \CJKglue
+                   \fi
+                   \CJK@testLastKern
+                   \ifCJK@
+                     \CJK@nobreakglue
+                   \fi
+                 \fi
+
+                 \@tempcnta ##1\relax
+                 \@tempcntb ##2\relax
+                 \multiply\@tempcntb \sixt@@n
+                 \advance\@tempcnta \@tempcntb
+                 \@tempcntb ##3\relax
+                 \divide\@tempcntb 4\relax
+                 \advance\@tempcnta \@tempcntb
+                 \CJK@numbxToHex{\CJK@gtemp}{\@tempcnta}
+                 \def\CJK@tempa####1{
+                   \lowercase{\edef\CJK@plane{####1}}}
+                 \expandafter\CJK@tempa\expandafter{\CJK@gtemp}
+
+                 \@tempcnta ##3\relax
+                 \multiply\@tempcntb -4\relax
+                 \advance\@tempcnta \@tempcntb
+                 \multiply\@tempcnta 64\relax
+                 \advance\@tempcnta ##4\relax
+                 \advance\@tempcnta -128\relax
+                 \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+                 \edef\reserved@a{
+                   \curr@fontshape/\CJK@plane/\the\@tempcnta/\CJK@direction}
+                 \expandafter\ifx\csname\reserved@a\endcsname \relax
+                   \CJKsymbol{\@tempcnta}
+                 \else
+                   \csname\reserved@a\endcsname
+                 \fi
+
+                 \ifCJK@hangul@
+                   \discretionary{}{}{}
+                 \fi
+                 \ifCJK@CJK@
+                   \CJK@CJK
+                 \fi
+               \fi
+             \fi
+           \fi
+         \fi
+       \fi
+     \fi}}
+
+% define macro for handling punctuation characters.
+
+  \CJK@global\def\CJK@punctchar##1##2##3##4{
+    {\ifnum ##3 < \CJK@min
+       \CJK@err
+     \else
+       \ifnum ##3 > \CJK@max
+         \CJK@err
+       \else
+         \ifnum ##4 < \CJK@min
+           \CJK@errx
+         \else
+           \ifnum ##4 > \CJK@max
+             \CJK@errx
+           \else
+             \@tempcnta ##2\relax
+             \@tempcntb ##3\relax
+             \divide\@tempcntb 4\relax
+             \advance\@tempcnta \@tempcntb
+             \CJK@numbToHex{\CJK@gtemp}{\@tempcnta}
+             \def\CJK@tempa####1{
+               \lowercase{\edef\CJK@plane{####1}}}
+             \expandafter\CJK@tempa\expandafter{\CJK@gtemp}
+
+             \@tempcnta ##3\relax
+             \multiply\@tempcntb -4\relax
+             \advance\@tempcnta \@tempcntb
+             \multiply\@tempcnta 64\relax
+             \advance\@tempcnta ##4\relax
+             \advance\@tempcnta -128\relax
+             \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+
+             % we need three braces to make it work with CJKulem.sty
+             {{{\ifCJK@CJK@
+                  \expandafter\CJK@testInList
+                   \expandafter{\expandafter##1\expandafter}
+                   \expandafter{\CJK@plane}
+                  \ifCJK@
+                    \CJK@numbToHex{\CJK@gtemp}{\@tempcnta}
+                    \CJK@testLastCJK
+                    \ifCJK@
+                      \CJK@testPostPunct{\CJK@@@enc}{\CJK@plane}{\CJK@gtemp}
+                      \ifCJK@
+                        \CJK@nobreakglue
+                      \else
+                        \CJKglue
+                      \fi
+                    \fi
+                    \CJK@testLastKern
+                    \ifCJK@
+                      \CJK@nobreakglue
+                    \fi
+
+                    \edef\reserved@a{
+                      \curr@fontshape/\CJK@plane/\the\@tempcnta/\CJK@direction}
+                    \expandafter\ifx\csname\reserved@a\endcsname \relax
+                      \CJKpunctsymbol{\@tempcnta}
+                    \else
+                      \csname\reserved@a\endcsname
+                    \fi
+
+                    \CJK@testPrePunct{\CJK@@@enc}{\CJK@plane}{\CJK@gtemp}
+                    \ifCJK@
+                      \CJK@kern
+                    \else
+                      \CJK@CJK
+                    \fi
+                  \else
+                    \CJK@testLastCJK
+                    \ifCJK@
+                      \CJKglue
+                    \fi
+                    \CJK@testLastKern
+                    \ifCJK@
+                      \CJK@nobreakglue
+                    \fi
+
+                    \CJKpunctsymbol{\@tempcnta}
+
+                    \CJK@CJK
+                  \fi
+                \else
+                  \CJKpunctsymbol{\@tempcnta}
+                \fi
+                \ifCJK@hangul@
+                  \discretionary{}{}{}
+                \fi
+             }}}
+           \fi
+         \fi
+       \fi
+     \fi}}}
+
+\endinput

@@ -1,0 +1,87 @@
+%%
+%% This is file `ctex-fontset-windowsold.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% ctex.dtx  (with options: `fontset,windowsold')
+%% 
+%%     Copyright (C) 2003--2015
+%%     CTEX.ORG and any individual authors listed in the documentation.
+%% ------------------------------------------------------------------------------
+%% 
+%%     This work may be distributed and/or modified under the
+%%     conditions of the LaTeX Project Public License, either
+%%     version 1.3c of this license or (at your option) any later
+%%     version. This version of this license is in
+%%        http://www.latex-project.org/lppl/lppl-1-3c.txt
+%%     and the latest version of this license is in
+%%        http://www.latex-project.org/lppl.txt
+%%     and version 1.3 or later is part of all distributions of
+%%     LaTeX version 2005/12/01 or later.
+%% 
+%%     This work has the LPPL maintenance status `maintained'.
+%% 
+%%     The Current Maintainers of this work are Leo Liu, Qing Lee and Liam Huang.
+%% 
+%% ------------------------------------------------------------------------------
+%% 
+\GetIdInfo$Id: ctex.dtx 4e02493 2016-02-02 17:10:17 +0800 Qing Lee <sobenlee@gmail.com> $
+  {Windows fonts definition for XP or earlier version (CTEX)}
+\ProvidesExplFile{ctex-fontset-windowsold.def}
+  {\ExplFileDate}{2.3}{\ExplFileDescription}
+\sys_if_engine_pdftex:TF
+  {
+    \ctex_zhmap_case:nnn
+      {
+        \ctex_punct_set:n { windows }
+        \setCJKmainfont
+          [ BoldFont = simhei.ttf , ItalicFont = simkai.ttf ] { simsun.ttc }
+        \setCJKsansfont { simhei.ttf }
+        \ctex_punct_map_family:nn { \CJKsfdefault } { zhhei }
+        \setCJKmonofont { simfang.ttf }
+        \setCJKfamilyfont { zhkai }  { simkai.ttf }
+        \setCJKfamilyfont { zhfs }   { simfang.ttf }
+        \setCJKfamilyfont { zhsong } { simsun.ttc }
+        \setCJKfamilyfont { zhhei }  { simhei.ttf }
+        \setCJKfamilyfont { zhli }   { simli.ttf }
+        \setCJKfamilyfont { zhyou }  { simyou.ttf }
+        \ctex_punct_map_family:nn { \CJKrmdefault } { zhsong }
+        \ctex_punct_map_family:nn { \CJKttdefault } { zhfs }
+        \ctex_punct_map_itshape:nn { \CJKrmdefault } { zhkai }
+        \ctex_punct_map_bfseries:nn { \CJKrmdefault } { zhhei }
+      }
+      {
+        \ctex_load_zhmap:nnnn { rm } { zhhei } { zhfs } { zhwindowsfonts }
+        \ctex_punct_set:n { windows }
+        \ctex_punct_map_family:nn { \CJKrmdefault } { zhsong }
+        \ctex_punct_map_bfseries:nn { \CJKrmdefault } { zhhei }
+        \ctex_punct_map_itshape:nn { \CJKrmdefault } { zhkai }
+      }
+      {
+        \tl_set:Nn \CJKrmdefault { rm }
+        \tl_set:Nn \CJKsfdefault { sf }
+        \tl_set:Nn \CJKttdefault { tt }
+      }
+  }
+  {
+    \setCJKmainfont
+      [ BoldFont = SimHei , ItalicFont = KaiTi_GB2312 ] { SimSun }
+    \setCJKsansfont { SimHei }
+    \setCJKmonofont { FangSong_GB2312 }
+    \setCJKfamilyfont { zhkai } { KaiTi_GB2312 }
+    \setCJKfamilyfont { zhfs }  { FangSong_GB2312 }
+    \setCJKfamilyfont { zhsong }  { SimSun }
+    \setCJKfamilyfont { zhhei }   { SimHei }
+    \setCJKfamilyfont { zhli }    { LiSu }
+    \setCJKfamilyfont { zhyou }   { YouYuan }
+  }
+\NewDocumentCommand \songti   { } { \CJKfamily { zhsong } }
+\NewDocumentCommand \heiti    { } { \CJKfamily { zhhei } }
+\NewDocumentCommand \fangsong { } { \CJKfamily { zhfs } }
+\NewDocumentCommand \kaishu   { } { \CJKfamily { zhkai } }
+\NewDocumentCommand \lishu    { } { \CJKfamily { zhli } }
+\NewDocumentCommand \youyuan  { } { \CJKfamily { zhyou } }
+%% 
+%%
+%% End of file `ctex-fontset-windowsold.def'.

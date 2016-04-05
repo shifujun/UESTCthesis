@@ -1,0 +1,256 @@
+%%
+%% This is file `glossary-tree.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% glossaries.dtx  (with options: `glossary-tree.sty,package')
+%% 
+%%  glossaries.dtx
+%%  Copyright 2016 Nicola Talbot
+%% 
+%%  This work may be distributed and/or modified under the
+%%  conditions of the LaTeX Project Public License, either version 1.3
+%%  of this license of (at your option) any later version.
+%%  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%%  and version 1.3 or later is part of all distributions of LaTeX
+%%  version 2005/12/01 or later.
+%% 
+%%  This work has the LPPL maintenance status `maintained'.
+%% 
+%%  The Current Maintainer of this work is Nicola Talbot.
+%% 
+%%  This work consists of the files glossaries.dtx and glossaries.ins and the derived files glossaries.sty, glossaries-prefix.sty, glossary-hypernav.sty, glossary-inline.sty, glossary-list.sty, glossary-long.sty, glossary-longbooktabs.sty, glossary-longragged.sty, glossary-mcols.sty, glossary-super.sty, glossary-superragged.sty, glossary-tree.sty, glossaries-compatible-207.sty, glossaries-compatible-307.sty, glossaries-accsupp.sty, glossaries-babel.sty, glossaries-polyglossia.sty, minimalgls.tex, glossary-lipsum-examples.tex, example-glossaries-acronym-desc.tex, example-glossaries-acronym.tex, example-glossaries-acronyms-lang.tex, example-glossaries-brief.tex, example-glossaries-childnoname.tex, example-glossaries-cite.tex, example-glossaries-images.tex, example-glossaries-long.tex, example-glossaries-multipar.tex, example-glossaries-parent.tex, example-glossaries-symbols.tex, example-glossaries-url.tex, sample-chap-hyperfirst.tex, sample-crossref.tex, sample-custom-acronym.tex, sample-dot-abbr.tex, sample-dual.tex, sample-entrycount.tex, sample-entryfmt.tex, sample-FnDesc.tex, sample-font-abbr.tex, sample-ignored.tex, sample-index.tex, sample-inline.tex, sample-langdict.tex, sample-newkeys.tex, sample-noidxapp-utf8.tex, sample-noidxapp.tex, sample-nomathhyper.tex, sample-numberlist.tex, sample-prefix.tex, sample-si.tex, sample-storage-abbr-desc.tex, sample-storage-abbr.tex, sample.tex, sample4col.tex, sampleaccsupp.tex, sampleAcr.tex, sampleAcrDesc.tex, sampleacronyms.tex, sampleCustomAcr.tex, sampleDB.tex, sampleDesc.tex, sampleEq.tex, sampleEqPg.tex, sampleFnAcrDesc.tex, sampleNtn.tex, samplePeople.tex, sampleSec.tex, sampleSort.tex, sampletree.tex, sampleutf8.tex, samplexdy.tex, samplexdy2.tex, mwe-acr-desc.tex, mwe-acr.tex, mwe-gls.tex, samplexdy-mc.xdy, samplexdy-mc207.xdy, database1.tex, database2.tex, glossaries.perl.
+%% 
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\ProvidesPackage{glossary-tree}[2016/01/24 v4.21 (NLCT)]
+\providecommand{\indexspace}{%
+  \par \vskip 10\p@ \@plus 5\p@ \@minus 3\p@ \relax
+}
+\newcommand*{\glstreenamefmt}[1]{\textbf{#1}}
+\newglossarystyle{index}{%
+  \renewenvironment{theglossary}%
+    {\setlength{\parindent}{0pt}%
+     \setlength{\parskip}{0pt plus 0.3pt}%
+     \let\item\@idxitem}%
+    {\par}%
+  \renewcommand*{\glossaryheader}{}%
+  \renewcommand*{\glsgroupheading}[1]{}%
+  \renewcommand*{\glossentry}[2]{%
+     \item\glsentryitem{##1}\glstreenamefmt{\glstarget{##1}{\glossentryname{##1}}}%
+     \ifglshassymbol{##1}{\space(\glossentrysymbol{##1})}{}%
+     \space \glossentrydesc{##1}\glspostdescription\space ##2%
+  }%
+  \renewcommand{\subglossentry}[3]{%
+    \ifcase##1\relax
+      % level 0
+      \item
+    \or
+      % level 1
+      \subitem
+      \glssubentryitem{##2}%
+    \else
+      % all other levels
+      \subsubitem
+    \fi
+    \glstreenamefmt{\glstarget{##2}{\glossentryname{##2}}}%
+    \ifglshassymbol{##2}{\space(\glossentrysymbol{##2})}{}%
+    \space\glossentrydesc{##2}\glspostdescription\space ##3%
+  }%
+  \renewcommand*{\glsgroupskip}{\ifglsnogroupskip\else\indexspace\fi}}
+\newglossarystyle{indexgroup}{%
+  \setglossarystyle{index}%
+  \renewcommand*{\glsgroupheading}[1]{%
+    \item\glstreenamefmt{\glsgetgrouptitle{##1}}\indexspace}%
+}
+\newglossarystyle{indexhypergroup}{%
+  \setglossarystyle{index}%
+  \renewcommand*{\glossaryheader}{%
+    \item\glstreenamefmt{\glsnavigation}\indexspace}%
+  \renewcommand*{\glsgroupheading}[1]{%
+    \item\glstreenamefmt{\glsnavhypertarget{##1}{\glsgetgrouptitle{##1}}}%
+    \indexspace}%
+}
+\newglossarystyle{tree}{%
+  \renewenvironment{theglossary}%
+    {\setlength{\parindent}{0pt}%
+     \setlength{\parskip}{0pt plus 0.3pt}}%
+    {}%
+  \renewcommand*{\glossaryheader}{}%
+  \renewcommand*{\glsgroupheading}[1]{}%
+  \renewcommand{\glossentry}[2]{%
+    \hangindent0pt\relax
+    \parindent0pt\relax
+    \glsentryitem{##1}\glstreenamefmt{\glstarget{##1}{\glossentryname{##1}}}%
+    \ifglshassymbol{##1}{\space(\glossentrysymbol{##1})}{}%
+    \space\glossentrydesc{##1}\glspostdescription\space##2\par
+  }%
+  \renewcommand{\subglossentry}[3]{%
+    \hangindent##1\glstreeindent\relax
+    \parindent##1\glstreeindent\relax
+    \ifnum##1=1\relax
+      \glssubentryitem{##2}%
+    \fi
+    \glstreenamefmt{\glstarget{##2}{\glossentryname{##2}}}%
+    \ifglshassymbol{##2}{\space(\glossentrysymbol{##2})}{}%
+    \space\glossentrydesc{##2}\glspostdescription\space ##3\par
+  }%
+  \renewcommand*{\glsgroupskip}{\ifglsnogroupskip\else\indexspace\fi}}
+\newglossarystyle{treegroup}{%
+  \setglossarystyle{tree}%
+  \renewcommand{\glsgroupheading}[1]{\par
+    \noindent\glstreenamefmt{\glsgetgrouptitle{##1}}\par\indexspace}%
+}
+\newglossarystyle{treehypergroup}{%
+  \setglossarystyle{tree}%
+  \renewcommand*{\glossaryheader}{%
+    \par\noindent\glstreenamefmt{\glsnavigation}\par\indexspace}%
+  \renewcommand*{\glsgroupheading}[1]{%
+    \par\noindent
+    \glstreenamefmt{\glsnavhypertarget{##1}{\glsgetgrouptitle{##1}}}\par
+    \indexspace}%
+}
+\newlength\glstreeindent
+\setlength{\glstreeindent}{10pt}
+\newglossarystyle{treenoname}{%
+  \renewenvironment{theglossary}%
+    {\setlength{\parindent}{0pt}%
+     \setlength{\parskip}{0pt plus 0.3pt}}%
+    {}%
+  \renewcommand*{\glossaryheader}{}%
+  \renewcommand*{\glsgroupheading}[1]{}%
+  \renewcommand{\glossentry}[2]{%
+    \hangindent0pt\relax
+    \parindent0pt\relax
+    \glsentryitem{##1}\glstreenamefmt{\glstarget{##1}{\glossentryname{##1}}}%
+    \ifglshassymbol{##1}{\space(\glossentrysymbol{##1})}{}%
+    \space\glossentrydesc{##1}\glspostdescription\space##2\par
+  }%
+  \renewcommand{\subglossentry}[3]{%
+    \hangindent##1\glstreeindent\relax
+    \parindent##1\glstreeindent\relax
+    \ifnum##1=1\relax
+      \glssubentryitem{##2}%
+    \fi
+    \glstarget{##2}{\strut}%
+    \glossentrydesc{##2}\glspostdescription\space##3\par
+  }%
+  \renewcommand*{\glsgroupskip}{\ifglsnogroupskip\else\indexspace\fi}%
+}
+\newglossarystyle{treenonamegroup}{%
+  \setglossarystyle{treenoname}%
+  \renewcommand{\glsgroupheading}[1]{\par
+    \noindent\glstreenamefmt{\glsgetgrouptitle{##1}}\par\indexspace}%
+}
+\newglossarystyle{treenonamehypergroup}{%
+  \setglossarystyle{treenoname}%
+  \renewcommand*{\glossaryheader}{%
+    \par\noindent\glstreenamefmt{\glsnavigation}\par\indexspace}%
+  \renewcommand*{\glsgroupheading}[1]{%
+    \par\noindent
+    \glstreenamefmt{\glsnavhypertarget{##1}{\glsgetgrouptitle{##1}}}\par
+    \indexspace}%
+}
+\newcommand*{\glssetwidest}[2][0]{%
+  \expandafter\def\csname @glswidestname\romannumeral#1\endcsname{%
+    #2}%
+}
+\newcommand*{\@glswidestname}{}
+\newcommand*{\glstreenamebox}[2]{%
+  \makebox[#1][l]{#2}%
+}
+\newglossarystyle{alttree}{%
+  \renewenvironment{theglossary}%
+    {\def\@gls@prevlevel{-1}%
+     \mbox{}\par}%
+    {\par}%
+  \renewcommand*{\glossaryheader}{}%
+  \renewcommand*{\glsgroupheading}[1]{}%
+  \renewcommand{\glossentry}[2]{%
+    \ifnum\@gls@prevlevel=0\relax
+    \else
+       \settowidth{\glstreeindent}{\glstreenamefmt{\@glswidestname\space}}%
+    \fi
+      \hangindent\glstreeindent
+      \parindent\glstreeindent
+    \makebox[0pt][r]{\glstreenamebox{\glstreeindent}{%
+       \glsentryitem{##1}\glstreenamefmt{\glstarget{##1}{\glossentryname{##1}}}}}%
+    \ifglshassymbol{##1}{(\glossentrysymbol{##1})\space}{}%
+    \glossentrydesc{##1}\glspostdescription \space ##2\par
+    \def\@gls@prevlevel{0}%
+  }%
+  \renewcommand{\subglossentry}[3]{%
+    \ifnum##1=1\relax
+      \glssubentryitem{##2}%
+    \fi
+    \ifnum\@gls@prevlevel=##1\relax
+    \else
+      \@ifundefined{@glswidestname\romannumeral##1}{%
+        \settowidth{\gls@tmplen}{\glstreenamefmt{\@glswidestname\space}}}{%
+        \settowidth{\gls@tmplen}{\glstreenamefmt{%
+           \csname @glswidestname\romannumeral##1\endcsname\space}}}%
+      \ifnum\@gls@prevlevel<##1\relax
+         \setlength\glstreeindent\gls@tmplen
+         \addtolength\glstreeindent\parindent
+         \parindent\glstreeindent
+      \else
+         \@ifundefined{@glswidestname\romannumeral\@gls@prevlevel}{%
+           \settowidth{\glstreeindent}{\glstreenamefmt{%
+              \@glswidestname\space}}}{%
+           \settowidth{\glstreeindent}{\glstreenamefmt{%
+              \csname @glswidestname\romannumeral\@gls@prevlevel
+                 \endcsname\space}}}%
+         \addtolength\parindent{-\glstreeindent}%
+         \setlength\glstreeindent\parindent
+      \fi
+    \fi
+    \hangindent\glstreeindent
+    \makebox[0pt][r]{\glstreenamebox{\gls@tmplen}{%
+      \glstreenamefmt{\glstarget{##2}{\glossentryname{##2}}}}}%
+    \ifglshassymbol{##2}{(\glossentrysymbol{##2})\space}{}%
+    \glossentrydesc{##2}\glspostdescription\space ##3\par
+    \def\@gls@prevlevel{##1}%
+  }%
+  \renewcommand*{\glsgroupskip}{\ifglsnogroupskip\else\indexspace\fi}%
+}
+\newglossarystyle{alttreegroup}{%
+  \setglossarystyle{alttree}%
+  \renewcommand{\glsgroupheading}[1]{\par
+    \def\@gls@prevlevel{-1}%
+    \hangindent0pt\relax
+    \parindent0pt\relax
+    \glstreenamefmt{\glsgetgrouptitle{##1}}\par\indexspace}%
+}
+\newglossarystyle{alttreehypergroup}{%
+  \setglossarystyle{alttree}%
+  \renewcommand*{\glossaryheader}{%
+    \par
+    \def\@gls@prevlevel{-1}%
+    \hangindent0pt\relax
+    \parindent0pt\relax
+    \glstreenamefmt{\glsnavigation}\par\indexspace}%
+  \renewcommand*{\glsgroupheading}[1]{%
+    \par
+    \def\@gls@prevlevel{-1}%
+    \hangindent0pt\relax
+    \parindent0pt\relax
+    \glstreenamefmt{\glsnavhypertarget{##1}{\glsgetgrouptitle{##1}}}\par
+    \indexspace}}
+\endinput
+%%
+%% End of file `glossary-tree.sty'.

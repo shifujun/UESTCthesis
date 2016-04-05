@@ -1,0 +1,400 @@
+%%
+%% This is file `ctex-engine-pdftex.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% ctex.dtx  (with options: `pdftex')
+%% 
+%%     Copyright (C) 2003--2015
+%%     CTEX.ORG and any individual authors listed in the documentation.
+%% ------------------------------------------------------------------------------
+%% 
+%%     This work may be distributed and/or modified under the
+%%     conditions of the LaTeX Project Public License, either
+%%     version 1.3c of this license or (at your option) any later
+%%     version. This version of this license is in
+%%        http://www.latex-project.org/lppl/lppl-1-3c.txt
+%%     and the latest version of this license is in
+%%        http://www.latex-project.org/lppl.txt
+%%     and version 1.3 or later is part of all distributions of
+%%     LaTeX version 2005/12/01 or later.
+%% 
+%%     This work has the LPPL maintenance status `maintained'.
+%% 
+%%     The Current Maintainers of this work are Leo Liu, Qing Lee and Liam Huang.
+%% 
+%% ------------------------------------------------------------------------------
+%% 
+\GetIdInfo$Id: ctex.dtx 4e02493 2016-02-02 17:10:17 +0800 Qing Lee <sobenlee@gmail.com> $
+  {(pdf)LaTeX adapter (CTEX)}
+\ProvidesExplFile{ctex-engine-pdftex.def}
+  {\ExplFileDate}{2.3}{\ExplFileDescription}
+\seq_new:N \c__ctex_cmap_encoding_seq
+\seq_set_from_clist:Nn \c__ctex_cmap_encoding_seq
+  { C19 , C10 , C00 , C09 , C40 , C60 }
+\cs_new_protected_nopar:Npn \ctex_family_cmap:nn #1#2
+  {
+    \cs_if_free:cF { #1 + #2 }
+      {
+        \seq_if_in:NnT \c__ctex_cmap_encoding_seq {#1}
+          { \tl_gput_right:cn { #1 + #2 } { \ctex_add_cmap:n {#1} } }
+      }
+  }
+\cs_generate_variant:Nn \ctex_family_cmap:nn { x }
+\cs_new_eq:NN \CTEX@Family@CMap \ctex_family_cmap:xn
+\cs_new_protected_nopar:Npn \ctex_add_cmap:n #1
+  {
+    \cs_if_free:NF \CJK@plane
+      { \ctex_add_cmap:cn { __ctex_add_cmap_ #1 \CJK@plane : } {#1} }
+  }
+\cs_new_protected_nopar:Npn \ctex_add_cmap:Nn #1#2
+  {
+    \cs_if_exist:NF #1 { \__ctex_save_cmap:Nn #1 {#2} }
+    #1
+  }
+\cs_generate_variant:Nn \ctex_add_cmap:Nn { c }
+\cs_new_protected_nopar:Npn \__ctex_save_cmap:Nn #1#2
+  {
+    \tl_set:Nx \l__ctex_tmp_tl { \str_lower_case:n {#2} \CJK@plane }
+    \tex_immediate:D \pdfobj stream ~ file { \l__ctex_tmp_tl .cmap }
+    \cs_new_protected_nopar:Npx #1
+      {
+        \exp_not:N \pdffontattr \exp_not:N \font
+          { /ToUnicode ~ \int_use:N \pdflastobj \c_space_tl 0 ~ R }
+      }
+  }
+\group_begin:
+\char_set_catcode_other:N \#
+\sys_if_output_pdf:TF
+  {
+    \group_end:
+    \ctex_appto_cmd:NnnTF \DeclareFontFamily { \ExplSyntaxOff }
+      { \CTEX@Family@CMap {#1} {#2} }
+      {
+        \ctex_at_end_package:nn { cmap }
+          { \cs_gset_eq:NN \CTEX@Family@CMap \use_none:nn }
+      }
+      { \ctex_patch_failure:N \DeclareFontFamily }
+  }
+  { \group_end: }
+\if_bool:N \g__ctex_zhmCJK_bool
+  \PassOptionsToPackage { encoding = \l__ctex_encoding_tl } { zhmCJK }
+  \RequirePackage { zhmCJK }
+\else:
+  \str_if_eq:onTF { \l__ctex_encoding_tl } { GBK }
+    { \RequirePackage { CJK } }
+    { \RequirePackage { CJKutf8 } }
+  \RequirePackage { CJKpunct , CJKspace }
+  \cs_new_protected_nopar:Npn \ctex_load_zhmap:nnnn #1#2#3#4
+    {
+      \tl_set:Nn \CJKrmdefault {#1}
+      \tl_set:Nn \CJKsfdefault {#2}
+      \tl_set:Nn \CJKttdefault {#3}
+      \AtBeginDvi { \file_input:n {#4} }
+      \ctex_at_end_package:nn { atbegshi }
+        { \AtBeginShipoutFirst { \file_input:n {#4} } }
+    }
+  \@onlypreamble \ctex_load_zhmap:n
+  \tl_if_exist:NF \CJKfamilydefault
+    { \tl_const:Nn \CJKfamilydefault { \CJKrmdefault } }
+  \tl_if_exist:NF \CJKrmdefault { \tl_new:N \CJKrmdefault }
+  \tl_if_exist:NF \CJKsfdefault { \tl_new:N \CJKsfdefault }
+  \tl_if_exist:NF \CJKttdefault { \tl_new:N \CJKttdefault }
+  \ctex_preto_cmd:NnnTF \rmfamily { \ExplSyntaxOff }
+    { \CJKfamily { \CJKrmdefault } }
+    { }
+    { \ctex_patch_failure:N \rmfamily }
+  \ctex_preto_cmd:NnnTF \sffamily { \ExplSyntaxOff }
+    { \CJKfamily { \CJKsfdefault } }
+    { }
+    { \ctex_patch_failure:N \sffamily }
+  \ctex_preto_cmd:NnnTF \ttfamily { \ExplSyntaxOff }
+    { \CJKfamily { \CJKttdefault } }
+    { }
+    { \ctex_patch_failure:N \ttfamily }
+  \ctex_preto_cmd:NnnTF \normalfont { \ExplSyntaxOff }
+    { \CJKfamily { \CJKfamilydefault } }
+    { \cs_set_eq:NN \reset@font \normalfont }
+    { \ctex_patch_failure:N \normalfont }
+\fi:
+\cs_new_protected_nopar:Npn \ctex_CJK_input:n #1
+  {
+    \ctex_file_wrapper:nnn
+      {
+        \char_set_catcode_other:n            { 60 } % <
+        \char_set_catcode_math_superscript:n { 94 } % ^
+        \int_set_eq:NN \tex_endlinechar:D \c_minus_one
+      }
+      { \file_input:n {#1} }
+      {
+        \char_set_catcode:nn { 60 } { \char_value_catcode:n { 60 } }
+        \char_set_catcode:nn { 94 } { \char_value_catcode:n { 94 } }
+        \int_set:Nn \tex_endlinechar:D { \int_use:N \tex_endlinechar:D }
+      }
+  }
+\cs_set_eq:NN \CJK@input \ctex_CJK_input:n
+\if_cs_exist:N \CJK@surr
+  \cs_new_protected_nopar:Npn \ctex_plane_to_utfxvibe:Nn #1#2
+    {
+      \tl_set:Nx \l__ctex_tmp_tl {#2}
+      \int_set:Nn \l__ctex_tmp_int
+        { \exp_args:No \int_from_hex:n { \l__ctex_tmp_tl } }
+      \int_compare:nNnTF \l__ctex_tmp_int < \c_two_hundred_fifty_six
+        { \tl_gset:Nx #1 { \int_to_Hex:n { \l__ctex_tmp_int } } }
+        {
+          \int_sub:Nn \l__ctex_tmp_int { \c_two_hundred_fifty_six }
+          \tl_gset:Nx #1
+            {
+              \int_to_Hex:n
+                { \int_div_truncate:nn { \l__ctex_tmp_int } { \c_four } + "D800 }
+              \int_to_Hex:n
+                { \int_mod:nn { \l__ctex_tmp_int } { \c_four } + "DC }
+            }
+        }
+    }
+  \cs_set_eq:NN \CJK@surr \ctex_plane_to_utfxvibe:Nn
+\fi:
+\AtBeginDocument
+  {
+    \str_if_eq_x:nnF { \l__ctex_punct_tl } { quanjiao }
+      { \punctstyle { \l__ctex_punct_tl } }
+  }
+\reverse_if:N \if_bool:N \g__ctex_zhmCJK_bool
+  \str_if_eq:onF { \l__ctex_encoding_tl } { UTF8 }
+    {
+      \CJK@makeActive
+      \CJK@loadBinding { standard }
+    }
+  \exp_args:Nx \ctex_at_end_preamble:n
+    {
+      \exp_not:N \CJK@envStart
+        { } { \l__ctex_encoding_tl } { \exp_not:N \CJKfamilydefault }
+      \exp_not:N \CJKtilde
+    }
+\fi:
+\cs_new_eq:NN \ctex_auto_ignorespaces: \CJK@@ignorespaces
+\cs_new_protected_nopar:Npn \ctex_ignorespaces_case:N #1
+  {
+    \cs_set_protected_nopar:Npn \ctex_set_ignorespaces:
+      { \cs_set_eq:NN \CJK@ignorespaces #1 }
+    \ctex_set_ignorespaces:
+  }
+\cs_new_protected_nopar:Npn \ctex_set_ignorespaces:
+  { \cs_set_eq:NN \CJK@ignorespaces \ctex_auto_ignorespaces: }
+\ctex_gadd_hook:Nn \CJKhook { \ctex_set_ignorespaces: }
+\cs_new_protected_nopar:Npn \ctex_punct_set:n #1
+  {
+    \clist_map_inline:Nn \c__ctex_punct_family_clist
+      {
+        \cs_if_free:cF { c__ctex_ #1 ##1 _punct_spaces_tl }
+          {
+            \cs_set_eq:cc
+              { CJKpunct@ ##1 @spaces }
+              { c__ctex_ #1 ##1 _punct_spaces_tl }
+          }
+      }
+  }
+\clist_const:Nn \c__ctex_punct_family_clist
+  {
+    zhsong , zhhei , zhfs , zhkai , zhli , zhyou ,
+    zhsongb , zhheil , zhheib , zhyoub , zhyahei , zhyaheib
+  }
+\cs_new_protected_nopar:Npn \ctex_punct_map_family:nn #1#2
+  {
+    \cs_if_free:cF { CJKpunct@ #2 @spaces }
+      { \cs_set_eq:cc { CJKpunct@ #1 @spaces } { CJKpunct@ #2 @spaces } }
+  }
+\cs_new_protected_nopar:Npn \ctex_punct_map_bfseries:nn #1#2
+  {
+    \clist_map_inline:nn {#1}
+      {
+        \ctex_punct_map_series:nnn { ##1 } { b } {#2}
+        \ctex_punct_map_series:nnn { ##1 } { bx } {#2}
+      }
+  }
+\cs_new_protected_nopar:Npn \ctex_punct_map_series:nnn #1#2#3
+  {
+    \CJKpunctmapfamily { C19 } {#1} {#2} { m }  {#3}
+    \CJKpunctmapfamily { C19 } {#1} {#2} { it } {#3}
+    \CJKpunctmapfamily { C19 } {#1} {#2} { sl } {#3}
+    \CJKpunctmapfamily { C70 } {#1} {#2} { m }  {#3}
+    \CJKpunctmapfamily { C70 } {#1} {#2} { it } {#3}
+    \CJKpunctmapfamily { C70 } {#1} {#2} { sl } {#3}
+  }
+\cs_new_protected_nopar:Npn \ctex_punct_map_itshape:nn #1#2
+  {
+    \CJKpunctmapfamily { C19 } {#1} { m }  { it } {#2}
+    \CJKpunctmapfamily { C19 } {#1} { b }  { it } {#2}
+    \CJKpunctmapfamily { C19 } {#1} { bx } { it } {#2}
+    \CJKpunctmapfamily { C70 } {#1} { m }  { it } {#2}
+    \CJKpunctmapfamily { C70 } {#1} { b }  { it } {#2}
+    \CJKpunctmapfamily { C70 } {#1} { bx } { it } {#2}
+  }
+\cs_new_protected_nopar:Npn \ctex_punct_space:nn #1#2
+  { \tl_const:cn { c__ctex_ #1 _punct_spaces_tl } {#2} }
+\cs_new_eq:NN \ctexspadef \ctex_punct_space:nn
+\ctex_file_input:n { ctexspa.def }
+\cs_new_protected_nopar:Npn \ctex_update_default_family:
+  {
+    \tl_if_eq:NNT \CJKfamilydefault \l__ctex_family_default_init_tl
+      {
+        \group_begin:
+          \cs_set_eq:NN \__ctex_family_default_wrap:n \exp_not:n
+          \tl_gset:Nx \CJKfamilydefault
+            {
+              \str_case:onF { \familydefault }
+                {
+                  { \rmdefault } { \exp_not:N \CJKrmdefault }
+                  { \sfdefault } { \exp_not:N \CJKsfdefault }
+                  { \ttdefault } { \exp_not:N \CJKttdefault }
+                }
+                { \CJKfamilydefault }
+            }
+        \group_end:
+      }
+  }
+\ctex_at_end_preamble:n { \ctex_update_default_family: }
+\tl_new:N \l__ctex_family_default_init_tl
+\cs_new_eq:NN \__ctex_family_default_wrap:n \use:n
+\tl_set:Nx \l__ctex_family_default_init_tl
+  {
+    \exp_not:N \__ctex_family_default_wrap:n
+      { \exp_not:o { \CJKfamilydefault } }
+  }
+\tl_gset_eq:NN \CJKfamilydefault \l__ctex_family_default_init_tl
+\cs_new_protected_nopar:Npn \ctex_detected_platform:
+  {
+    \file_if_exist:nTF { /dev/null }
+      {
+        \file_if_exist:nTF { nul: }
+          {
+            \file_if_exist:nTF { \c__ctex_upper_case_file_str }
+              { \ctex_if_macosx:TF { mac } { windows } }
+              { \ctex_if_macosx:TF { mac } { fandol } }
+          }
+          { \ctex_if_macosx:TF { mac } { fandol } }
+      }
+      { \tl_gset:Nn \g__ctex_fontset_tl { windows } }
+  }
+\str_const:Nx \c__ctex_upper_case_file_str
+  { \exp_args:No \str_upper_case:n { \g_file_current_name_tl } }
+\cs_new_protected_nopar:Npn \ctex_if_macosx:TF #1#2
+  {
+    \file_if_exist:nTF { \c__ctex_macosx_file_str }
+      { \tl_gset:Nn \g__ctex_fontset_tl {#1} }
+      { \tl_gset:Nn \g__ctex_fontset_tl {#2} }
+  }
+\str_const:Nn \c__ctex_macosx_file_str { /Library/Fonts/Songti.ttc }
+\ctex_hypersetup:n { driverfallback = dvipdfmx }
+\str_if_eq:onTF { \l__ctex_encoding_tl } { GBK }
+  {
+    \ctex_hypersetup:n { CJKbookmarks = true }
+    \sys_if_output_pdf:TF
+      { \ctex_at_end_package:nn { hyperref } { \RequirePackage { xCJK2uni } } }
+      {
+        \ctex_at_end_package:nn { hyperref }
+          {
+            \str_if_eq:onTF { \Hy@driver } { hdvipdfm }
+              {
+                \AtBeginShipoutFirst
+                  { \special { pdf:tounicode~GBK-EUC-UCS2 } }
+              }
+              { \RequirePackage { xCJK2uni } }
+          }
+      }
+  }
+  { \ctex_hypersetup:n { pdfencoding = unicode } }
+\RequirePackage { CJKfntef }
+\normalem
+\cs_new_protected_nopar:Npn \__ctex_clear_fntef_color:n #1
+  { \tl_clear:c { CJK#1color } }
+\clist_map_inline:nn
+  { underdot , underline , underdblline , underwave , sout , xout }
+  {
+    \__ctex_clear_fntef_color:n {#1}
+    \cs_new_protected_nopar:cpx { CTEX#1 }
+      {
+        \msg_warning:nnnn { ctex } { deprecated-command } { \exp_not:c { CTEX#1 } }
+          { You~ can~ use~ the~ command~ with~ prefix~ \exp_not:N \CJK~ instead. }
+        \exp_not:c { CJK#1 }
+      }
+  }
+\cs_new_protected_nopar:Npn { \CTEXfilltwosides }
+  {
+    \msg_warning:nnnn { ctex } { deprecated-environment } { CTEXfilltwosides }
+      { You~ can~ use~ `CJKfilltwosides'~ environment~ instead. }
+    \CJKfilltwosides
+  }
+\cs_new_protected_nopar:Npn { \endCTEXfilltwosides } { \endCJKfilltwosides }
+\clist_map_inline:nn
+  {
+    underdotbasesep ,   underdotsep ,     underlinebasesep ,
+    underlinesep ,      underdbllinesep , underdbllinebasesep ,
+    underwavebasesep ,  underwavesep ,    southeight ,
+    underdotcolor ,     underwavecolor ,  underlinecolor ,
+    underdbllinecolor , soutcolor ,       xoutcolor
+  }
+  {
+    \cs_new_eq:cc { CTEX#1 } { CJK#1 }
+    \cs_set_nopar:cpx { CJK#1 } { \exp_not:c { CTEX#1 } }
+  }
+\cs_new_protected_nopar:Npn \ctex_update_ccwd:
+  {
+    \hbox_set:Nn \l__ctex_tmp_box { \CJKglue }
+    \dim_set:Nn \ccwd { \box_wd:N \l__ctex_tmp_box + \f@size \p@ }
+  }
+\dim_new:N \ccwd
+\cs_new_protected_nopar:Npn \ctex_update_ccglue:
+  {
+    \cs_set_protected_nopar:Npn \CJKglue
+      { \skip_horizontal:N \l__ctex_ccglue_skip }
+  }
+\skip_new:N \l__ctex_ccglue_skip
+\prg_new_conditional:Npnn \ctex_if_ccglue_touched: { TF }
+  {
+    \if_meaning:w \CJKglue \__ctex_ccglue:
+      \prg_return_false: \else: \prg_return_true: \fi:
+  }
+\ctex_at_end:n { \cs_new_eq:NN \__ctex_ccglue: \CJKglue }
+\cs_new_protected_nopar:Npn \ctex_update_em_unit:
+  { \dim_set:Nn \ccwd { \f@size \p@ } }
+\cs_new_protected:Npn \ctex_add_to_selectfont:n #1
+  {
+    \cs_set_protected_nopar:Npx \CTEX@selectfont@hook
+      { \exp_not:o { \CTEX@selectfont@hook #1 } }
+  }
+\cs_new_eq:NN \CTEX@selectfont@hook \prg_do_nothing:
+\cs_new_eq:Nc \__ctex_save_selectfont: { selectfont ~ }
+\ctex_preto_cmd:NnnTF \selectfont { \ExplSyntaxOff }
+  { \CTEX@selectfont@hook }
+  {
+    \tl_put_left:Nn \@EverySelectfont@Init
+      { \cs_set_eq:cN { selectfont ~ } \__ctex_save_selectfont: }
+  }
+  { \ctex_patch_failure:N \selectfont }
+\EverySelectfont { \cs_if_exist:NF \CJK@plane { \CTEX@selectfont@hook } }
+\keys_define:nn { ctex }
+  {
+    space .choice: ,
+    space / true  .code:n =
+      { \ctex_ignorespaces_case:N \prg_do_nothing: } ,
+    space / auto  .code:n =
+      { \ctex_ignorespaces_case:N \ctex_auto_ignorespaces: } ,
+    space / false .code:n =
+      { \ctex_ignorespaces_case:N \tex_ignorespaces:D } ,
+    space .default:n = { true } ,
+    space .initial:n = { auto }
+  }
+\keys_define:nn { ctex }
+  {
+    punct .code:n =
+      {
+        \tl_set:Nx \l__ctex_punct_tl { #1 }
+        \punctstyle { \l__ctex_punct_tl }
+      } ,
+    punct .default:n = { quanjiao } ,
+  }
+%% 
+%%
+%% End of file `ctex-engine-pdftex.def'.

@@ -1,0 +1,501 @@
+% This is the file MULEenc.sty of the CJK package
+%   providing an interface to `cjk-enc.el' (a special Emacs mode)
+%
+% created by Werner Lemberg <wl@gnu.org>
+%
+% Version 4.8.4 (18-Apr-2015)
+
+% Copyright (C) 1994-2015  Werner Lemberg <wl@gnu.org>
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program in doc/COPYING; if not, write to the Free
+% Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+% MA 02110-1301 USA
+
+\makeatletter
+\endlinechar \m@ne
+
+\def\fileversion{4.8.4}
+\def\filedate{2015/04/18}
+\ProvidesPackage{MULEenc}[\filedate\space\fileversion]
+\NeedsTeXFormat{LaTeX2e}[1998/06/01]
+
+
+% to allow Latin encodings in verbatim environments we activate the
+%     character ^^7f and define it as a multiplex character which executes
+%     its first argument; it will also be used as a delimiter.
+
+\catcode "7F \active
+
+\def^^7f{
+  \ifx\protect \@typeset@protect
+    \expandafter\mule@arg
+  \else
+    \noexpand ^^7f
+  \fi}
+
+\def\mule@arg#1^^7f#2^^7f{
+  \mule@@arg #2^^7f#1^^7f#2^^7f}
+
+\def\mule@@arg#1^^7f{
+  \mule@ifbslash #1^^7f
+    \expandafter\mule@@@arg
+  \else
+    \expandafter\mule@exec
+  \fi}
+
+\def\mule@@@arg#1^^7f#2^^7f{
+  \csname mule@\string #1\endcsname{#2}}
+
+
+% the pseudo-if \mule@ifbslash tests whether its argument contains a
+%     backslash with a character category code (this happens in verbatim
+%     environments). We need to change the catcode of `\' locally to
+%     achieve that.
+%
+% \mule@exec then swallows this backslash so we can call \csname (twice).
+%
+% All these weird constructions assure that we do not lose kerning between
+%     characters---only macro expansion is allowed!
+
+\let\mule@@@ \@empty
+
+{\catcode`\|=\z@
+ \catcode`\\=12\relax
+ |gdef|mule@ifbslash#1^^7f{
+   |mule@@ifbslash #1\^^7f}
+ |gdef|mule@@ifbslash#1\#2^^7f{
+   |expandafter|expandafter|expandafter|ifx
+    |expandafter|csname |string #2mule@@@|endcsname |@empty}
+ |gdef|mule@exec#1^^7f\#2^^7f{
+   |expandafter|csname 
+   mule@#1|expandafter |endcsname |csname #2|endcsname}
+}
+
+
+% here come the definitions for the macros cjk-enc.el emits.
+
+% first some \let's to avoid problems in tabbing environments.
+
+\AtBeginDocument{
+  \let\mule@acute \'
+  \let\mule@grave \`
+  \let\mule@macron \=
+  \let\mule@hacek \v}
+
+% and now the missing definitions for cjk-enc.el to represent Latin
+%     encodings.
+
+% these definitions may be overridden with \ProvideTextCommandDefault
+%     commands.
+
+\def\textonequarter{\ensuremath{\frac14}}
+\def\textonehalf{\ensuremath{\frac12}}
+\def\textthreequarters{\ensuremath{\frac34}}
+
+% LaTeX defines the following macros as \math... instead of \text...,
+%     but we want that all commands work in text mode.
+
+\def\textonesuperior{\ensuremath{{^1}}}
+\def\texttwosuperior{\ensuremath{{^2}}}
+\def\textthreesuperior{\ensuremath{{^3}}}
+
+% the next macros are text versions of the corresponding math macros.
+
+\def\textlnot{\ensuremath{\lnot}}
+\def\textpm{\ensuremath{\pm}}
+\def\textmu{\ensuremath{\mu}}
+\def\texttimes{\ensuremath{\times}}
+\def\textdiv{\ensuremath{\div}}
+
+% this macro is not in the LaTeX 2e base package
+
+\def\textcommercialat{\char64}
+
+% the following macro is not defined in standard LaTeX2e.
+%
+%     JIS X 0201:   0x7E    \textoverscore (U+203E)
+
+
+% to make the multiplex macro work with \uppercase and \lowercase too,
+%     numbers are used as parameters in the ^^7f macro.
+
+\def\mule@def#1{\expandafter\def\csname mule@\string #1\endcsname}
+
+% accents
+
+\mule@def{8}{\"}
+\mule@def{15}{\mule@macron}
+\mule@def{20}{\mule@acute}
+\mule@def{24}{\c}
+\mule@def{32}{\mule@grave}
+\mule@def{33}{\^}
+\mule@def{34}{\~}
+\mule@def{48}{\k}
+\mule@def{49}{\u}
+\mule@def{51}{\mule@hacek}
+\mule@def{52}{\.}
+\mule@def{53}{\r}
+\mule@def{55}{\H}
+
+% Vietnamese hook (\h; only defined in T5 encoding) and dot below accent
+
+\mule@def{71}{\d}
+\mule@def{73}{\h}
+
+% symbols
+
+\mule@def{1}{\textexclamdown}
+\mule@def{2}{\textcent}
+\mule@def{3}{\textsterling}
+\mule@def{4}{\textcurrency}
+\mule@def{5}{\textyen}
+\mule@def{6}{\textbrokenbar}
+\mule@def{7}{\S}
+\mule@def{9}{\copyright}
+\mule@def{10}{\textordfeminine}
+\mule@def{11}{\guillemotleft}
+\mule@def{12}{\textlnot}
+\mule@def{14}{\textregistered}
+\mule@def{16}{\textdegree}
+\mule@def{17}{\textpm}
+\mule@def{18}{\texttwosuperior}
+\mule@def{19}{\textthreesuperior}
+\mule@def{21}{\textmu}
+\mule@def{22}{\P}
+\mule@def{23}{\textperiodcentered}
+\mule@def{25}{\textonesuperior}
+\mule@def{26}{\textordmasculine}
+\mule@def{27}{\guillemotright}
+\mule@def{28}{\textonequarter}
+\mule@def{29}{\textonehalf}
+\mule@def{30}{\textthreequarters}
+\mule@def{31}{\textquestiondown}
+\mule@def{36}{\textcommercialat}
+\mule@def{37}{\textquotedbl}
+\mule@def{38}{\texttimes}
+\mule@def{39}{\textdollar}
+\mule@def{40}{\textquoteright}
+\mule@def{41}{\textless}
+\mule@def{42}{\textgreater}
+\mule@def{43}{\textasciicircum}
+\mule@def{44}{\textunderscore}
+\mule@def{45}{\textdiv}
+\mule@def{46}{\textquoteleft}
+\mule@def{47}{\textbraceleft}
+\mule@def{50}{\textbar}
+\mule@def{54}{\textbraceright}
+\mule@def{56}{\textoverscore}
+\mule@def{99}{\nobreakspace}
+
+\mule@def{35}{\textnumero}          % Cyrillic Number Sign
+
+% letters
+
+\let\TEXTMALTESEH \textmalteseH
+\def\I{I}                           % uppercase form of \i
+
+\let\TEXTTSTROKE \textTstroke
+\mule@def{59}{\textkra}
+
+% commands
+
+\mule@def{0}{\@firstofone}          % for commands as arguments which exist
+                                    % in both uppercase and lowercase forms
+                                    % like \AA and \aa
+\mule@def{64}{\CJKspace\@gobble}
+\mule@def{65}{\CJKnospace\@gobble}
+\mule@def{66}{\CJKenc{JIS}\@gobble}
+\mule@def{67}{\CJKenc{GB}\@gobble}
+\mule@def{68}{\CJKenc{Bg5}\@gobble}
+\mule@def{69}{\CJKenc{KS}\@gobble}
+\mule@def{70}{\CJKenc{SJIS}\@gobble}
+
+% in previous versions we have used ^^a0 for calling \CJKchar, but to
+%     support GBK and Big 5+ encodings which both need this slot we use the
+%     ^^7f interface also.
+
+\mule@def{72}{\mule@@@@arg}
+
+\def\mule@@@@arg#1^^7f#2^^7f#3^^7f{
+  \uppercase{\CJKchar[#1]{#2}{#3}}}
+
+
+% Thai support. We need the many \bgroup and \egroup commands to make it
+%     work with ulem.sty.
+
+\mule@def{57}{\bgroup\fontencoding{C90}\selectfont
+              \bgroup\bgroup\@gobble}                   % begin Thai
+\mule@def{58}{\egroup
+              \egroup\egroup\@gobble}                   % end Thai
+\mule@def{60}{\mule@char}                               % Thai diacritic
+\mule@def{61}{\Thaibreak\@gobble}                       % Thai word break
+\mule@def{62}{\nobreak\Thaiglue\nobreak\mule@char}      % Thai base character
+\mule@def{63}{\mule@ignorespaces}                       % Thai EOL
+
+\def\mule@char#1{\char #1 }
+\def\mule@ignorespaces#1{\ignorespaces}
+
+\newcommand{\Thaiglue}{\hskip \z@ \@plus .03\baselineskip}
+\newcommand{\Thaibreak}{\hskip \z@}
+
+\newcommand{\Thaispace}{\mule@def{63}{}}
+\newcommand{\Thainospace}{\mule@def{63}{\mule@ignorespaces}}
+
+
+% preprocessed mode now uses the ^^7f interface for CJK characters also
+%     to make it coexist with normal mode.
+%
+% the \@gobble macro is used to swallow the first element in \CJK@<number>;
+%     this is either \CJK@disableMakeUppercase or \relax if not needed.
+
+\def\mule@@def#1{
+  \expandafter\def\csname mule@\string #1\endcsname##1{
+    \expandafter\expandafter\expandafter\@gobble
+    \csname CJK@\number `#1\endcsname{##1}
+    \CJK@ignorespaces}}
+
+\mule@@def{^^81}
+\mule@@def{^^82}
+\mule@@def{^^83}
+\mule@@def{^^84}
+\mule@@def{^^85}
+\mule@@def{^^86}
+\mule@@def{^^87}
+\mule@@def{^^88}
+\mule@@def{^^89}
+\mule@@def{^^8a}
+\mule@@def{^^8b}
+\mule@@def{^^8c}
+\mule@@def{^^8d}
+\mule@@def{^^8e}
+\mule@@def{^^8f}
+\mule@@def{^^90}
+\mule@@def{^^91}
+\mule@@def{^^92}
+\mule@@def{^^93}
+\mule@@def{^^94}
+\mule@@def{^^95}
+\mule@@def{^^96}
+\mule@@def{^^97}
+\mule@@def{^^98}
+\mule@@def{^^99}
+\mule@@def{^^9a}
+\mule@@def{^^9b}
+\mule@@def{^^9c}
+\mule@@def{^^9d}
+\mule@@def{^^9e}
+\mule@@def{^^9f}
+\mule@@def{^^a0}
+\mule@@def{^^a1}
+\mule@@def{^^a2}
+\mule@@def{^^a3}
+\mule@@def{^^a4}
+\mule@@def{^^a5}
+\mule@@def{^^a6}
+\mule@@def{^^a7}
+\mule@@def{^^a8}
+\mule@@def{^^a9}
+\mule@@def{^^aa}
+\mule@@def{^^ab}
+\mule@@def{^^ac}
+\mule@@def{^^ad}
+\mule@@def{^^ae}
+\mule@@def{^^af}
+\mule@@def{^^b0}
+\mule@@def{^^b1}
+\mule@@def{^^b2}
+\mule@@def{^^b3}
+\mule@@def{^^b4}
+\mule@@def{^^b5}
+\mule@@def{^^b6}
+\mule@@def{^^b7}
+\mule@@def{^^b8}
+\mule@@def{^^b9}
+\mule@@def{^^ba}
+\mule@@def{^^bb}
+\mule@@def{^^bc}
+\mule@@def{^^bd}
+\mule@@def{^^be}
+\mule@@def{^^bf}
+\mule@@def{^^c0}
+\mule@@def{^^c1}
+\mule@@def{^^c2}
+\mule@@def{^^c3}
+\mule@@def{^^c4}
+\mule@@def{^^c5}
+\mule@@def{^^c6}
+\mule@@def{^^c7}
+\mule@@def{^^c8}
+\mule@@def{^^c9}
+\mule@@def{^^ca}
+\mule@@def{^^cb}
+\mule@@def{^^cc}
+\mule@@def{^^cd}
+\mule@@def{^^ce}
+\mule@@def{^^cf}
+\mule@@def{^^d0}
+\mule@@def{^^d1}
+\mule@@def{^^d2}
+\mule@@def{^^d3}
+\mule@@def{^^d4}
+\mule@@def{^^d5}
+\mule@@def{^^d6}
+\mule@@def{^^d7}
+\mule@@def{^^d8}
+\mule@@def{^^d9}
+\mule@@def{^^da}
+\mule@@def{^^db}
+\mule@@def{^^dc}
+\mule@@def{^^dd}
+\mule@@def{^^de}
+\mule@@def{^^df}
+\mule@@def{^^e0}
+\mule@@def{^^e1}
+\mule@@def{^^e2}
+\mule@@def{^^e3}
+\mule@@def{^^e4}
+\mule@@def{^^e5}
+\mule@@def{^^e6}
+\mule@@def{^^e7}
+\mule@@def{^^e8}
+\mule@@def{^^e9}
+\mule@@def{^^ea}
+\mule@@def{^^eb}
+\mule@@def{^^ec}
+\mule@@def{^^ed}
+\mule@@def{^^ee}
+\mule@@def{^^ef}
+\mule@@def{^^f0}
+\mule@@def{^^f1}
+\mule@@def{^^f2}
+\mule@@def{^^f3}
+\mule@@def{^^f4}
+\mule@@def{^^f5}
+\mule@@def{^^f6}
+\mule@@def{^^f7}
+\mule@@def{^^f8}
+\mule@@def{^^f9}
+\mule@@def{^^fa}
+\mule@@def{^^fb}
+\mule@@def{^^fc}
+\mule@@def{^^fd}
+\mule@@def{^^fe}
+
+
+% if the `verbatim' package is loaded it is possible to improve the output
+%     automatically, namely, to avoid breaking of overfull lines in a
+%     verbatim environment. The following command will install a hook to
+%     suppress insertion of glue between Thai glyphs. CJK.sty will extend
+%     it for CJK glyphs.
+%
+\def\mule@verbatim{
+  \addto@hook{\every@verbatim}{
+    \renewcommand{\Thaiglue}{}
+    \mule@def{61}{}}}
+\ifx\CJK@verbatim \@undefined
+  \def\CJK@verbatim{}
+\fi
+
+\def\CJKverbatim{
+  \mule@verbatim
+  \CJK@verbatim}
+
+
+% here comes our special include command which will load <file>.cjk
+%     instead of <file>.tex
+
+\def\CJKinclude#1{
+  \relax
+
+  \ifnum\@auxout = \@partaux
+    \@latex@error{\string\CJKinclude\space cannot be nested}
+    \@eha
+  \else
+    \CJK@include#1 %
+  \fi
+}
+
+\def\CJK@include#1 {
+  \clearpage
+
+  \if@filesw
+    \immediate\write\@mainaux{\string\@input{#1.aux}}
+  \fi
+
+  \@tempswatrue
+
+  \if@partsw
+    \@tempswafalse
+    \edef\reserved@b{#1}
+    \@for\reserved@a:=\@partlist\do
+      {\ifx\reserved@a \reserved@b
+         \@tempswatrue
+       \fi
+      }
+  \fi
+
+  \if@tempswa
+    \let\@auxout\@partaux
+    \if@filesw
+      \immediate\openout\@partaux #1.aux
+      \immediate\write\@partaux{\relax}
+    \fi
+    \@input@{#1.cjk}
+    \clearpage
+    \@writeckpt{#1}
+    \if@filesw
+      \immediate\closeout\@partaux
+    \fi
+  \else
+    \deadcycles\z@
+    \@nameuse{cp@#1}
+  \fi
+
+  \let\@auxout\@mainaux
+}
+
+
+% the same for the bibliography
+
+\def\CJKbibliography#1{
+  \if@filesw
+    \immediate\write\@auxout{\string\bibdata{#1-cjk}}%
+  \fi
+  \@input@{\jobname.bbl}
+}
+
+
+% here our special input command -- cjk-enc.el will scan files included with
+% \CJKinput, but not with \input.
+%
+% We only want the syntax form of \input with braces around the parameter.
+% If no file name extension is given, `cjk' is used.
+
+\def\CJKinput#1{
+  \filename@parse{#1}
+  \ifx\filename@ext \relax
+    \def\filename@ext{cjk}
+  \fi
+  \InputIfFileExists{\filename@area\filename@base.\filename@ext}
+    {}
+    {\edef\reserved@a{
+       \noexpand\@missingfileerror
+         {\filename@area\filename@base}
+         {\filename@ext}}
+     \reserved@a}}
+
+
+\endlinechar `\^^M
+\makeatother
+\endinput

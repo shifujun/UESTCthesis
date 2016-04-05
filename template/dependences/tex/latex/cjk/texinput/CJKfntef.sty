@@ -1,0 +1,509 @@
+% This is the file CJKfntef.sty of the CJK package
+%   extending CJKulem.sty with more font effects
+%
+% created by Wenchang Sun <sunwch@hotmail.com>
+%            Werner Lemberg <wl@gnu.org>
+%
+% Version 4.8.4 (18-Apr-2015)
+%
+% Macros:
+%   \CJKunderdot{...}
+%   \CJKunderline[*]{...}
+%   \CJKunderdblline[*]{...}
+%   \CJKunderwave[*]{...}
+%   \CJKsout[*]{...}
+%   \CJKxout[*]{...}
+%   \varCJKunderline
+%   \CJKunderanyline
+%   \CJKunderanysymbol
+%
+%   The following nesting combinations are allowed:
+%
+%     \CJKunderdot{...\CJKunderline[*]{...}...}
+%     \CJKunderdot{...\CJKunderdblline[*]{...}...}
+%     \CJKunderdot{...\CJKunderwave[*]{...}...}
+%     \CJKunderdot{...\CJKsout[*]{...}...}
+%     \CJKunderdot{...\CJKxout[*]{...}...}
+%
+%     \CJKunderline[*]{...\CJKunderdot{...}...}
+%     \CJKunderdblline[*]{...\CJKunderdot{...}...}
+%     \CJKunderwave[*]{...\CJKunderdot{...}...}
+%     \CJKsout[*]{...\CJKunderdot{...}...}
+%     \CJKxout[*]{...\CJKunderdot{...}...}
+%
+% Environment:
+%   CJKfilltwosides
+%
+%
+% Here an example which shows how to use \CJKunderanysymbol.
+%
+%   \def\varCJKunderdot{%
+%     \CJKunderanysymbol{0.5em}{$\cdot$}%
+%   }
+%
+
+% Copyright (C) 1994-2015  Werner Lemberg <wl@gnu.org>
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program in doc/COPYING; if not, write to the Free
+% Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+% MA 02110-1301 USA
+
+\NeedsTeXFormat{LaTeX2e}[1998/06/01]
+\def\fileversion{4.8.4}
+\def\filedate{2015/04/18}
+\ProvidesPackage{CJKfntef}[\filedate\space\fileversion]
+
+\RequirePackage{CJK}
+\RequirePackage{CJKulem}
+
+
+\endlinechar \m@ne
+
+
+\ifx\CJKpunctsymbol\undefined
+  \PackageWarning{CJKfntef}{
+    You need to download the last version of the CJK package\MessageBreak
+    to keep CJK punctuation from being underdotted}
+  \let\CJKpunctsymbol\CJKsymbol
+\fi
+
+
+\newskip\CJK@fntefSkip
+\newcount\CJK@nest
+\newdimen\CJK@fntefDimen
+\newbox\CJK@underdotBox
+\newbox\CJK@ULbox
+
+\newif\ifCJK@UL@
+\CJK@UL@false
+\newif\ifCJK@sxout@
+\CJK@sxout@false
+
+
+\newcommand{\CJKunderdotbasesep}{0.05em}
+\newcommand{\CJKunderdotsep}{0.04em}
+\newcommand{\CJKunderlinebasesep}{0.20em}
+\newcommand{\CJKunderlinesep}{0.07em}
+\newcommand{\CJKunderdbllinebasesep}{0.20em}
+\newcommand{\CJKunderdbllinesep}{0.17em}
+\newcommand{\CJKunderwavebasesep}{0.20em}
+\newcommand{\CJKunderwavesep}{0.00em}
+\newcommand{\CJKsoutheight}{0.35em}
+
+\let\CJKf@global\global
+
+\ifx\color\undefined
+  \def\CJKunderdotcolor{}
+  \def\CJKunderwavecolor{}
+  \def\CJKunderlinecolor{}
+  \def\CJKunderdbllinecolor{}
+  \def\CJKsoutcolor{}
+  \def\CJKxoutcolor{}
+\else
+  \def\CJKunderdotcolor{\color{red}}
+  \def\CJKunderwavecolor{\color{blue}}
+  \def\CJKunderlinecolor{\color{blue}}
+  \def\CJKunderdbllinecolor{\color{blue}}
+  \def\CJKsoutcolor{\color{red}}
+  \def\CJKxoutcolor{\color{blue}}
+\fi
+
+
+%
+% \CJKunderdot:
+%   Add a dot under every CJK non-punctuation character. The dot position
+%   can be controlled by redefining \CJKunderdotsep (for nesting) and
+%   \CJKunderdotbasesep.
+%
+%   The dot color can be changed by redefining \CJKunderdotcolor.
+%
+\def\CJK@underdotSkip{\z@}
+
+\def\CJK@preUnderdot{
+  \ifnum\CJK@nest = \z@
+    \CJKf@global\advance\CJK@fntefSkip \CJKunderdotbasesep
+  \fi
+  \CJKf@global\advance\CJK@nest \@ne
+
+  \xdef\CJK@underdotSkip{\the\CJK@fntefSkip}
+  \CJKf@global\advance\CJK@fntefSkip \CJKunderdotsep
+
+  \CJKf@global\setbox\CJK@underdotBox\hbox{{
+    \CJKunderdotcolor
+    {$\cdot$}}}
+  \CJKf@global\advance\CJK@fntefSkip \ht\CJK@underdotBox
+  \CJKf@global\advance\CJK@fntefSkip \dp\CJK@underdotBox}
+
+\def\CJK@postUnderdot{
+  \CJKf@global\advance\CJK@fntefSkip -\CJKunderdotsep
+  \CJKf@global\advance\CJK@fntefSkip -\ht\CJK@underdotBox
+  \CJKf@global\advance\CJK@fntefSkip -\dp\CJK@underdotBox
+  \CJKf@global\def\CJK@underdotSkip{\z@}
+
+  \CJKf@global\advance\CJK@nest \m@ne
+  \ifnum\CJK@nest = \z@
+    \CJKf@global\advance\CJK@fntefSkip -\CJKunderdotbasesep
+  \fi}
+
+
+\ifcsname XeTeXinterchartokenstate\endcsname
+  \def\XeTeX@CJKfntef@hook{
+    \XeTeXinterchartokenstate=0}
+\else
+  \let\XeTeX@CJKfntef@hook\relax
+\fi
+
+\newcommand{\CJKunderdot}[1]{
+  \CJK@preUnderdot
+
+  \CJKf@global\let\CJK@underdotSymbol \CJKsymbol
+  \CJKf@global\def\CJKsymbol##1{
+    \CJK@underdotSymbol{##1}
+
+    \settowidth\CJK@fntefDimen{{
+      \XeTeX@CJKfntef@hook
+      \CJK@underdotSymbol{##1}}}
+    \leavevmode
+    \rlap{
+      \vbox to \z@ {
+        \vskip\CJK@underdotSkip
+        \hbox to \z@ {
+          \hskip -\CJK@fntefDimen
+          \hss
+          \copy\CJK@underdotBox
+          \hss}
+        \vss}}}
+  #1
+  \CJKf@global\let\CJKsymbol \CJK@underdotSymbol
+
+  \CJK@postUnderdot
+  \ignorespaces}
+
+
+%
+% Auxiliary macros needed by \CJKunderline and friends.
+%
+\def\UL@CJKpunctnobreakglue{
+  \ifx\ \LA@space
+    \LA@CJKglue
+  \else
+    \egroup
+    \UL@stop
+    \UL@start
+    \bgroup
+  \fi}
+
+\def\CJK@fntefSave{
+  \CJKf@global\let\UL@UL@CJKnobreakglue \UL@CJKnobreakglue
+  \CJKf@global\let\UL@CJKsymbol \CJKsymbol
+  \CJKf@global\let\UL@CJKpunctsymbol \CJKpunctsymbol}
+
+\def\CJK@fntefRestore{
+  \CJKf@global\let\UL@CJKnobreakglue \UL@UL@CJKnobreakglue
+  \CJKf@global\let\CJKsymbol \UL@CJKsymbol
+  \CJKf@global\let\CJKpunctsymbol \UL@CJKpunctsymbol}
+
+\def\CJK@preUL{
+  \ifCJK@UL@
+    \PackageError{CJKfntef}
+      {Nesting error}
+      {Nesting \string\CJKunderwave[*], \string\CJKunderline[*],
+       \string\CJKsout[*], \string\CJKxout[*],\MessageBreak
+       or \string\CJKunderdblline[*] is not supported.}
+  \else
+    \CJKf@global\CJK@UL@true
+  \fi
+  \ifCJK@sxout@
+    \CJKf@global\def\CJK@ULskip{\z@}
+  \else
+    \ifnum\CJK@nest = \z@
+      \CJKf@global\advance\CJK@fntefSkip \CJK@ULbasesep
+    \fi
+    \CJKf@global\advance\CJK@nest \@ne
+
+    \CJKf@global\advance\CJK@fntefSkip \ht\CJK@ULbox
+    \CJKf@global\advance\CJK@fntefSkip \dp\CJK@ULbox
+
+    \xdef\CJK@ULskip{\the\CJK@fntefSkip}
+    \CJKf@global\advance\CJK@fntefSkip \CJK@ULsep
+  \fi}
+
+\def\CJK@postUL{
+  \CJKf@global\CJK@UL@false
+
+  \ifCJK@sxout@
+    \CJKf@global\CJK@sxout@false
+  \else
+    \CJKf@global\advance\CJK@fntefSkip -\CJK@ULsep
+    \CJKf@global\advance\CJK@fntefSkip -\ht\CJK@ULbox
+    \CJKf@global\advance\CJK@fntefSkip -\dp\CJK@ULbox
+
+    \CJKf@global\advance\CJK@nest \m@ne
+    \ifnum\CJK@nest = \z@
+      \CJKf@global\advance\CJK@fntefSkip -\CJK@ULbasesep
+    \fi
+  \fi}
+
+\def\CJK@UL{
+  \CJK@preUL
+  \CJK@fntefSave
+
+  \CJKf@global\let\UL@CJKnobreakglue \UL@CJKpunctnobreakglue
+  \CJKf@global\def\CJKsymbol{
+    \CJKf@global\def\UL@leadtype{\leaders\copy\ULC@box}
+    \UL@CJKsymbol}
+  \CJKf@global\def\CJKpunctsymbol{
+    \CJKf@global\def\UL@leadtype{}
+    \UL@CJKpunctsymbol}
+
+  \bgroup
+    \markoverwith{
+      \lower\CJK@ULskip\copy\CJK@ULbox}
+    \aftergroup\CJK@fntefRestore
+    \aftergroup\CJK@postUL
+    \ULon}
+
+\def\CJK@@UL{
+  \CJK@preUL
+  \bgroup
+    \markoverwith{
+      \lower\CJK@ULskip\copy\CJK@ULbox}
+    \aftergroup\CJK@postUL
+    \ULon}
+
+
+%
+% \CJKunderwave*:
+%   The same as \uwave except that the wavy line is colored (you can change
+%   the color by redefining \CJKunderwavecolor), and the position can be
+%   controlled by redefining \CJKunderwavesep (for nesting) and
+%   \CJKunderwavebasesep.
+%
+% \CJKunderwave:
+%   The same as \CJKunderwave* but ignoring CJK punctuation characters.
+%
+\newcommand{\CJKunderwave}{
+  \CJKf@global\let\CJK@ULsep \CJKunderwavesep
+  \CJKf@global\let\CJK@ULbasesep \CJKunderwavebasesep
+  \CJKf@global\setbox\CJK@ULbox\hbox{{
+    \CJKunderwavecolor
+    \sixly
+    \char 58}}
+
+  \@ifstar\CJK@@UL\CJK@UL}
+
+
+%
+% \CJKunderline*:
+%   The same as \uline except that the line is colored (you can change the
+%   color by redefining \CJKunderlinecolor), and the position can be
+%   controlled by redefining \CJKunderlinesep (for nesting) and
+%   \CJKunderlinebasesep.
+%
+% \CJKunderline:
+%   The same as \CJKunderline* but ignoring CJK punctuation characters.
+%
+\newcommand{\CJKunderline}{
+  \CJKf@global\let\CJK@ULsep \CJKunderlinesep
+  \CJKf@global\let\CJK@ULbasesep \CJKunderlinebasesep
+  \CJKf@global\setbox\CJK@ULbox\hbox{{
+    \CJKunderlinecolor
+    \vtop{\hrule \@height \ULthickness \@width .2em}}}
+
+  \@ifstar\CJK@@UL\CJK@UL}
+
+
+%
+% \CJKunderdblline[*]:
+%   The same as \CJKunderline[*] except that two lines are used for
+%   underlining.
+%
+\newcommand{\CJKunderdblline}{
+  \CJKf@global\let\CJK@ULsep \CJKunderdbllinesep
+  \CJKf@global\let\CJK@ULbasesep \CJKunderdbllinebasesep
+
+  \CJKf@global\setbox\CJK@ULbox\hbox{{
+    \CJKunderdbllinecolor
+    \vtop{
+      \kern -.07em
+      \hrule \@height\ULthickness \@width .2em
+      \kern 1.1\p@
+      \hrule}}}
+
+  \@ifstar\CJK@@UL\CJK@UL}
+
+
+%
+% \CJKsout*:
+%   The same as \sout except that the line is colored (you can change the
+%   color by redefining \CJKsoutcolor), and the position can be controlled
+%   by redefining \CJKsoutheight.
+%
+% \CJKsout:
+%   The same as \CJKsout* but ignoring CJK punctuation characters.
+%
+\def\CJKsout{
+  \CJKf@global\CJK@sxout@true
+  \CJKf@global\setbox\CJK@ULbox\hbox{{
+    \CJKsoutcolor
+    \vtop{
+      \kern -\CJKsoutheight
+      \hrule \@height\ULthickness \@width .2em}}}
+
+  \@ifstar\CJK@@UL\CJK@UL}
+
+
+%
+% \CJKxout*:
+%   The same as \xout except using colored `/' (you can change the color
+%   by redefining \CJKxoutcolor).
+%
+% \CJKxout:
+%   The same as \CJKxout* but ignoring CJK punctuation characters.
+%
+\def\CJKxout{
+  \CJKf@global\CJK@sxout@true
+  \CJKf@global\setbox\CJK@ULbox\hbox{{
+    \kern -0.1em
+    {\CJKxoutcolor $/$}
+    \kern -0.1em}}
+
+  \@ifstar\CJK@@UL\CJK@UL}
+
+
+%
+%  CJKfilltwosides environment:
+%    Align CJK characters to fill two sides.
+%
+%  Usage:
+%    \begin{CJKfilltwosides}{width}
+%      first line \\
+%      second line \\
+%      ... \\
+%      last line
+%    \end{CJKfilltwosides}
+%
+\newif\ifCJK@fillbegin@
+\CJKf@global\CJK@fillbegin@false
+\newif\ifCJK@filltwosides@
+\CJKf@global\CJK@filltwosides@false
+
+\newenvironment{CJKfilltwosides}[1]{
+  \leavevmode
+  \vbox\bgroup
+    \CJKf@global\CJK@filltwosides@true
+    \CJKf@global\let\CJK@filltwosidesSymbol \CJKsymbol
+
+    \def\CJK@ftscr{
+      \egroup
+      \CJKf@global\CJK@fillbegin@false
+      \hbox to #1\bgroup
+        \ignorespaces}
+
+    \let\\ \CJK@ftscr
+
+    \def\CJKsymbol##1{
+      \ifCJK@fillbegin@
+        \hfill
+        \CJK@filltwosidesSymbol{##1}
+      \else
+        \CJK@filltwosidesSymbol{##1}
+        \CJKf@global\CJK@fillbegin@true
+      \fi}
+
+    \hbox to #1\bgroup
+      \ignorespaces
+ }{
+  \egroup
+  \egroup
+
+  \CJKf@global\let\CJKsymbol \CJK@filltwosidesSymbol
+  \CJKf@global\CJK@fillbegin@false
+  \CJKf@global\CJK@filltwosides@false}
+
+
+%
+% \varCJKunderline:
+%   The same as \CJKunderline but leaving spaces between two consecutive
+%   \varCJKunderline calls.  The separation on the left and right can be
+%   controlled by redefining \CJKulineleftskip and \CJKulinerightskip,
+%   respectively.
+%
+\def\CJKulineleftskip{0.2em}
+\def\CJKulinerightskip{0.2em}
+
+\def\varCJKunderline#1{
+  {\null
+   \hskip\CJKulineleftskip}
+  \CJKunderline{
+    {\hskip-\CJKulineleftskip}
+    #1
+    {\hskip-\CJKulinerightskip}}
+  {\hskip\CJKulinerightskip}}
+
+
+%
+% \CJKunderanyline:
+%   The same as \varCJKunderline but using a user-defined underline shape.
+%   The first argument gives the distance to the baseline, the second
+%   argument the object used for underlining.
+%
+\def\CJK@underanyline#1#2{
+  \setbox\UL@box\hbox{{#2}}
+  \bgroup\markoverwith{\lower #1\copy\UL@box}\ULon}
+
+\def\CJKunderanyline#1#2#3{
+  {\null
+   \hskip\CJKulineleftskip}
+  \CJK@underanyline{#1}{#2}{
+    {\hskip-\CJKulineleftskip}
+    #3
+    {\hskip-\CJKulinerightskip}}
+  {\hskip\CJKulinerightskip}}
+
+
+%
+% \CJKunderanysymbol:
+%   The same as \CJKunderdot but using a user-defined underline shape.
+%   The first argument gives the distance to the baseline, the second
+%   argument the object used for `underdotting'.
+%
+\newdimen\CJK@underanyskip
+
+\def\CJKunderanysymbol#1#2#3{{
+  \CJK@underanyskip #1\relax
+  \setbox\CJK@underdotBox\hbox{{#2}}
+  \CJKf@global\let\CJK@underanysymbol\CJKsymbol
+  \CJKf@global\def\CJK@fntefglue{
+    \CJKf@global\let\CJK@fntefglue\CJKglue}
+  \CJKf@global\def\CJKsymbol##1{
+    \CJK@fntefglue
+    \CJK@underanysymbol{##1}
+    \leavevmode
+    \rlap{
+      \lower \CJK@underanyskip
+        \hbox to \z@ {
+          \hskip -1em
+          \hss
+          \copy\CJK@underdotBox
+          \hss}
+        \hskip -1em}
+    \ignorespaces}
+  #3
+  \CJKf@global\let\CJKsymbol\CJK@underanysymbol}}
+
+
+\endlinechar `\^^M
+
+\endinput

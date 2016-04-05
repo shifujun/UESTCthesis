@@ -1,0 +1,156 @@
+% This is the file UTF8.bdg of the CJK package
+%   for using Asian logographs (Chinese/Japanese/Korean) with LaTeX2e
+%
+% created by Werner Lemberg <wl@gnu.org>
+%
+% Version 4.8.4 (18-Apr-2015)
+
+% Copyright (C) 1994-2015  Werner Lemberg <wl@gnu.org>
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program in doc/COPYING; if not, write to the Free
+% Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+% MA 02110-1301 USA
+
+\def\fileversion{4.8.4}
+\def\filedate{2015/04/18}
+\ProvidesFile{UTF8.bdg}[\filedate\space\fileversion]
+
+
+
+% UTF 8 bindings for two-, three-, and four-byte characters. We stop
+% with 0xF4 because there are no valid Unicode characters beyond 0x10FFFF.
+
+\global\@namedef{CJK@UTF8Binding}{
+  \CJK@namedef{^^80}
+  \CJK@namedef{^^81}
+  \CJK@namedef{^^82}
+  \CJK@namedef{^^83}
+  \CJK@namedef{^^84}
+  \CJK@namedef{^^85}
+  \CJK@namedef{^^86}
+  \CJK@namedef{^^87}
+  \CJK@namedef{^^88}
+  \CJK@namedef{^^89}
+  \CJK@namedef{^^8a}
+  \CJK@namedef{^^8b}
+  \CJK@namedef{^^8c}
+  \CJK@namedef{^^8d}
+  \CJK@namedef{^^8e}
+  \CJK@namedef{^^8f}
+  \CJK@namedef{^^90}
+  \CJK@namedef{^^91}
+  \CJK@namedef{^^92}
+  \CJK@namedef{^^93}
+  \CJK@namedef{^^94}
+  \CJK@namedef{^^95}
+  \CJK@namedef{^^96}
+  \CJK@namedef{^^97}
+  \CJK@namedef{^^98}
+  \CJK@namedef{^^99}
+  \CJK@namedef{^^9a}
+  \CJK@namedef{^^9b}
+  \CJK@namedef{^^9c}
+  \CJK@namedef{^^9d}
+  \CJK@namedef{^^9e}
+  \CJK@namedef{^^9f}
+  \CJK@namedef{^^a0}
+  \CJK@namedef{^^a1}
+  \CJK@namedef{^^a2}
+  \CJK@namedef{^^a3}
+  \CJK@namedef{^^a4}
+  \CJK@namedef{^^a5}
+  \CJK@namedef{^^a6}
+  \CJK@namedef{^^a7}
+  \CJK@namedef{^^a8}
+  \CJK@namedef{^^a9}
+  \CJK@namedef{^^aa}
+  \CJK@namedef{^^ab}
+  \CJK@namedef{^^ac}
+  \CJK@namedef{^^ad}
+  \CJK@namedef{^^ae}
+  \CJK@namedef{^^af}
+  \CJK@namedef{^^b0}
+  \CJK@namedef{^^b1}
+  \CJK@namedef{^^b2}
+  \CJK@namedef{^^b3}
+  \CJK@namedef{^^b4}
+  \CJK@namedef{^^b5}
+  \CJK@namedef{^^b6}
+  \CJK@namedef{^^b7}
+  \CJK@namedef{^^b8}
+  \CJK@namedef{^^b9}
+  \CJK@namedef{^^ba}
+  \CJK@namedef{^^bb}
+  \CJK@namedef{^^bc}
+  \CJK@namedef{^^bd}
+  \CJK@namedef{^^be}
+  \CJK@namedef{^^bf}
+
+  \CJK@nameppdef{^^c0}
+  \CJK@nameppdef{^^c1}
+  \CJK@nameppdef{^^c2}
+  \CJK@nameppdef{^^c3}
+  \CJK@nameppdef{^^c4}
+  \CJK@nameppdef{^^c5}
+  \CJK@nameppdef{^^c6}
+  \CJK@nameppdef{^^c7}
+  \CJK@nameppdef{^^c8}
+  \CJK@nameppdef{^^c9}
+  \CJK@nameppdef{^^ca}
+  \CJK@nameppdef{^^cb}
+  \CJK@nameppdef{^^cc}
+  \CJK@nameppdef{^^cd}
+  \CJK@nameppdef{^^ce}
+  \CJK@nameppdef{^^cf}
+  \CJK@nameppdef{^^d0}
+  \CJK@nameppdef{^^d1}
+  \CJK@nameppdef{^^d2}
+  \CJK@nameppdef{^^d3}
+  \CJK@nameppdef{^^d4}
+  \CJK@nameppdef{^^d5}
+  \CJK@nameppdef{^^d6}
+  \CJK@nameppdef{^^d7}
+  \CJK@nameppdef{^^d8}
+  \CJK@nameppdef{^^d9}
+  \CJK@nameppdef{^^da}
+  \CJK@nameppdef{^^db}
+  \CJK@nameppdef{^^dc}
+  \CJK@nameppdef{^^dd}
+  \CJK@nameppdef{^^de}
+  \CJK@nameppdef{^^df}
+
+  \CJK@namepppdef{^^e0}
+  \CJK@namepppdef{^^e1}
+  \CJK@namepppdef{^^e2}
+  \CJK@namepppdef{^^e3}
+  \CJK@namepppdef{^^e4}
+  \CJK@namepppdef{^^e5}
+  \CJK@namepppdef{^^e6}
+  \CJK@namepppdef{^^e7}
+  \CJK@namepppdef{^^e8}
+  \CJK@namepppdef{^^e9}
+  \CJK@namepppdef{^^ea}
+  \CJK@namepppdef{^^eb}
+  \CJK@namepppdef{^^ec}
+  \CJK@namepppdef{^^ed}
+  \CJK@namepppdef{^^ee}
+  \CJK@namepppdef{^^ef}
+
+  \CJK@nameppppdef{^^f0}
+  \CJK@nameppppdef{^^f1}
+  \CJK@nameppppdef{^^f2}
+  \CJK@nameppppdef{^^f3}
+  \CJK@nameppppdef{^^f4}}
+
+\endinput

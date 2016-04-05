@@ -1,0 +1,244 @@
+%%
+%% This is file `multibib.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% multibib.dtx  (with options: `package')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% This work may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3 of this license
+%% or any later version. The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt and version 1.3 or later is
+%% part of all distributions of LaTeX version 2003/12/01 or
+%% later.
+%% 
+%% This work has the LPPL maintenance status "maintained". The Current
+%% Maintainer of this work is Thorsten Hansen.
+%% 
+%% Any modified versions of this file must be renamed with new filenames
+%% distinct from multibib.sty.
+%% 
+%% This is a generated file. It may not be distributed without the
+%% original source file multibib.dtx.
+%% 
+%% To produce the documentation run multibib.dtx through LaTeX.
+%% 
+%% 
+%% Package `multibib' to use with LaTeX2e.
+%%
+%% Copyright (C) 2008 by Thorsten Hansen
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{multibib}
+          [2008/12/10 v1.4 Multiple bibliographies for one document.]
+
+\newif\ifcontinuouslabels
+\continuouslabelstrue
+\DeclareOption{resetlabels}{\continuouslabelsfalse}
+\newif\iflabeled
+\labeledfalse
+\DeclareOption{labeled}{\labeledtrue}
+\ProcessOptions
+\def\mylop#1\to#2{\expandafter\mylopoff#1\mylopoff#1#2}
+\long\def\mylopoff#1,#2\mylopoff#3#4{\def#4{#1}\def#3{#2}}
+\AtBeginDocument{%
+  \@ifpackageloaded{natbib}{%
+    \NAT@set@cites
+    \let\std@@citex\@citex
+    \def\mb@@citex[#1][#2]#3{%
+      \global\let\@save@auxout\@auxout
+      \let\@auxout\@newciteauxhandle
+      \std@@citex[#1][#2]{#3}%
+      \let\@auxout\@save@auxout
+      \let\@citex\std@@citex}%
+  }{% else
+    \@ifundefined{@newciteauxhandle}{% not defined by compatible packages
+      \let\std@@citex\@citex
+      \def\mb@@citex[#1]#2{{%
+        \let\@auxout\@newciteauxhandle
+        \std@@citex[#1]{#2}}%
+        \let\@citex\std@@citex}%
+      }{\let\mb@@citex\@citex}%
+  }%
+}%
+\def\@newusecounter#1{\@nmbrlisttrue\def\@listctr{#1}}
+\let\newusecounter\usecounter
+\let\std@bibliography\bibliography
+\def\bibliography#1{%
+  \ifcontinuouslabels
+    \let\usecounter\newusecounter
+  \fi
+  \std@bibliography{#1}%
+  \ifcontinuouslabels
+    \global\let\newusecounter\@newusecounter
+  \fi}
+\newcount\mb@biblabelwidth
+\newcommand\setbiblabelwidth[1]{\mb@biblabelwidth #1}
+\AtBeginDocument{%
+  \@ifpackageloaded{suthesis}%
+    {\def\thebibliography#1{%
+       \newpage
+       \addcontentsline{toc}{chapter}{\bibname}%
+       \@ldthebibliography{#1}}}%
+    {}%
+  \@ifpackageloaded{natbib}%
+    {%
+
+\renewenvironment{thebibliography}[1]{%
+ \bibsection\parindent \z@\bibpreamble\bibfont\list
+   {\@biblabel{\arabic{NAT@ctr}}}{\@bibsetup{#1}%
+    \usecounter{NAT@ctr}}% %% only changed here to usecounter
+    \ifNAT@openbib
+      \renewcommand\newblock{\par}
+    \else
+      \renewcommand\newblock{\hskip .11em \@plus.33em \@minus.07em}%
+    \fi
+    \sloppy\clubpenalty4000\widowpenalty4000
+    \sfcode`\.=1000\relax
+    \let\citeN\cite \let\shortcite\cite
+    \let\citeasnoun\cite
+ }{\def\@noitemerr{%
+  \PackageWarning{natbib}
+     {Empty `thebibliography' environment}}%
+  \endlist\vskip-\lastskip}
+
+      \let\std@thebibliography\thebibliography
+      \def\thebibliography#1{%
+        \@isnumber{#1}%
+        {\ifnum\mb@biblabelwidth=0
+          \@tempcnta\c@NAT@ctr %% changed here to c@NAT@ctr
+          \ifcontinuouslabels
+          \advance\@tempcnta#1%
+          \fi
+          \std@thebibliography{\@arabic\@tempcnta}%
+          \else
+          \std@thebibliography{\@arabic\mb@biblabelwidth}%
+        \global\mb@biblabelwidth 0
+        \fi}%
+        {\std@thebibliography{#1}}%
+     }%
+   }%
+   {% else, natbib not loaded
+     \let\std@thebibliography\thebibliography
+
+     \def\thebibliography#1{%
+        \@isnumber{#1}%
+          {\ifnum\mb@biblabelwidth=0
+            \@tempcnta\c@enumiv
+            \ifcontinuouslabels
+            \advance\@tempcnta#1%
+            \fi
+            \std@thebibliography{\@arabic\@tempcnta}%
+            \else
+            \std@thebibliography{\@arabic\mb@biblabelwidth}%
+          \global\mb@biblabelwidth 0
+          \fi}%
+        {\std@thebibliography{#1}}%
+    }%
+   }%
+}
+\newcommand{\@isnumber}[3]{%
+  \def\argdef{#1}%
+  \edef\argedef{#1}%
+  \ifx\argedef\empty
+    #3
+  \else
+    \ifx\argdef\argedef
+      \global\@tempswafalse
+      \setbox\@tempboxa=\hbox{\@scannumber#1\plugh}%
+      \if@tempswa#2\else#3\fi
+    \else
+      #3
+    \fi
+  \fi}
+\let\plugh\relax
+\newcommand{\@scannumber}[1]{%
+  \let\testchar#1%
+  \ifx \testchar 0\let\next\@scannumber
+  \else\ifx \testchar 1\let\next\@scannumber
+  \else\ifx \testchar 2\let\next\@scannumber
+  \else\ifx \testchar 3\let\next\@scannumber
+  \else\ifx \testchar 4\let\next\@scannumber
+  \else\ifx \testchar 5\let\next\@scannumber
+  \else\ifx \testchar 6\let\next\@scannumber
+  \else\ifx \testchar 7\let\next\@scannumber
+  \else\ifx \testchar 8\let\next\@scannumber
+  \else\ifx \testchar 9\let\next\@scannumber
+  \else\ifx \testchar \plugh \let\next\relax \global\@tempswatrue
+  \else \let\next\relax
+  \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+  \next}
+\long\def\mb@addtocontents#1#2{%
+  \protected@write\temp@auxout
+    {\let\label\@gobble \let\index\@gobble \let\glossary\@gobble}%
+    {\string\@writefile{#1}{#2}}}
+\@ifundefined{@mb@citenamelist}%
+  {\def\@mb@citenamelist{cite,citep,citet,citealp,citealt}}%
+  {\relax}
+\def\newcites#1#2{%
+  \def\@suffixlist{#1,}%
+  \@for\@newrefname:=#2\do{%
+    \mylop\@suffixlist\to\@suffix
+    \expandafter\protected@edef\csname refname\@suffix\endcsname
+      {\@newrefname}%
+    \if@filesw
+      \expandafter\newwrite\csname @auxout\@suffix\endcsname
+      \expandafter\edef\csname @auxout\@suffix name\endcsname{\@suffix}%
+      \begingroup
+        \makeatletter
+        \@input@{\csname @auxout\@suffix name\endcsname .aux}%
+      \endgroup
+      \immediate\openout\csname @auxout\@suffix\endcsname
+                        \csname @auxout\@suffix name\endcsname .aux
+    \fi
+    \@for\@citename:=\@mb@citenamelist\do{%
+      \expandafter\edef\csname \@citename\@suffix\endcsname{%
+        \let\noexpand\@citex\noexpand\mb@@citex
+        \let\noexpand\@newciteauxhandle\csname @auxout\@suffix\endcsname
+        \noexpand\csname\@citename\endcsname}%
+    }%
+    \expandafter\edef\csname nocite\@suffix\endcsname##1{{%
+      \let\noexpand\@auxout\csname @auxout\@suffix\endcsname
+      \noexpand\nocite{##1}}}%
+    \iflabeled % if option labeled
+      \expandafter\edef\csname @bibitem\@suffix\endcsname##1{%
+        \noexpand\item
+        \noexpand\if@filesw \noexpand\immediate\noexpand\write\noexpand\@auxout
+        {\noexpand\string\noexpand\bibcite{##1}%
+           {\@suffix\noexpand\the\noexpand\value{\noexpand\@listctr}}}%
+        \noexpand\fi
+        \noexpand\ignorespaces}%
+      \expandafter\edef\csname @biblabel\@suffix\endcsname##1{[\@suffix##1]}%
+    \fi % end if option labeled
+    \expandafter\edef\csname bibliography\@suffix\endcsname##1{{%
+      \let\noexpand\temp@auxout\noexpand\@auxout
+      \let\noexpand\addtocontents\noexpand\mb@addtocontents
+      \let\noexpand\@auxout\csname @auxout\@suffix\endcsname
+      \let\noexpand\jobname
+         \expandafter\noexpand\csname @auxout\@suffix name\endcsname
+      \let\noexpand\refname
+          \expandafter\noexpand\csname refname\@suffix\endcsname
+      \let\noexpand\bibname
+          \expandafter\noexpand\csname refname\@suffix\endcsname
+      \iflabeled
+        \let\noexpand\@bibitem
+            \expandafter\noexpand\csname @bibitem\@suffix\endcsname
+        \let\noexpand\@biblabel
+            \expandafter\noexpand\csname @biblabel\@suffix\endcsname
+      \fi
+      \noexpand\bibliography{##1}%
+      }}
+    \expandafter\edef\csname bibliographystyle\@suffix\endcsname##1{%
+      \noexpand\if@filesw
+        \noexpand\immediate\noexpand\write\csname @auxout\@suffix\endcsname
+          {\noexpand\string\noexpand\bibstyle{##1}}%
+      \noexpand\fi}
+   }%
+}
+\@onlypreamble\newcites
+\endinput
+%%
+%% End of file `multibib.sty'.

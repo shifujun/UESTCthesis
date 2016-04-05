@@ -1,0 +1,152 @@
+%%
+%% This is file `l3pdfmode.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% l3drivers.dtx  (with options: `package,pdfmode')
+%% 
+%% EXPERIMENTAL CODE
+%% 
+%% Do not distribute this file without also distributing the
+%% source files specified above.
+%% 
+%% Do not distribute a modified version of this file.
+%% 
+%% File: l3drivers.dtx Copyright(C) 2011-2015 The LaTeX3 Project
+%%
+%% It may be distributed and/or modified under the conditions of the
+%% LaTeX Project Public License (LPPL), either version 1.3c of this
+%% license or (at your option) any later version.  The latest version
+%% of this license is in the file
+%%
+%%    http://www.latex-project.org/lppl.txt
+%%
+%% This file is part of the "l3kernel bundle" (The Work in LPPL)
+%% and all files in that bundle must be distributed together.
+%%
+%% The released version of this bundle is available from CTAN.
+%%
+%% -----------------------------------------------------------------------
+%%
+%% The development version of the bundle can be found at
+%%
+%%    http://www.latex-project.org/svnroot/experimental/trunk/
+%%
+%% for those people who are interested.
+%%
+%%%%%%%%%%%
+%% NOTE: %%
+%%%%%%%%%%%
+%%
+%%   Snapshots taken from the repository represent work in progress and may
+%%   not work or may contain conflicting material!  We therefore ask
+%%   people _not_ to put them into distributions, archives, etc. without
+%%   prior consultation with the LaTeX Project Team.
+%%
+%% -----------------------------------------------------------------------
+%%
+\GetIdInfo$Id: l3drivers.dtx 6281 2015-11-17 07:11:52Z joseph $
+  {L3 Experimental drivers}
+\ProvidesExplFile
+  {l3pdfmode.def}{\ExplFileDate}{\ExplFileVersion}
+  {L3 Experimental driver: PDF mode}
+\cs_new_protected_nopar:Npx \__driver_state_save:
+  {
+    \cs_if_exist:NTF \luatex_pdfextension:D
+      { \luatex_pdfextension:D save \scan_stop: }
+      { \pdftex_pdfsave:D }
+  }
+\cs_new_protected_nopar:Npx \__driver_state_restore:
+  {
+    \cs_if_exist:NTF \luatex_pdfextension:D
+      { \luatex_pdfextension:D restore \scan_stop: }
+      { \pdftex_pdfrestore:D }
+  }
+\cs_new_protected:Npx \__driver_literal:n #1
+  {
+    \cs_if_exist:NTF \luatex_pdfextension:D
+      { \luatex_pdfextension:D literal }
+      { \pdftex_pdfliteral:D }
+        {#1}
+  }
+\cs_new_protected:Npx \__driver_matrix:n #1
+  {
+    \cs_if_exist:NTF \luatex_pdfextension:D
+      { \luatex_pdfextension:D setmatrix }
+      { \pdftex_pdfsetmatrix:D }
+        {#1}
+  }
+\cs_new_protected:Npn \__driver_box_use_clip:N #1
+  {
+    \__driver_state_save:
+    \__driver_literal:n
+      {
+        0~
+        \dim_to_decimal_in_bp:n { -\box_dp:N #1 } ~
+        \dim_to_decimal_in_bp:n { \box_wd:N #1 } ~
+        \dim_to_decimal_in_bp:n { \box_ht:N #1 + \box_dp:N #1 } ~
+        re~W~n
+      }
+    \hbox_overlap_right:n { \box_use:N #1 }
+    \__driver_state_restore:
+    \skip_horizontal:n { \box_wd:N #1 }
+  }
+\cs_new_protected_nopar:Npn \__driver_box_rotate_begin:
+  {
+    \__driver_state_save:
+    \box_set_wd:Nn \l__box_internal_box \c_zero_dim
+    \fp_set:Nn \l__box_cos_fp { round ( \l__box_cos_fp , 5 ) }
+    \fp_compare:nNnT \l__box_cos_fp = \c_zero_fp
+      { \fp_zero:N \l__box_cos_fp }
+    \fp_set:Nn \l__box_sin_fp { round ( \l__box_sin_fp , 5 ) }
+    \__driver_matrix:n
+      {
+        \fp_use:N \l__box_cos_fp \c_space_tl
+        \fp_compare:nNnTF \l__box_sin_fp = \c_zero_fp
+          { 0~0 }
+          {
+            \fp_use:N \l__box_sin_fp
+            \c_space_tl
+            \fp_eval:n { -\l__box_sin_fp }
+          }
+        \c_space_tl
+        \fp_use:N \l__box_cos_fp
+      }
+  }
+\cs_new_eq:NN \__driver_box_rotate_end: \__driver_state_restore:
+\cs_new_protected_nopar:Npn \__driver_box_scale_begin:
+  {
+    \__driver_state_save:
+    \fp_set:Nn \l__box_scale_x_fp { round ( \l__box_scale_x_fp , 5 ) }
+    \fp_set:Nn \l__box_scale_y_fp { round ( \l__box_scale_y_fp , 5 ) }
+    \__driver_matrix:n
+      {
+        \fp_use:N \l__box_scale_x_fp \c_space_tl
+        0~0~
+        \fp_use:N \l__box_scale_y_fp
+      }
+  }
+\cs_new_eq:NN \__driver_box_scale_end: \__driver_state_restore:
+\tl_new:N \l__driver_current_color_tl
+\tl_set:Nn \l__driver_current_color_tl { 0~g~0~G }
+\int_new:N \l__driver_color_stack_int
+\cs_new_protected_nopar:Npx \__driver_color_ensure_current:
+  {
+    \cs_if_exist:NTF \luatex_pdfextension:D
+      { \luatex_pdfextension:D colorstack }
+      { \pdftex_pdfcolorstack:D }
+        \exp_not:N \l__driver_color_stack_int push
+          { \exp_not:N \l__driver_current_color_tl }
+    \group_insert_after:N \exp_not:N \__driver_color_reset:
+  }
+\cs_new_protected_nopar:Npx \__driver_color_reset:
+  {
+    \cs_if_exist:NTF \luatex_pdfextension:D
+      { \luatex_pdfextension:D colorstack }
+      { \pdftex_pdfcolorstack:D }
+        \exp_not:N \l__driver_color_stack_int pop \scan_stop:
+  }
+%% 
+%%
+%% End of file `l3pdfmode.def'.
