@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2016/03/06 v1.2.5 UESTC thesis class]
+    [2016/06/05 v1.2.7 UESTC thesis class]
 \LoadClass[fontset = windowsold,cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \def\CTEX@contentsname{目录}
 \def\CTEX@figurename{图}
@@ -773,7 +773,8 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
             breaklinks=true,
 pdfdisplaydoctitle=true
 ]{hyperref}
-\ifdef{\onlychapters@uestcthesis}{}{%onlychapters选项效果，在pdf元信息中去除学校信息。
+\def\endeqnarray{\@@eqncr \egroup \global \advance \c@equation \m@ne $$\@ignoretrue }
+\ifdef{\onlychapters@uestcthesis}{}{% onlychapters选项效果，在pdf元信息中去除学校信息。
 \AtEndDocument{
     \hypersetup{%
     pdftitle={\@title},

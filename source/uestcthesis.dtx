@@ -30,7 +30,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2011/06/27]
 %<class>\ProvidesClass{uestcthesis}
 %<*class>
-    [2016/03/06 v1.2.5 UESTC thesis class]
+    [2016/06/05 v1.2.7 UESTC thesis class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -1378,7 +1378,18 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
             breaklinks=true,
 			pdfdisplaydoctitle=true
 			]{hyperref}
-\ifdef{\onlychapters@uestcthesis}{}{%onlychapters选项效果，在pdf元信息中去除学校信息。
+%    \end{macrocode}
+% \changes{v1.2.7}{2016/06/05}{修复eqnarray环境最后一行序号没能右对齐的问题。}
+% hyperref对eqnarray的结束进行了hook。通过将|\endeqnarray|命令还原回原本的定义修复了该问题。
+% 修复后测试了一下对eqnarray里最后一个公式添加label后依然能正常引用，使用超链接。
+% 所以我没有读懂hyperref的hook到底起什么作用。对于论文模板来说打印效果是第一位的，超级链接只是
+% 辅助功能，由于时间的关系，我就不深究这个改动会有什么问题了。
+%    \begin{macrocode}
+\def\endeqnarray{\@@eqncr \egroup \global \advance \c@equation \m@ne $$\@ignoretrue }
+%    \end{macrocode}
+% onlychapters选项效果，在pdf元信息中去除学校信息。
+%    \begin{macrocode}
+\ifdef{\onlychapters@uestcthesis}{}{% onlychapters选项效果，在pdf元信息中去除学校信息。
 \AtEndDocument{
     \hypersetup{%
     pdftitle={\@title},
