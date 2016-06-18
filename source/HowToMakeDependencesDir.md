@@ -115,21 +115,21 @@ cp /usr/local/texlive/2015/texmf-dist/tex/latex/ctex/ctexbook.cls ./dependencies
 Shell脚本中
 
 ```
-export TEXINPUTS=./dependences//:
-export TEXMFDBS=./dependences:
+export TEXINPUTS=./dependencies//:
+export TEXMFDBS=./dependencies:
 ```
 
 Windows批处理bat文件中
 
 ```
-set TEXINPUTS=./dependences//;
-set TEXMFDBS=./dependences;
+set TEXINPUTS=./dependencies//;
+set TEXMFDBS=./dependencies;
 ```
 
-其中“//”表示包含子目录。“:”和“;”表示我们只是将dependences目录放在了搜索路径的最前面，这使得当dependences目录中找不到编译所需要的文件时，程序还能在原路径中继续查找文件。这样模板的使用者如果自行声明了新的宏包依赖，而dependences目录中没有，还可以正常使用TeX发行版中所安装的宏包。
+其中“//”表示包含子目录。“:”和“;”表示我们只是将dependencies目录放在了搜索路径的最前面，这使得当dependencies目录中找不到编译所需要的文件时，程序还能在原路径中继续查找文件。这样模板的使用者如果自行声明了新的宏包依赖，而dependencies目录中没有，还可以正常使用TeX发行版中所安装的宏包。
 
 ## 遗留问题
 
 本说明所给出的使用\listfiles命令列出所有依赖文件的方法并不十分完整。\listfiles命令只能列出LaTeX宏包，不能列出宏包自身将要读取的文件。这一点可以通过UESTCthesis在MiKTeX的basic版本编译中得到验证，MiKTeX还是会提示缺少个别文件需要联网下载。不过通过将\listfiles列出的文件都打包到模板中，UESTCthesis已经能很好的在多数发行版上编译了。像这样遗漏的文件可以通过将/usr/local/texlive/2015/texmf-dist/删除再编译，如果编译失败，就能发现缺少哪些文件了。
 
-还有一个问题是，有一些TeX发行版不使用Kpathsea管理文件。MiKTeX的旧版本就曾不使用。国内比较流行的CTeX 2.9.2套装所包装的MiKTeX就不能正确地遵从TEXINPUTS的定义从dependences目录中读取文件。但是能够肯定的是texlive的各个版本都是支持的，准确的说是Web2C的发行版都是支持的。所以，如果一个模板只能在CTeX 2.9.2上或者更旧的版本上编译成功，而在TeXLive 2016这种较新的发行版上不能编译成功，可以通过本方法将其依赖打包到模板中。然后可以在较新的TeXLive 2016上正常编译。
+还有一个问题是，有一些TeX发行版不使用Kpathsea管理文件。MiKTeX的旧版本就曾不使用。国内比较流行的CTeX 2.9.2套装所包装的MiKTeX就不能正确地遵从TEXINPUTS的定义从dependencies目录中读取文件。但是能够肯定的是texlive的各个版本都是支持的，准确的说是Web2C的发行版都是支持的。所以，如果一个模板只能在CTeX 2.9.2上或者更旧的版本上编译成功，而在TeXLive 2016这种较新的发行版上不能编译成功，可以通过本方法将其依赖打包到模板中。然后可以在较新的TeXLive 2016上正常编译。
