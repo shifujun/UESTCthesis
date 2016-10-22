@@ -29,7 +29,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2011/06/27]
 \ProvidesClass{uestcthesis}
-    [2016/06/05 v1.2.7 UESTC thesis class]
+    [2016/10/22 v1.2.8 UESTC thesis class]
 \LoadClass[fontset = windowsold,cs4size,UTF8,fancyhdr,hyperref,fntef,openany]{ctexbook}[2011/03/11]
 \def\CTEX@contentsname{目录}
 \def\CTEX@figurename{图}
@@ -253,25 +253,25 @@
 {\hss \ifdim \wd \@tempboxa >\@tempdimb \subfig@caption {##1}{}\else
 \ifsubcapnooneline \subfig@caption {##1}{}\else \box \@tempboxa \fi \fi \hss }
 \ifthenelse{\equal{\subfigcaptionA}{}}{\gdef\subfigcaptionA{{(a)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionB}{}}{\gdef\subfigcaptionB{；{(b)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionC}{}}{\gdef\subfigcaptionC{；{(c)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionD}{}}{\gdef\subfigcaptionD{；{(d)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionE}{}}{\gdef\subfigcaptionE{；{(e)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionF}{}}{\gdef\subfigcaptionF{；{(f)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionG}{}}{\gdef\subfigcaptionG{；{(g)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionH}{}}{\gdef\subfigcaptionH{；{(h)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionI}{}}{\gdef\subfigcaptionI{；{(i)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionJ}{}}{\gdef\subfigcaptionJ{；{(j)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionK}{}}{\gdef\subfigcaptionK{；{(k)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionL}{}}{\gdef\subfigcaptionL{；{(l)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionM}{}}{\gdef\subfigcaptionM{；{(m)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionN}{}}{\gdef\subfigcaptionN{；{(n)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionO}{}}{\gdef\subfigcaptionO{；{(o)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionP}{}}{\gdef\subfigcaptionP{；{(p)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionQ}{}}{\gdef\subfigcaptionQ{；{(q)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionR}{}}{\gdef\subfigcaptionR{；{(r)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionS}{}}{\gdef\subfigcaptionS{；{(s)}{\ignorespaces ##2}}}
-{\ifthenelse{\equal{\subfigcaptionT}{}}{\gdef\subfigcaptionT{；{(t)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionB}{}}{\gdef\subfigcaptionB{;{(b)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionC}{}}{\gdef\subfigcaptionC{;{(c)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionD}{}}{\gdef\subfigcaptionD{;{(d)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionE}{}}{\gdef\subfigcaptionE{;{(e)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionF}{}}{\gdef\subfigcaptionF{;{(f)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionG}{}}{\gdef\subfigcaptionG{;{(g)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionH}{}}{\gdef\subfigcaptionH{;{(h)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionI}{}}{\gdef\subfigcaptionI{;{(i)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionJ}{}}{\gdef\subfigcaptionJ{;{(j)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionK}{}}{\gdef\subfigcaptionK{;{(k)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionL}{}}{\gdef\subfigcaptionL{;{(l)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionM}{}}{\gdef\subfigcaptionM{;{(m)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionN}{}}{\gdef\subfigcaptionN{;{(n)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionO}{}}{\gdef\subfigcaptionO{;{(o)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionP}{}}{\gdef\subfigcaptionP{;{(p)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionQ}{}}{\gdef\subfigcaptionQ{;{(q)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionR}{}}{\gdef\subfigcaptionR{;{(r)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionS}{}}{\gdef\subfigcaptionS{;{(s)}{\ignorespaces ##2}}}
+{\ifthenelse{\equal{\subfigcaptionT}{}}{\gdef\subfigcaptionT{;{(t)}{\ignorespaces ##2}}}
 {\gdef\subfigcaptionA{子图不能超过20个！！！}}}}}}}}}}}}}}}}}}}}}}
 \newcommand{\allsubpiccaptions}{%
 \subfigcaptionA\subfigcaptionB\subfigcaptionC\subfigcaptionD\subfigcaptionE%
@@ -295,25 +295,21 @@
 \end{center}%
 \vspace{-0.582mm}%
 \raggedright%
+\stepcounter{figure}%
 \sbox{\tempsubpiccaptionbox}{\parbox{\textwidth}%
-{\zihao{5}图~\thefigure~\subpiccaption}}%
-\settowidth{\tempsubpiccaptionheadindent}{\zihao{5}图~\thefigure~}%
+{\zihao{5}\CTEX@figurename~\thefigure~\subpiccaption\allsubpiccaptions}}%
+\settowidth{\tempsubpiccaptionheadindent}{\zihao{5}\CTEX@figurename~\thefigure~}%
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 16pt}}{%THEN
-\noindent\caption{\subpiccaption}\label{\subpiclabel}\par%
-\noindent\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
-}{%ELSE
-{\centering\caption{\subpiccaption}\label{\subpiclabel}}\par
-\sbox{\tempsubpiccaptionbox}{\zihao{5}\baselineskip=20bp{}\CTEX@figurename~\thefigure~\subpiccaption}%
 \setlength{\tempsubpiccaptionindent}{\textwidth}%
-\addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
-\setlength{\tempsubpiccaptionindent}{.5\tempsubpiccaptionindent}%
-\setlength{\tempsubpiccaptionwidth}{\textwidth}%
-\addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionindent}%
-\addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionheadindent}%
-\hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
-\parbox[t]{\tempsubpiccaptionwidth}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
+\addtolength{\tempsubpiccaptionindent}{-\tempsubpiccaptionheadindent}%
+\addtolength{\tempsubpiccaptionindent}{-4em}%
+\hspace*{2em}\zihao{5}\CTEX@figurename~\thefigure~\parbox[t]{\tempsubpiccaptionindent}{%
+\zihao{5}\baselineskip=20bp{}\subpiccaption\allsubpiccaptions%
 }%
+}{%ELSE
+{\begin{center}\label{\subpiclabel}\zihao{5}\baselineskip=20bp{}\CTEX@figurename~\thefigure~\subpiccaption\allsubpiccaptions\end{center}}%
+}%
+\addcontentsline{lof}{figure}{\numberline {\thefigure}{\ignorespaces \subpiccaption\relax }}%
 \vspace{12bp}%
 \end{figure}%
 \clearallsubfigcaptions%
@@ -335,21 +331,16 @@
 {\zihao{5}图~\thefigure~\subpiccaption}}%
 \settowidth{\tempsubpiccaptionheadindent}{\zihao{5}图~\thefigure~}%
 \ifthenelse{\lengthtest{\ht\tempsubpiccaptionbox > 16pt}}{%THEN
-\noindent\caption[\subpiclofcaption]{\subpiccaption}\label{\subpiclabel}\par%
-\noindent\hspace*{\tempsubpiccaptionheadindent}%
-\parbox{\textwidth-\tempsubpiccaptionheadindent}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
-}{%ELSE
-{\centering\caption[\subpiclofcaption]{\subpiccaption}\label{\subpiclabel}}\par
-\sbox{\tempsubpiccaptionbox}{\zihao{5}\baselineskip=20bp{}\CTEX@figurename~\thefigure~\subpiccaption}%
 \setlength{\tempsubpiccaptionindent}{\textwidth}%
-\addtolength{\tempsubpiccaptionindent}{-\wd\tempsubpiccaptionbox}%
-\setlength{\tempsubpiccaptionindent}{.5\tempsubpiccaptionindent}%
-\setlength{\tempsubpiccaptionwidth}{\textwidth}%
-\addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionindent}%
-\addtolength{\tempsubpiccaptionwidth}{-\tempsubpiccaptionheadindent}%
-\hspace*{\tempsubpiccaptionindent}\hspace*{\tempsubpiccaptionheadindent}%
-\parbox[t]{\tempsubpiccaptionwidth}{\zihao{5}\baselineskip=20bp{}\allsubpiccaptions}%
+\addtolength{\tempsubpiccaptionindent}{-\tempsubpiccaptionheadindent}%
+\addtolength{\tempsubpiccaptionindent}{-4em}%
+\hspace*{2em}\zihao{5}\CTEX@figurename~\thefigure~\parbox[t]{\tempsubpiccaptionindent}{%
+\zihao{5}\baselineskip=20bp{}\subpiccaption\allsubpiccaptions%
 }%
+}{%ELSE
+{\begin{center}\label{\subpiclabel}\zihao{5}\baselineskip=20bp{}\CTEX@figurename~\thefigure~\subpiccaption\allsubpiccaptions\end{center}}%
+}%
+\addcontentsline{lof}{figure}{\numberline {\thefigure}{\ignorespaces \subpiccaption\relax }}%
 \vspace{12bp}%
 \end{figure}%
 \clearallsubfigcaptions%
