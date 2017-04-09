@@ -696,19 +696,19 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 \theoremheaderfont{\normalfont \bfseries \hspace*{2em}}%设置缩进
 \theoremseparator{\enskip}%分隔符是一个空格
 \theoremsymbol{}%定义环境结束符，下同
-\newtheorem{dingyi}{定义}[chapter]
+\newtheorem{dingyi}{定义}[section]
 \def\enddingyi{\quad\@endtheorem}%修正环境中最后一个字符不是英文字符时，不显示结束符的BUG。下同。
 \theoremsymbol{}
-\newtheorem{gongli}{公理}[chapter]
+\newtheorem{gongli}{公理}[section]
 \def\endgongli{\quad\@endtheorem}
-%\theoremsymbol{■}
-\newtheorem{dingli}{定理}[chapter]
+\theoremsymbol{■}
+\newtheorem{dingli}{定理}[section]
 \def\enddingli{\quad\@endtheorem}
-%\theoremsymbol{■}
-\newtheorem{yinli}{引理}[chapter]
+\theoremsymbol{■}
+\newtheorem{yinli}{引理}[section]
 \def\endyinli{\quad\@endtheorem}
 \theoremstyle{nonumberplain}
-\theoremsymbol{$\blacksquare$}
+\theoremsymbol{■}
 \newtheorem{zhengming}{证明}
 \def\endzhengming{\quad\@endtheorem}
 \RequirePackage[numbers,sort&compress]{natbib}
