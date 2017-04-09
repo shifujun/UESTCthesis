@@ -1247,23 +1247,23 @@ pdfkeywords={\@pdfckeywords}%在pdf元信息中加入关键字
 %定义四种带标号的定理环境
 %    \begin{macrocode}
 \theoremsymbol{}%定义环境结束符，下同
-\newtheorem{dingyi}{定义}[section]
+\newtheorem{dingyi}{定义}[chapter]
 \def\enddingyi{\quad\@endtheorem}%修正环境中最后一个字符不是英文字符时，不显示结束符的BUG。下同。
 \theoremsymbol{}
-\newtheorem{gongli}{公理}[section]
+\newtheorem{gongli}{公理}[chapter]
 \def\endgongli{\quad\@endtheorem}
-\theoremsymbol{■}
-\newtheorem{dingli}{定理}[section]
+%\theoremsymbol{■}
+\newtheorem{dingli}{定理}[chapter]
 \def\enddingli{\quad\@endtheorem}
-\theoremsymbol{■}
-\newtheorem{yinli}{引理}[section]
+%\theoremsymbol{■}
+\newtheorem{yinli}{引理}[chapter]
 \def\endyinli{\quad\@endtheorem}
 %    \end{macrocode}
 %
 %定义一种不带标号的证明环境。
 %    \begin{macrocode}
 \theoremstyle{nonumberplain}
-\theoremsymbol{■}
+\theoremsymbol{$\blacksquare$}
 \newtheorem{zhengming}{证明}
 \def\endzhengming{\quad\@endtheorem}
 %    \end{macrocode}
@@ -3735,7 +3735,8 @@ FUNCTION {conference}
   new.block
   format.conference.title output
   new.block
-      publisher ", " * address * output
+      booktitle output
+		address  output
       year output
       format.comma.pages output
   new.block
@@ -3746,7 +3747,8 @@ FUNCTION {conference}
   new.block
   format.conference.title output
   new.block
-      publisher ", " * address * output
+      booktitle output
+		address  output
       year output
       format.comma.pages output
   new.block
